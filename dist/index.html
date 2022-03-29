@@ -2,10 +2,54 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Whats Cookin</title>
+    <title>What's Cookin</title>
   </head>
   <body>
-    <h1>Whats Cookin</h1>
+    <header>
+      <h1>What's Cookin</h1>
+    </header>
+    <main>
+      <nav>
+        <button class="search-button">Search Recipes</button>
+        <button class="filter-button">Filter Recipes</button>
+        <button class="favorite-recipes-button">Favorite Recipes</button>
+        <button class="all-recipes-button hidden">All Recipes</button>
+      </nav>
+      <section>
+        <section class="all-recipes-container">
+          <h2>All Recipes</h2>
+          <div class="all-recipe-thumbnails">
+          </div>
+        </section>
+        <section class="favorite-recipes-container hidden">
+          <h2>Favorite Recipes</h2>
+          <div class="favorite-recipe-thumbnails">
+          </div>
+        </section>
+        <section class="recipe-details-container hidden">
+          <div class="recipe-title">
+            <h2>Recipe Name</h2>
+            <img>
+          </div>
+          <div>
+            <img>
+            <div class="ingredients-container">
+              <h3>Ingredients:</h3>
+              <div class="ingredients-list-container">
+                <form class="ingredient-list">
+                  <!-- <input>
+                  <input> -->
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-instructions">
+            <h3>Instructions:</h3>
+            <p class="instructions"></p>
+          </div>
+        </section>
+      </section>
+    </main>
   </body>
   <!-- Do not include the scripts.js file here - it is done automatically by the webpack server -->
   <script src="bundle.js"></script>
