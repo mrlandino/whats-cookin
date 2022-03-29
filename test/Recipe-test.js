@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import Recipe from '../src/classes/Recipe';
 
 describe('Recipe', () => {
-  let recipe, recipeData;
+  let recipe, recipeData, ingredients;
 
   beforeEach(() => {
     recipeData = [
@@ -29,62 +29,6 @@ describe('Recipe', () => {
           "quantity": {
             "amount": 1,
             "unit": "large"
-          }
-        },
-        {
-          "id": 19335,
-          "quantity": {
-            "amount": 0.5,
-            "unit": "c"
-          }
-        },
-        {
-          "id": 19206,
-          "quantity": {
-            "amount": 3,
-            "unit": "Tbsp"
-          }
-        },
-        {
-          "id": 19334,
-          "quantity": {
-            "amount": 0.5,
-            "unit": "c"
-          }
-        },
-        {
-          "id": 2047,
-          "quantity": {
-            "amount": 0.5,
-            "unit": "tsp"
-          }
-        },
-        {
-          "id": 1012047,
-          "quantity": {
-            "amount": 24,
-            "unit": "servings"
-          }
-        },
-        {
-          "id": 10019903,
-          "quantity": {
-            "amount": 2,
-            "unit": "c"
-          }
-        },
-        {
-          "id": 1145,
-          "quantity": {
-            "amount": 0.5,
-            "unit": "c"
-          }
-        },
-        {
-          "id": 2050,
-          "quantity": {
-            "amount": 0.5,
-            "unit": "tsp"
           }
         }
       ],
@@ -126,19 +70,43 @@ describe('Recipe', () => {
       }
     ]
     recipe = new Recipe(recipeData[0]);
+    ingredients = [
+        {
+          "id": 20081,
+          "name": "wheat flour",
+          "estimatedCostInCents": 142
+        },
+        {
+          "id": 18372,
+          "name": "bicarbonate of soda",
+          "estimatedCostInCents": 582
+        },
+        {
+          "id": 1123,
+          "name": "eggs",
+          "estimatedCostInCents": 472
+        } ];
   });
 
   it('Should be a function', function() {
     expect(Recipe).to.be.a('function');
   });
 
-  it('should be an instance of RecipeRepository', function() {
+  it('Should be an instance of RecipeRepository', function() {
     expect(recipe).to.be.an.instanceof(Recipe);
   });
 
   it('Should store recipe details', function() {
-    expect(recipe).to.deep.equal(recipeData[0]);
+    expect(recipe.id).to.deep.equal(recipeData[0].id);
+    expect(recipe.image).to.deep.equal(recipeData[0].image);
+    expect(recipe.ingredients).to.deep.equal(recipeData[0].ingredients);
+    expect(recipe.instructions).to.deep.equal(recipeData[0].instructions);
+    expect(recipe.name).to.deep.equal(recipeData[0].name);
+    expect(recipe.tags).to.deep.equal(recipeData[0].tags);
   });
 
-  
+  it('Should have a method that will store a list of ingredients needed', function() {
+    recipe.findIngredientsNeeded(ingredients);
+    expect(recipe.ingredientsNeeded.length).to.equal(3);
+  })
 })
