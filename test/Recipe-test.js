@@ -108,5 +108,10 @@ describe('Recipe', () => {
   it('Should have a method that will store a list of ingredients needed', function() {
     recipe.findIngredientsNeeded(ingredients);
     expect(recipe.ingredientsNeeded.length).to.equal(3);
-  })
+  });
+
+  it('Should have a method that will determine the cost of the recipe', function() {
+    recipe.getCost(ingredients);
+    expect(recipe.recipeCost).to.equal(9.76);
+  });
 })

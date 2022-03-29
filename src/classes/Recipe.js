@@ -7,6 +7,7 @@ class Recipe {
     this.name = recipe.name;
     this.tags = recipe.tags;
     this.ingredientsNeeded = [];
+    this.recipeCost = 0;
   };
 
   findIngredientsNeeded(ingredients) {
@@ -21,6 +22,19 @@ class Recipe {
     filteredIngredients.forEach(ingredient => {
       this.ingredientsNeeded.push(ingredient.name)
     });
+  };
+
+  getCost(ingredients) {
+    const idsAndCosts = ingredients.reduce((idCostObj, ingredient) => {
+      idCostObj[ingredient.id] = ingredient.estimatedCostInCents;
+      return idCostObj;
+    }, {});
+
+    const totalCost = this.ingredients.reduce((totalCost, ingredient) => {
+      totalCost += (ingredient.quantity.amount * idsAndCosts[ingredient.id]);
+      return totalCost;
+    }, 0);
+    this.recipeCost = totalCost / 100;
   };
 }
 
