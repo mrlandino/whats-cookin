@@ -2,8 +2,7 @@ import { expect } from 'chai';
 import RecipeRepository from '../src/classes/RecipeRepository';
 
 describe('Recipe', () => {
-  let recipeRepository;
-  let recipeData;
+  let recipeData, recipeRepository;
 
   beforeEach(() => {
     recipeData = [
@@ -139,18 +138,46 @@ describe('Recipe', () => {
 
   it('should have data bank of recipes', function() {
     expect(recipeRepository.recipes[0]).to.deep.equal(recipeData[0]);
-  })
+  });
 
   it('should have a method that filters recipes by tag', function() {
-
     recipeRepository.filterByTag("snack");
-
-    expect(recipeRepository.filteredRecipes).to.deep.equal([recipeData[0]]);
+    expect(recipeRepository.filteredRecipesTag).to.deep.equal([recipeData[0]]);
 
     recipeRepository.filterByTag("dinner");
+    expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
+  });
 
-    expect(recipeRepository.filteredRecipes).to.deep.equal([]);
+  it('should have a method that filters recipes by name', function() {
+    recipeRepository.filterByName("chocolate");
+    expect(recipeRepository.filteredRecipesName).to.deep.equal([recipeData[0]]);
 
-  })
+    recipeRepository.filterByName("bread");
+    expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
+  });
 
+  it('should be able to filter recipes by name and tag at the same time', function() {
+    recipeRepository.filterByName("chocolate");
+    recipeRepository.filterByTag("snack");
+
+    expect(recipeRepository.filteredRecipesTag).to.deep.equal([recipeData[0]]);
+
+    recipeRepository.filterByName("chocolate");
+    recipeRepository.filterByTag("dinner");
+
+    expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
+    expect(recipeRepository.filteredRecipesName).to.deep.equal([recipeData[0]]);
+
+    recipeRepository.filterByName("bread");
+    recipeRepository.filterByTag("snack");
+
+    expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
+    expect(recipeRepository.filteredRecipesTag).to.deep.equal([recipeData[0]]);
+
+    recipeRepository.filterByName("milk");
+    recipeRepository.filterByTag("dinner");
+
+    expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
+    expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
+  });
 })

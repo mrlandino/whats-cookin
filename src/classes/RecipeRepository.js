@@ -1,16 +1,33 @@
 class RecipeRepository {
   constructor(recipeData) {
     this.recipes = recipeData;
-    this.filteredRecipes;
+    this.filteredRecipesTag = [];
+    this.filteredRecipesName = [];
   }
 
   filterByTag(tag) {
-    this.filteredRecipes = this.recipes.filter(recipe => {
-      return recipe.tags.includes(tag);
-    });
+    if(this.filteredRecipesName.length > 0) {
+      this.filteredRecipesTag = this.filteredRecipesName.filter(recipe => {
+        return recipe.tags.includes(tag);
+      });
+    } else {
+      this.filteredRecipesTag = this.recipes.filter(recipe => {
+        return recipe.tags.includes(tag);
+      });
+    };
+  };
 
-
-  }
+  filterByName(name) {
+    if(this.filteredRecipesTag.length > 0) {
+      this.filteredRecipesName = this.filteredRecipesTag.filter(recipe => {
+        return recipe.name.includes(name[0].toUpperCase());
+      });
+    } else {
+      this.filteredRecipesName = this.recipes.filter(recipe => {
+        return recipe.name.includes(name[0].toUpperCase());
+      });
+    };
+  };
 }
 
 export default RecipeRepository;
