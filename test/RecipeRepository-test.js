@@ -140,4 +140,17 @@ describe('Recipe', () => {
   it('should have data bank of recipes', function() {
     expect(recipeRepository.recipes[0]).to.deep.equal(recipeData[0]);
   })
+
+  it('should have a method that filters recipes by tag', function() {
+
+    recipeRepository.filterByTag("snack");
+
+    expect(recipeRepository.filteredRecipes).to.deep.equal([recipeData[0]]);
+
+    recipeRepository.filterByTag("dinner");
+
+    expect(recipeRepository.filteredRecipes).to.deep.equal([]);
+
+  })
+
 })
