@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import RecipeRepository from '../src/classes/RecipeRepository';
 
-describe('Recipe', () => {
+describe('Recipe Repository', () => {
   let recipeData, recipeRepository;
 
   beforeEach(() => {
@@ -132,15 +132,15 @@ describe('Recipe', () => {
     expect(RecipeRepository).to.be.a('function');
   });
 
-  it('should be an instance of RecipeRepository', function() {
+  it('should be an instance of RecipeRepository', () => {
     expect(recipeRepository).to.be.an.instanceof(RecipeRepository);
   });
 
-  it('should have data bank of recipes', function() {
+  it('should have data bank of recipes', () => {
     expect(recipeRepository.recipes[0]).to.deep.equal(recipeData[0]);
   });
 
-  it('should have a method that filters recipes by tag', function() {
+  it('should have a method that filters recipes by tag', () => {
     recipeRepository.filterByTag("snack");
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([recipeData[0]]);
 
@@ -148,7 +148,7 @@ describe('Recipe', () => {
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
   });
 
-  it('should have a method that filters recipes by name', function() {
+  it('should have a method that filters recipes by name', () => {
     recipeRepository.filterByName("chocolate");
     expect(recipeRepository.filteredRecipesName).to.deep.equal([recipeData[0]]);
 
@@ -156,7 +156,7 @@ describe('Recipe', () => {
     expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
   });
 
-  it('should be able to filter recipes by name and tag at the same time', function() {
+  it('should be able to filter recipes by name and tag at the same time', () => {
     recipeRepository.filterByName("chocolate");
     recipeRepository.filterByTag("snack");
 
