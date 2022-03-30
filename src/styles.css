@@ -66,6 +66,44 @@ h2 {
   width: 100%;
 }
 
+.all-recipe-thumbnails {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.recipe-thumbnail {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  width: 350px;
+  /* border: solid 3px blue; */
+  margin: 15px;
+}
+
+.recipe-image {
+  height: 75%;
+  width: 100%
+}
+
+.thumbnail-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: blanchedalmond;
+  height: 25%
+}
+.star-icon {
+  height: 80%;
+  width: auto;
+  margin: 5px;
+}
+
+p {
+  overflow-wrap: break-word;
+  margin: 5px;
+}
+
 /* HEADER-------------------------- */
 header {
   background-color: #F87664;
