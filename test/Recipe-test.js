@@ -88,15 +88,15 @@ describe('Recipe', () => {
         } ];
   });
 
-  it('Should be a function', function() {
+  it('Should be a function', () => {
     expect(Recipe).to.be.a('function');
   });
 
-  it('Should be an instance of RecipeRepository', function() {
+  it('Should be an instance of RecipeRepository', () => {
     expect(recipe).to.be.an.instanceof(Recipe);
   });
 
-  it('Should store recipe details', function() {
+  it('Should store recipe details', () => {
     expect(recipe.id).to.deep.equal(recipeData[0].id);
     expect(recipe.image).to.deep.equal(recipeData[0].image);
     expect(recipe.ingredients).to.deep.equal(recipeData[0].ingredients);
@@ -105,17 +105,17 @@ describe('Recipe', () => {
     expect(recipe.tags).to.deep.equal(recipeData[0].tags);
   });
 
-  it('Should have a method that will store a list of ingredients needed', function() {
+  it('Should have a method that will store a list of ingredients needed', () => {
     recipe.findIngredientsNeeded(ingredients);
     expect(recipe.ingredientsNeeded.length).to.equal(3);
   });
 
-  it('Should have a method that will determine the cost of the recipe', function() {
+  it('Should have a method that will determine the cost of the recipe', () => {
     recipe.getCost(ingredients);
     expect(recipe.recipeCost).to.equal(9.76);
   });
 
-  it('Should have a method that will return the recipe instructions', function() {
+  it('Should have a method that will return the recipe instructions', () => {
     let instructions = recipe.getInstructions();
     expect(instructions).to.equal(recipeData[0].instructions);
   });

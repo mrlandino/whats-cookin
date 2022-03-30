@@ -17,10 +17,10 @@ class Recipe {
     const filteredIngredients = ingredients.filter(ingredient => {
       if (ingredientIds.includes(ingredient.id)) {
         return ingredient;
-      }
+      };
     });
     filteredIngredients.forEach(ingredient => {
-      this.ingredientsNeeded.push(ingredient.name)
+      this.ingredientsNeeded.push(ingredient.name);
     });
   };
 
@@ -36,11 +36,11 @@ class Recipe {
     }, 0);
     this.recipeCost = totalCost / 100;
     };
-    
+
     getInstructions() {
       return this.instructions;
     };
-  };
+  }
 
 
 export default Recipe;
