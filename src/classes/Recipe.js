@@ -35,7 +35,12 @@ class Recipe {
       return totalCost;
     }, 0);
     this.recipeCost = totalCost / 100;
+    };
+    
+    getInstructions() {
+      return this.instructions;
+    };
   };
-}
+
 
 export default Recipe;

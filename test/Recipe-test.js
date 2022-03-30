@@ -114,4 +114,9 @@ describe('Recipe', () => {
     recipe.getCost(ingredients);
     expect(recipe.recipeCost).to.equal(9.76);
   });
+
+  it('Should have a method that will return the recipe instructions', function() {
+    let instructions = recipe.getInstructions();
+    expect(instructions).to.equal(recipeData[0].instructions);
+  });
 })
