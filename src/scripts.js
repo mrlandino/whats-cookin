@@ -78,14 +78,14 @@ const updateRecipeCard = () => {
                                 <img class="larger-star">`;
   ingredientsListContainer.innerHTML = "";
   amountsColumn.innerHTML = "";
-  console.log(currentRecipe.ingredientsNeeded);
+  // console.log(currentRecipe.ingredientsNeeded);
   currentRecipe.ingredientsNeeded.forEach(ingredient => {
     ingredientsListContainer.innerHTML += `<p>${ingredient}</p>`;
   });
   currentRecipe.ingredients.forEach(ingredient => {
     amountsColumn.innerHTML += `<p>${ingredient.quantity.amount} ${ingredient.quantity.unit}</p>`;
   });
-}
+};
 
 // let ingredientList = [];
 // let ingredientsListById = currentRecipe.ingredients.map(ingredient => {
