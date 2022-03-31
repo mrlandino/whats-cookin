@@ -73,6 +73,7 @@ const findRecipeInfo = (id) => {
 
 const updateRecipeCard = () => {
   currentRecipe.findIngredientsNeeded(ingredientsData);
+  currentRecipe.getCost(ingredientsData)
   let recipe = "";
   recipe += `<div class="recipe-title">
               <h2>${currentRecipe.name}</h2>
@@ -87,14 +88,15 @@ const updateRecipeCard = () => {
   let ingredientList = ""; currentRecipe.ingredientsNeeded.forEach(ingredient => {
     ingredientList += `<p>${ingredient.name} ${ingredient.amount} ${ingredient.unit}</p>`;
   });
-
+  let recipeCost = "";
+  recipeCost += `<p>$${currentRecipe.recipeCost}</p>`
   let instructionsList = "";
   currentRecipe.instructions.forEach(instruction => {
     instructionsList += `<p class="instructions">${instruction.number}. ${instruction.instruction}</p>`;
   });
 
   console.log(currentRecipe.instructions[0].instruction);
-  recipeDetailsContainer.innerHTML = (recipe + ingredientList + `</div></div></div><div class="recipe-instructions"><h3>Instructions:</h3>` + instructionsList + `</div>`);
+  recipeDetailsContainer.innerHTML = (recipe + ingredientList + recipeCost + `</div></div></div><div class="recipe-instructions"><h3>Instructions:</h3>` + instructionsList + `</div>`);
 
 
 
