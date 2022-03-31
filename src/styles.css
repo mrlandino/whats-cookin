@@ -54,7 +54,10 @@ h2 {
   background-color: #DFDCDC
 }
 
-
+.ingredient-columns {
+  display: flex;
+  flex-direction: row;
+}
 
 .image-and-ingredients-container {
   /* border: solid 3px blue; */
