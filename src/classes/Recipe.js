@@ -51,7 +51,7 @@ class Recipe {
       totalCost += (ingredient.quantity.amount * idsAndCosts[ingredient.id]);
       return totalCost;
     }, 0);
-    this.recipeCost = totalCost / 100;
+    this.recipeCost = (totalCost / 100).toFixed(2);
     };
 
     getInstructions() {
