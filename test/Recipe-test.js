@@ -108,6 +108,9 @@ describe('Recipe', () => {
   it('Should have a method that will store a list of ingredients needed', () => {
     recipe.findIngredientsNeeded(ingredients);
     expect(recipe.ingredientsNeeded.length).to.equal(3);
+    expect(recipe.ingredientsNeeded[0].name).to.equal("wheat flour");
+    expect(recipe.ingredientsNeeded[0].amount).to.equal(1.5);
+
   });
 
   it('Should have a method that will determine the cost of the recipe', () => {
