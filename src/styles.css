@@ -137,6 +137,20 @@ button {
   font-size: 20px;
   font-weight: bolder;
 }
+
+.dropdown-content {
+  display: none;
+}
+
+.dropdown:hover
+.dropdown-content {
+  display: block;
+}
+
+.tag-hover:hover{
+  background-color: blanchedalmond;
+}
+
 .hidden {
   display: none;
 }

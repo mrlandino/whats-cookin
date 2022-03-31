@@ -14,6 +14,9 @@ let currentRecipe;
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
 const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
+const filterByTag = document.querySelector(".filter-tag-button");
+const dropdownContent = document.querySelector(".dropdown-content");
+
 // let recipeCardName = document.querySelector(".recipe-card-name");
 // let recipeCardTitle = document.querySelector(".recipe-title");
 // let ingredientsListContainer = document.querySelector(".ingredients-list-container");
@@ -25,6 +28,7 @@ const recipesList = new RecipeRepository(recipeData);
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
   displayAllRecipes()
+  injectFilterTags()
 };
 
 allRecipes.addEventListener('click', function(e) {
@@ -35,6 +39,7 @@ allRecipes.addEventListener('click', function(e) {
   }
 });
 
+// filterByTag.addEventListener('')
 // EVENT HANDLERS------------------------------------------------
 const showElement = element => {
   element.classList.remove('hidden');
@@ -95,10 +100,26 @@ const updateRecipeCard = () => {
     instructionsList += `<p class="instructions">${instruction.number}. ${instruction.instruction}</p>`;
   });
 
-  console.log(currentRecipe.instructions[0].instruction);
+  // console.log(currentRecipe.instructions[0].instruction);
   recipeDetailsContainer.innerHTML = (recipe + ingredientList + recipeCost + `</div></div></div><div class="recipe-instructions"><h3>Instructions:</h3>` + instructionsList + `</div>`);
+}
 
-
+const injectFilterTags = () => {
+  let tags = "";
+  let uniqueTags;
+  uniqueTags = recipesList.recipes.reduce((allTags, recipe) => {
+  recipe.tags.forEach(tag => {
+    if (!allTags.includes(tag)) {
+      allTags.push(tag);
+    }
+  })
+  return allTags;
+}, []);
+uniqueTags.forEach((tag) => {
+  tags += `<p class="tag-hover" id=${tag}>${tag}</p>`
+})
+dropdownContent.innerHTML = tags
+}
 
 
   // recipeCardTitle.innerHTML = "";
@@ -113,7 +134,7 @@ const updateRecipeCard = () => {
   // currentRecipe.ingredients.forEach(ingredient => {
   //   amountsColumn.innerHTML += `<p>${ingredient.quantity.amount} ${ingredient.quantity.unit}</p>`;
   // });
-};
+
 
 // let ingredientList = [];
 // let ingredientsListById = currentRecipe.ingredients.map(ingredient => {
