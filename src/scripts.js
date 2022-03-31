@@ -1,19 +1,25 @@
 import './styles.css';
 import apiCalls from './apiCalls';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/turing-logo.png'
-import recipeData from './data/recipes.js'
-import RecipeRepository from './classes/RecipeRepository.js'
+import './images/turing-logo.png';
+import recipeData from './data/recipes.js';
+import ingredientsData from './data/ingredients.js'
+import RecipeRepository from './classes/RecipeRepository.js';
+import Recipe from './classes/Recipe.js';
 
 
 
 // VARIABLES-----------------------------------------------
+let currentRecipe;
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
 const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
+let recipeCardName = document.querySelector(".recipe-card-name");
+let recipeCardTitle = document.querySelector(".recipe-title");
+let ingredientsListContainer = document.querySelector(".ingredients-list-container");
+let amountsColumn = document.querySelector(".amounts");
 
 // const recipeTest = [{name: "steph", age: 24}, {name: "olivia", age: 26}]
-// recipeData;
 const recipesList = new RecipeRepository(recipeData);
 
 // EVENT LISTENERS-----------------------------------------------
@@ -24,7 +30,8 @@ window.onload = (event) => {
 allRecipes.addEventListener('click', function(e) {
   if (e.target.parentElement.classList.contains('recipe-thumbnail')) {
     displayCard();
-    displayRecipeInfo(e.target.parentElement.id);
+    findRecipeInfo(e.target.parentElement.id);
+    updateRecipeCard();
   }
 });
 
@@ -56,16 +63,42 @@ const displayCard = () => {
   showElement(recipeDetailsContainer);
 };
 
-const displayRecipeInfo = (id) => {
-  console.log(id);
-  // let recipeCardHTML = "";
-  let currentRecipe = recipesList.recipes.find((recipe) => {
-    console.log(recipe.id, id);
+const findRecipeInfo = (id) => {
+  let newRecipe = recipesList.recipes.find((recipe) => {
     return `${recipe.id}` === id;
   });
-  console.log(currentRecipe);
+  currentRecipe = new Recipe(newRecipe);
+  return currentRecipe;
 };
 
+const updateRecipeCard = () => {
+  currentRecipe.findIngredientsNeeded(ingredientsData);
+  recipeCardTitle.innerHTML = "";
+  recipeCardTitle.innerHTML += `<h2 class="recipe-card-name">${currentRecipe.name}</h2>
+                                <img class="larger-star">`;
+  ingredientsListContainer.innerHTML = "";
+  amountsColumn.innerHTML = "";
+  console.log(currentRecipe.ingredientsNeeded);
+  currentRecipe.ingredientsNeeded.forEach(ingredient => {
+    ingredientsListContainer.innerHTML += `<p>${ingredient}</p>`;
+  });
+  currentRecipe.ingredients.forEach(ingredient => {
+    amountsColumn.innerHTML += `<p>${ingredient.quantity.amount} ${ingredient.quantity.unit}</p>`;
+  });
+}
+
+// let ingredientList = [];
+// let ingredientsListById = currentRecipe.ingredients.map(ingredient => {
+  //   return ingredient.id;
+  // });
+  // let ingredientListByName = ingredientsData.forEach(ingredientItem => {
+    //   ingredientsListById.forEach(ingredientId => {
+      //     if (ingredientId === ingredientItem.id) {
+        //       ingredientList.push(ingredientItem);
+        //     }
+        //   })
+        // });
+        // return(ingredientList);
 
 
 
