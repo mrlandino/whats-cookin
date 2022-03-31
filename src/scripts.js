@@ -14,10 +14,10 @@ let currentRecipe;
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
 const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
-let recipeCardName = document.querySelector(".recipe-card-name");
-let recipeCardTitle = document.querySelector(".recipe-title");
-let ingredientsListContainer = document.querySelector(".ingredients-list-container");
-let amountsColumn = document.querySelector(".amounts");
+// let recipeCardName = document.querySelector(".recipe-card-name");
+// let recipeCardTitle = document.querySelector(".recipe-title");
+// let ingredientsListContainer = document.querySelector(".ingredients-list-container");
+// let amountsColumn = document.querySelector(".amounts");
 
 // const recipeTest = [{name: "steph", age: 24}, {name: "olivia", age: 26}]
 const recipesList = new RecipeRepository(recipeData);
@@ -73,18 +73,44 @@ const findRecipeInfo = (id) => {
 
 const updateRecipeCard = () => {
   currentRecipe.findIngredientsNeeded(ingredientsData);
-  recipeCardTitle.innerHTML = "";
-  recipeCardTitle.innerHTML += `<h2 class="recipe-card-name">${currentRecipe.name}</h2>
-                                <img class="larger-star">`;
-  ingredientsListContainer.innerHTML = "";
-  amountsColumn.innerHTML = "";
-  // console.log(currentRecipe.ingredientsNeeded);
-  currentRecipe.ingredientsNeeded.forEach(ingredient => {
-    ingredientsListContainer.innerHTML += `<p>${ingredient}</p>`;
+  let recipe = "";
+  recipe += `<div class="recipe-title">
+              <h2>${currentRecipe.name}</h2>
+              <img class="larger-star">
+            </div>
+            <div class="image-and-ingredients-container">
+              <img class="recipe-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
+              <div class="ingredients-container">
+                <h3>Ingredients:</h3>
+                <div class="ingredient-list-name-and-amounts">`
+
+  let ingredientList = ""; currentRecipe.ingredientsNeeded.forEach(ingredient => {
+    ingredientList += `<p>${ingredient.name} ${ingredient.amount} ${ingredient.unit}</p>`;
   });
-  currentRecipe.ingredients.forEach(ingredient => {
-    amountsColumn.innerHTML += `<p>${ingredient.quantity.amount} ${ingredient.quantity.unit}</p>`;
+
+  let instructionsList = "";
+  currentRecipe.instructions.forEach(instruction => {
+    instructionsList += `<p class="instructions">${instruction.number}. ${instruction.instruction}</p>`;
   });
+
+  console.log(currentRecipe.instructions[0].instruction);
+  recipeDetailsContainer.innerHTML = (recipe + ingredientList + `</div></div></div><div class="recipe-instructions"><h3>Instructions:</h3>` + instructionsList + `</div>`);
+
+
+
+
+  // recipeCardTitle.innerHTML = "";
+  // recipeCardTitle.innerHTML += `<h2 class="recipe-card-name">${currentRecipe.name}</h2>
+  //                               <img class="larger-star">`;
+  // ingredientsListContainer.innerHTML = "";
+  // amountsColumn.innerHTML = "";
+  // // console.log(currentRecipe.ingredientsNeeded);
+  // currentRecipe.ingredientsNeeded.forEach(ingredient => {
+  //   ingredientsListContainer.innerHTML += `<p>${ingredient}</p>`;
+  // });
+  // currentRecipe.ingredients.forEach(ingredient => {
+  //   amountsColumn.innerHTML += `<p>${ingredient.quantity.amount} ${ingredient.quantity.unit}</p>`;
+  // });
 };
 
 // let ingredientList = [];
