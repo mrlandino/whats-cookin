@@ -16,6 +16,8 @@ const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
 const filterByTag = document.querySelector(".filter-tag-button");
 const dropdownContent = document.querySelector(".dropdown-content");
+const searchInput = document.querySelector(".search-button-input");
+
 // const filterTargets = document.querySelectorAll(".tag-hover")
 
 
@@ -53,6 +55,17 @@ dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
     applyFilter(e.target.id)
     displayFilteredContent()
+  }
+})
+
+searchInput.addEventListener("keypress", function(e) {
+  // event.preventDefault();
+  if(e.key === "Enter") {
+    event.preventDefault();
+    console.log("1: ", searchInput.value)
+    applySearch(`${searchInput.value}`);
+    console.log("2: ", currentRecipe)
+    displaySearchedContent();
   }
 })
 
@@ -144,6 +157,7 @@ const applyFilter = (id) => {
 }
 
 const displayFilteredContent = () => {
+  allRecipes.innerHTML = "";
   let filteredRecipesHTML = "";
   recipesList.filteredRecipesTag.forEach((recipe) => {
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
@@ -157,6 +171,27 @@ const displayFilteredContent = () => {
   allRecipes.innerHTML = filteredRecipesHTML;
 }
 
+const applySearch = (input) => {
+  recipesList.filteredRecipesTag = [];
+  recipesList.filterByName(input);
+  console.log(recipesList);
+}
+
+const displaySearchedContent = () => {
+  console.log("YOU ARE IN DISPLAY SEARCH FUNCTION");
+  allRecipes.innerHTML = "";
+  let searchedRecipesHTML = "";
+  recipesList.filteredRecipesName.forEach((recipe) => {
+    searchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
+                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <div class="thumbnail-details">
+                  <p>${recipe.name}</p>
+                  <img class="star-icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                </div>
+              </div>`;
+  });
+  allRecipes.innerHTML = searchedRecipesHTML;
+}
 
   // recipeCardTitle.innerHTML = "";
   // recipeCardTitle.innerHTML += `<h2 class="recipe-card-name">${currentRecipe.name}</h2>

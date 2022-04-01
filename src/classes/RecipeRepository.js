@@ -18,13 +18,14 @@ class RecipeRepository {
   };
 
   filterByName(name) {
+    let upperCaseName = name.charAt(0).toUpperCase() + name.slice(1);
     if(this.filteredRecipesTag.length > 0) {
       this.filteredRecipesName = this.filteredRecipesTag.filter(recipe => {
-        return recipe.name.includes(name[0].toUpperCase());
+        return recipe.name.includes(upperCaseName);
       });
     } else {
       this.filteredRecipesName = this.recipes.filter(recipe => {
-        return recipe.name.includes(name[0].toUpperCase());
+        return recipe.name.includes(upperCaseName);
       });
     };
   };
