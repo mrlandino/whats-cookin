@@ -103,6 +103,11 @@ h2 {
   margin: 5px;
 }
 
+.large-star {
+  height: 100px;
+  width: 100px;
+}
+
 p {
   overflow-wrap: break-word;
   margin: 5px;

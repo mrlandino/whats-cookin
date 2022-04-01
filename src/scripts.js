@@ -21,8 +21,7 @@ const recipeDetailsContainer = document.querySelector(".recipe-details-container
 const filterByTag = document.querySelector(".filter-tag-button");
 const dropdownContent = document.querySelector(".dropdown-content");
 const searchInput = document.querySelector(".search-button-input");
-// const filterTargets = document.querySelectorAll(".tag-hover")
-
+const largeStar = document.querySelector(".large-star");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
@@ -36,6 +35,15 @@ allRecipes.addEventListener('click', function(e) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
+  };
+});
+
+allRecipes.addEventListener("click", function(e) {
+  if (e.target.classList.contains('star-icon')) {
+    console.log('star');
+    addRecipeToFavorites(e.target.id);
+    //function to change star icon
+    //funtion to add recipe to user.favoriteRecipes
   };
 });
 
@@ -70,7 +78,7 @@ const displayAllRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -96,7 +104,7 @@ const updateRecipeCard = () => {
   let recipe = "";
   recipe += `<div class="recipe-title">
               <h2>${currentRecipe.name}</h2>
-              <img class="larger-star">
+              <img class="large-star" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
             </div>
             <div class="image-and-ingredients-container">
               <img class="recipe-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
@@ -149,7 +157,7 @@ const displayFilteredContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -169,7 +177,7 @@ const displaySearchedContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -177,9 +185,31 @@ const displaySearchedContent = () => {
 };
 
 const instantiateUser = () => {
-  //Iterate through length of usersData, return a random number
-  // Use that random number to instantiate currentUser
   let randomUser = usersData[Math.floor(Math.random() * usersData.length)];
   currentUser = new User(randomUser);
-  console.log(currentUser);
 };
+
+const addRecipeToFavorites = (id) => {
+  let recipeClicked = recipesList.recipes.find(recipe => {
+    return `${recipe.id}` === id;
+  })
+  currentUser.addFavoriteRecipes(recipeClicked);
+  console.log('1: ', currentUser);
+  console.log('2: ', currentUser.favoriteRecipes);
+};
+
+// Give star icon a unique class and querySelector
+// If e.target.class.includes(star class), then
+// Get the id of the star's parent element?
+
+// That parent element should represent a recipe thumbnail or recipe card
+// Get that recipe object's information and
+  // if recipe.favorite === false
+    // Add recipe to favorites
+  // if recipe.favorite === true
+    // remove recipe from favorites
+// change color of star when clicked
+
+// Add functionality to not add recipes more than once
+
+// Display favorite recipes (user.favoriteRecipes) when you click the favorite recipes button
