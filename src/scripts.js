@@ -3,14 +3,17 @@ import apiCalls from './apiCalls';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png';
 import recipeData from './data/recipes.js';
-import ingredientsData from './data/ingredients.js'
+import ingredientsData from './data/ingredients.js';
+import usersData from './data/users.js';
 import RecipeRepository from './classes/RecipeRepository.js';
 import Recipe from './classes/Recipe.js';
+import User from './classes/User.js';
 
 
 
 // VARIABLES-----------------------------------------------
 let currentRecipe;
+let currentUser;
 const recipesList = new RecipeRepository(recipeData);
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
 const allRecipesContainer = document.querySelector(".all-recipes-container");
@@ -25,6 +28,7 @@ const searchInput = document.querySelector(".search-button-input");
 window.onload = (event) => {
   displayAllRecipes();
   injectFilterTags();
+  instantiateUser();
 };
 
 allRecipes.addEventListener('click', function(e) {
@@ -170,4 +174,12 @@ const displaySearchedContent = () => {
               </div>`;
   });
   allRecipes.innerHTML = searchedRecipesHTML;
+};
+
+const instantiateUser = () => {
+  //Iterate through length of usersData, return a random number
+  // Use that random number to instantiate currentUser
+  let randomUser = usersData[Math.floor(Math.random() * usersData.length)];
+  currentUser = new User(randomUser);
+  console.log(currentUser);
 };
