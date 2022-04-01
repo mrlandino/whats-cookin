@@ -835,4 +835,27 @@ describe('User', () => {
     expect(user.recipesToCook.length).to.equal(2);
     expect(user.recipesToCook[0]).to.equal(recipe1);
   });
+
+
+
+  it('should have a method that filters favorite recipes by tag', () => {
+    user.addFavoriteRecipes(recipe1);
+
+    user.filterFavoriteByTag("snack");
+    expect(user.favoritesByTag).to.deep.equal([recipe1]);
+
+    user.filterFavoriteByTag("dinner");
+    expect(user.favoritesByTag).to.deep.equal([]);
+  });
+
+  it('should have a method that filters favorite recipes by name', () => {
+    user.addFavoriteRecipes(recipe1);
+
+    user.filterFavoriteByName("chocolate");
+    expect(user.favoritesByName).to.deep.equal([recipe1]);
+
+    user.filterFavoriteByName("bread");
+    expect(user.favoritesByName).to.deep.equal([]);
+  });
+
 })
