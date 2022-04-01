@@ -16,6 +16,8 @@ const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
 const filterByTag = document.querySelector(".filter-tag-button");
 const dropdownContent = document.querySelector(".dropdown-content");
+// const filterTargets = document.querySelectorAll(".tag-hover")
+
 
 // let recipeCardName = document.querySelector(".recipe-card-name");
 // let recipeCardTitle = document.querySelector(".recipe-title");
@@ -38,6 +40,21 @@ allRecipes.addEventListener('click', function(e) {
     updateRecipeCard();
   }
 });
+
+// filterTargets.forEach((target) => {
+//   target.addEventListener("click", function(e) {
+//     console.log("hello")
+//     applyFilter(e.target.id)
+//   })
+// })
+
+dropdownContent.addEventListener("click", function(e) {
+  console.log("hit")
+  if(e.target.classList.contains('tag-hover')) {
+    applyFilter(e.target.id)
+    displayFilteredContent()
+  }
+})
 
 // filterByTag.addEventListener('')
 // EVENT HANDLERS------------------------------------------------
@@ -119,6 +136,25 @@ uniqueTags.forEach((tag) => {
   tags += `<p class="tag-hover" id=${tag}>${tag}</p>`
 })
 dropdownContent.innerHTML = tags
+}
+
+const applyFilter = (id) => {
+  let tag = id;
+  recipesList.filterByTag(tag);
+}
+
+const displayFilteredContent = () => {
+  let filteredRecipesHTML = "";
+  recipesList.filteredRecipesTag.forEach((recipe) => {
+    filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
+                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <div class="thumbnail-details">
+                  <p>${recipe.name}</p>
+                  <img class="star-icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                </div>
+              </div>`;
+  });
+  allRecipes.innerHTML = filteredRecipesHTML;
 }
 
 
