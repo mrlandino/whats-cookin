@@ -16,10 +16,13 @@
     </header>
     <main>
       <nav>
-        <button class="search-button">Search Recipes</button>
-        <button class="filter-name-button">Filter Recipes By Name</button>
+          <form>
+            <label class="search-button-label" for="recipe-search">Search recipes:</label>
+            <input class="search-button-input" type="search" id="recipe-search">
+            <!-- <button class="search-button">-></button> -->
+          </form>
         <div class="dropdown">
-          <button class="filter-tag-button">Filter Recipes By Tag</button>
+          <button class="filter-tag-button">Filter Recipes</button>
           <div class="dropdown-content">
           </div>
         </div>
