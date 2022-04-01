@@ -6,10 +6,12 @@ class User {
     this.favoriteRecipes = [];
   };
 
-  favoriteRecipes(recipe) => {
-    //this will run when the user favorites a recipe. it will then add to this.favoriteRecipes array
+  addFavoriteRecipes(recipe) {
+    this.favoriteRecipes.push(recipe);
+  };
 
-    
+  removeFavoriteRecipes(recipe) {
+    this.favoriteRecipes.splice(recipe, 1);
   }
 }
 
