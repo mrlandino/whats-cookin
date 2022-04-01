@@ -822,8 +822,17 @@ describe('User', () => {
     user.addFavoriteRecipes(recipe1);
     user.addFavoriteRecipes(recipe2);
     user.removeFavoriteRecipes(recipe1);
-    
+
     expect(user.favoriteRecipes.length).to.equal(1);
     expect(user.favoriteRecipes[0]).to.equal(recipe2);
+  });
+
+  it('should have a method that allows the users to add a recipe to their menu to cook for that week', () => {
+
+    user.addRecipeToMenu(recipe1);
+    user.addRecipeToMenu(recipe2);
+
+    expect(user.recipesToCook.length).to.equal(2);
+    expect(user.recipesToCook[0]).to.equal(recipe1);
   });
 })

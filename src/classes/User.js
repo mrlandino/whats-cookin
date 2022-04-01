@@ -4,6 +4,7 @@ class User {
     this.id = user.id;
     this.pantry = user.pantry;
     this.favoriteRecipes = [];
+    this.recipesToCook = [];
   };
 
   addFavoriteRecipes(recipe) {
@@ -12,7 +13,13 @@ class User {
 
   removeFavoriteRecipes(recipe) {
     this.favoriteRecipes.splice(recipe, 1);
-  }
+  };
+
+  addRecipeToMenu(recipe) {
+    this.recipesToCook.push(recipe);
+  };
+
+
 }
 
 export default User;
