@@ -4,7 +4,7 @@ class RecipeRepository {
     this.filteredRecipesTag = [];
     this.filteredRecipesName = [];
   }
-
+//maindish
   filterByTag(tag) {
     if(this.filteredRecipesName.length > 0) {
       this.filteredRecipesTag = this.filteredRecipesName.filter(recipe => {

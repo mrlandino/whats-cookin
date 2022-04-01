@@ -51,9 +51,9 @@ allRecipes.addEventListener('click', function(e) {
 // })
 
 dropdownContent.addEventListener("click", function(e) {
-  console.log("hit")
+  // console.log("hit")
   if(e.target.classList.contains('tag-hover')) {
-    applyFilter(e.target.id)
+    applyFilter(e.target.dataset.id)
     displayFilteredContent()
   }
 })
@@ -62,9 +62,9 @@ searchInput.addEventListener("keypress", function(e) {
   // event.preventDefault();
   if(e.key === "Enter") {
     event.preventDefault();
-    console.log("1: ", searchInput.value)
+    // console.log("1: ", searchInput.value)
     applySearch(`${searchInput.value}`);
-    console.log("2: ", currentRecipe)
+    // console.log("2: ", currentRecipe)
     displaySearchedContent();
   }
 })
@@ -146,7 +146,7 @@ const injectFilterTags = () => {
   return allTags;
 }, []);
 uniqueTags.forEach((tag) => {
-  tags += `<p class="tag-hover" id=${tag}>${tag}</p>`
+  tags += `<p class="tag-hover" data-id="${tag}">${tag}</p>`
 })
 dropdownContent.innerHTML = tags
 }
@@ -174,11 +174,9 @@ const displayFilteredContent = () => {
 const applySearch = (input) => {
   recipesList.filteredRecipesTag = [];
   recipesList.filterByName(input);
-  console.log(recipesList);
 }
 
 const displaySearchedContent = () => {
-  console.log("YOU ARE IN DISPLAY SEARCH FUNCTION");
   allRecipes.innerHTML = "";
   let searchedRecipesHTML = "";
   recipesList.filteredRecipesName.forEach((recipe) => {
