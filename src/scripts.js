@@ -16,7 +16,6 @@ let recipeData;
 let currentRecipe;
 let currentUser;
 let recipesList;
-// const recipesList = new RecipeRepository(recipeData);
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
 const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
@@ -32,6 +31,7 @@ const allRecipesButton = document.querySelector(".all-recipes-button");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
+  //apiCalls();
   let usersPromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users")
       .then(usersResponse => usersResponse.json());
   let ingredientsPromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients")
@@ -95,34 +95,25 @@ searchInput.addEventListener("keypress", function(e) {
 });
 
 favoriteRecipesButton.addEventListener("click", function() {
-  hideElement(allRecipesContainer);
-  showElement(favoriteRecipesContainer);
+  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter]);
+  showElement([favoriteRecipesContainer, allRecipesButton]);
   displayFavoriteRecipes();
   injectFavFilterTags();
-  hideElement(favoriteRecipesButton);
-  hideElement(allSearchBar);
-  hideElement(allFilter);
-  showElement(allRecipesButton);
 })
 
 allRecipesButton.addEventListener("click", function() {
-  showElement(favoriteRecipesButton);
-  showElement(allSearchBar);
-  showElement(allFilter);
-  hideElement(allRecipesButton);
-  showElement(allRecipesContainer);
-  hideElement(favoriteRecipesContainer);
-
+  showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer]);
+  hideElement([allRecipesButton, favoriteRecipesContainer]);
   displayAllRecipes();
 })
 
 // EVENT HANDLERS------------------------------------------------
-const showElement = element => {
-  element.classList.remove('hidden');
+const showElement = elements => {
+  elements.forEach(element => element.classList.remove('hidden'));
 };
 
-const hideElement = element => {
-  element.classList.add('hidden');
+const hideElement = elements => {
+  elements.forEach(element => element.classList.add('hidden'));
 };
 
 const displayAllRecipes = () => {
@@ -175,8 +166,8 @@ const displayFavoriteRecipes = () => {
 
 
 const displayCard = () => {
-  hideElement(allRecipesContainer);
-  showElement(recipeDetailsContainer);
+  hideElement([allRecipesContainer]);
+  showElement([recipeDetailsContainer]);
 };
 
 const findRecipeInfo = (id) => {
