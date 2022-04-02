@@ -2,17 +2,20 @@ import './styles.css';
 import apiCalls from './apiCalls';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png';
-import recipeData from './data/recipes.js';
-import ingredientsData from './data/ingredients.js';
-import usersData from './data/users.js';
+// import recipeData from './data/recipes.js';
+// import ingredientsData from './data/ingredients.js';
+// import usersData from './data/users.js';
 import RecipeRepository from './classes/RecipeRepository.js';
 import Recipe from './classes/Recipe.js';
 import User from './classes/User.js';
 
 // VARIABLES-----------------------------------------------
+let usersData;
+let ingredientsData;
+let recipeData;
 let currentRecipe;
 let currentUser;
-const recipesList = new RecipeRepository(recipeData);
+let recipesList;
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
 const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
@@ -28,10 +31,29 @@ const allRecipesButton = document.querySelector(".all-recipes-button");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
-  displayAllRecipes();
-  injectFilterTags();
-  instantiateUser();
-  recipesList.updateRecipesList();
+  //apiCalls();
+  let usersPromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users")
+      .then(usersResponse => usersResponse.json());
+  let ingredientsPromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients")
+      .then(ingredientsResponse => ingredientsResponse.json());
+  let recipePromise = fetch("	https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
+      .then(recipeResponse => recipeResponse.json());
+  Promise.all(
+    [
+      usersPromise,
+      ingredientsPromise,
+      recipePromise
+    ]
+  ).then(jsonArray => {
+    usersData = jsonArray[0].usersData;
+    ingredientsData = jsonArray[1].ingredientsData;
+    recipeData = jsonArray[2].recipeData;
+    recipesList = new RecipeRepository(recipeData);
+    instantiateUser();
+    displayAllRecipes();
+    injectFilterTags();
+    recipesList.updateRecipesList();
+  })
 };
 
 allRecipes.addEventListener('click', function(e) {
@@ -73,34 +95,25 @@ searchInput.addEventListener("keypress", function(e) {
 });
 
 favoriteRecipesButton.addEventListener("click", function() {
-  hideElement(allRecipesContainer);
-  showElement(favoriteRecipesContainer);
+  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter]);
+  showElement([favoriteRecipesContainer, allRecipesButton]);
   displayFavoriteRecipes();
   injectFavFilterTags();
-  hideElement(favoriteRecipesButton);
-  hideElement(allSearchBar);
-  hideElement(allFilter);
-  showElement(allRecipesButton);
 })
 
 allRecipesButton.addEventListener("click", function() {
-  showElement(favoriteRecipesButton);
-  showElement(allSearchBar);
-  showElement(allFilter);
-  hideElement(allRecipesButton);
-  showElement(allRecipesContainer);
-  hideElement(favoriteRecipesContainer);
-
+  showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer]);
+  hideElement([allRecipesButton, favoriteRecipesContainer]);
   displayAllRecipes();
 })
 
 // EVENT HANDLERS------------------------------------------------
-const showElement = element => {
-  element.classList.remove('hidden');
+const showElement = elements => {
+  elements.forEach(element => element.classList.remove('hidden'));
 };
 
-const hideElement = element => {
-  element.classList.add('hidden');
+const hideElement = elements => {
+  elements.forEach(element => element.classList.add('hidden'));
 };
 
 const displayAllRecipes = () => {
@@ -153,8 +166,8 @@ const displayFavoriteRecipes = () => {
 
 
 const displayCard = () => {
-  hideElement(allRecipesContainer);
-  showElement(recipeDetailsContainer);
+  hideElement([allRecipesContainer]);
+  showElement([recipeDetailsContainer]);
 };
 
 const findRecipeInfo = (id) => {
@@ -275,7 +288,9 @@ const displaySearchedContent = () => {
 };
 
 const instantiateUser = () => {
+  console.log(usersData);
   let randomUser = usersData[Math.floor(Math.random() * usersData.length)];
+  console.log(randomUser);
   currentUser = new User(randomUser);
 };
 
