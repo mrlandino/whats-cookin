@@ -8,6 +8,7 @@ class Recipe {
     this.tags = recipe.tags;
     this.ingredientsNeeded = [];
     this.recipeCost = 0;
+    this.isFavorite = false;
   };
 
   findIngredientsNeeded(ingredients) {
