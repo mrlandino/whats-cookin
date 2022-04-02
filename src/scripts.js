@@ -70,22 +70,13 @@ allRecipes.addEventListener('click', function(e) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
-    // addToMenuButton = document.querySelector('.add-to-menu');
   };
 });
 
-
-// addToMenuButton.addEventListener("click", function(e) {
-//   console.log('button');
-//   console.log(e.target.dataset.recipe);
-// });
-
 recipeDetailsContainer.addEventListener("click", function(e) {
   if (e.target.classList.contains('add-to-menu')) {
-    // console.log('button');
-    // console.log(e.target.dataset.recipe);
     addToMenu(e.target.dataset.recipe);
-    // currentUser.addRecipeToMenu()
+    console.log(currentUser);
   }
 })
 
