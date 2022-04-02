@@ -80,7 +80,6 @@ h2 {
   flex-direction: column;
   height: 200px;
   width: 350px;
-  /* border: solid 3px blue; */
   margin: 15px;
 }
 
@@ -106,6 +105,11 @@ h2 {
 .large-star {
   height: 100px;
   width: 100px;
+}
+
+.fav-filter-search-bar {
+  border: solid 3px blue;
+  width: 500px
 }
 
 p {
@@ -147,11 +151,19 @@ button {
   display: none;
 }
 
+
 .dropdown:hover
 .dropdown-content {
   display: block;
 }
 
+.dropdown-fav-tag:hover
+.dropdown-content-fav-tag {
+  display: block;
+}
+
+
+.fav-tag-hover:hover
 .tag-hover:hover{
   background-color: blanchedalmond;
 }
