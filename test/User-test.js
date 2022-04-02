@@ -3,12 +3,7 @@ import User from '../src/classes/User';
 import Recipe from '../src/classes/Recipe';
 
 describe('User', () => {
-  let user;
-  let usersData;
-  let recipeData;
-  let recipe1;
-  let recipe2;
-  let recipe3;
+  let user, usersData, recipeData, recipe1, recipe2, recipe3;
 
   beforeEach(() => {
     usersData = [
@@ -408,212 +403,6 @@ describe('User', () => {
           }
         ]
       },
-      {
-        "name": "Nelda Bosco",
-        "id": 3,
-        "pantry": [
-          {
-            "ingredient": 1009159,
-            "amount": 3
-          },
-          {
-            "ingredient": 19335,
-            "amount": 10
-          },
-          {
-            "ingredient": 10123,
-            "amount": 4
-          },
-          {
-            "ingredient": 1001,
-            "amount": 12
-          },
-          {
-            "ingredient": 11529,
-            "amount": 5
-          },
-          {
-            "ingredient": 1082047,
-            "amount": 4
-          },
-          {
-            "ingredient": 4582,
-            "amount": 2
-          },
-          {
-            "ingredient": 2021,
-            "amount": 3
-          },
-          {
-            "ingredient": 19336,
-            "amount": 3
-          },
-          {
-            "ingredient": 20027,
-            "amount": 2
-          },
-          {
-            "ingredient": 1123,
-            "amount": 7
-          },
-          {
-            "ingredient": 14412,
-            "amount": 3
-          },
-          {
-            "ingredient": 1011256,
-            "amount": 2
-          },
-          {
-            "ingredient": 11215,
-            "amount": 10
-          },
-          {
-            "ingredient": 6615,
-            "amount": 3
-          },
-          {
-            "ingredient": 11477,
-            "amount": 2
-          },
-          {
-            "ingredient": 10011693,
-            "amount": 4
-          },
-          {
-            "ingredient": 14106,
-            "amount": 4
-          },
-          {
-            "ingredient": 16124,
-            "amount": 4
-          },
-          {
-            "ingredient": 20081,
-            "amount": 10
-          },
-          {
-            "ingredient": 1034053,
-            "amount": 2
-          },
-          {
-            "ingredient": 11124,
-            "amount": 4
-          },
-          {
-            "ingredient": 2047,
-            "amount": 8
-          },
-          {
-            "ingredient": 1124,
-            "amount": 3
-          },
-          {
-            "ingredient": 9156,
-            "amount": 4
-          },
-          {
-            "ingredient": 2050,
-            "amount": 3
-          },
-          {
-            "ingredient": 18372,
-            "amount": 3
-          },
-          {
-            "ingredient": 6150,
-            "amount": 2
-          },
-          {
-            "ingredient": 4053,
-            "amount": 10
-          },
-          {
-            "ingredient": 1012010,
-            "amount": 3
-          },
-          {
-            "ingredient": 19296,
-            "amount": 3
-          },
-          {
-            "ingredient": 18371,
-            "amount": 6
-          },
-          {
-            "ingredient": 1145,
-            "amount": 5
-          },
-          {
-            "ingredient": 10862,
-            "amount": 2
-          },
-          {
-            "ingredient": 1019,
-            "amount": 2
-          },
-          {
-            "ingredient": 11291,
-            "amount": 4
-          },
-          {
-            "ingredient": 9152,
-            "amount": 10
-          },
-          {
-            "ingredient": 99223,
-            "amount": 2
-          },
-          {
-            "ingredient": 2009,
-            "amount": 2
-          },
-          {
-            "ingredient": 1077,
-            "amount": 3
-          },
-          {
-            "ingredient": 2049,
-            "amount": 3
-          },
-          {
-            "ingredient": 11282,
-            "amount": 3
-          },
-          {
-            "ingredient": 19334,
-            "amount": 3
-          },
-          {
-            "ingredient": 2031,
-            "amount": 2
-          },
-          {
-            "ingredient": 9302,
-            "amount": 2
-          },
-          {
-            "ingredient": 11463,
-            "amount": 2
-          },
-          {
-            "ingredient": 2025,
-            "amount": 2
-          },
-          {
-            "ingredient": 1002014,
-            "amount": 2
-          },
-          {
-            "ingredient": 2028,
-            "amount": 3
-          },
-          {
-            "ingredient": 4047,
-            "amount": 2
-          }
-        ]
-      }
     ];
     recipeData = [
       {
@@ -785,7 +574,6 @@ describe('User', () => {
     recipe1 = new Recipe(recipeData[0]);
     recipe2 = new Recipe(recipeData[1]);
     user = new User(usersData[0]);
-
   });
 
   it('Should be a function', () => {
@@ -815,6 +603,7 @@ describe('User', () => {
 
     expect(user.favoriteRecipes.length).to.equal(2);
     expect(user.favoriteRecipes[1]).to.equal(recipe2);
+    expect(user.favoriteRecipes[2]).to.equal(recipe3);
   });
 
   it('should have a method that allows the users to remove a favorite recipe', () => {
@@ -822,6 +611,11 @@ describe('User', () => {
     user.addFavoriteRecipes(recipe1);
     user.addFavoriteRecipes(recipe2);
     user.removeFavoriteRecipes(recipe1);
+
+    expect(user.favoriteRecipes.length).to.equal(1);
+    expect(user.favoriteRecipes[0]).to.equal(recipe2);
+
+    user.removeFavoriteRecipes('banana');
 
     expect(user.favoriteRecipes.length).to.equal(1);
     expect(user.favoriteRecipes[0]).to.equal(recipe2);
@@ -836,25 +630,27 @@ describe('User', () => {
     expect(user.recipesToCook[0]).to.equal(recipe1);
   });
 
-
-
   it('should have a method that filters favorite recipes by tag', () => {
-    user.addFavoriteRecipes(recipe1);
 
+    user.addFavoriteRecipes(recipe1);
     user.filterFavoriteByTag("snack");
+
     expect(user.favoritesByTag).to.deep.equal([recipe1]);
 
     user.filterFavoriteByTag("dinner");
+
     expect(user.favoritesByTag).to.deep.equal([]);
   });
 
   it('should have a method that filters favorite recipes by name', () => {
-    user.addFavoriteRecipes(recipe1);
 
+    user.addFavoriteRecipes(recipe1);
     user.filterFavoriteByName("chocolate");
+
     expect(user.favoritesByName).to.deep.equal([recipe1]);
 
     user.filterFavoriteByName("bread");
+
     expect(user.favoritesByName).to.deep.equal([]);
   });
 

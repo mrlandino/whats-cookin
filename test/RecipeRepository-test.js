@@ -138,25 +138,33 @@ describe('Recipe Repository', () => {
 
   it('should have data bank of recipes', () => {
     expect(recipeRepository.recipes[0]).to.deep.equal(recipeData[0]);
+    expect(recipeRepository.recipes[1]).to.deep.equal(recipeData[1]);
   });
 
   it('should have a method that filters recipes by tag', () => {
+
     recipeRepository.filterByTag("snack");
+
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([recipeData[0]]);
 
     recipeRepository.filterByTag("dinner");
+
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
   });
 
   it('should have a method that filters recipes by name', () => {
+
     recipeRepository.filterByName("chocolate");
+
     expect(recipeRepository.filteredRecipesName).to.deep.equal([recipeData[0]]);
 
     recipeRepository.filterByName("bread");
+
     expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
   });
 
   it('should be able to filter recipes by name and tag at the same time', () => {
+
     recipeRepository.filterByName("chocolate");
     recipeRepository.filterByTag("snack");
 
@@ -180,4 +188,4 @@ describe('Recipe Repository', () => {
     expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
   });
-})
+});
