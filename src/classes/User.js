@@ -14,7 +14,13 @@ class User {
   };
 
   removeFavoriteRecipes(recipe) {
-    this.favoriteRecipes.splice(recipe, 1);
+    this.favoriteRecipes = this.favoriteRecipes.reduce((acc, meal) => {
+      if(recipe.id !== meal.id) {
+        acc.push(meal);
+      }
+      return acc;
+    }, []);
+    return this.favoriteRecipes;
   };
 
   addRecipeToMenu(recipe) {
