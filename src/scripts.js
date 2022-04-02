@@ -30,7 +30,7 @@ const allSearchBar = document.querySelector(".all-search-bar");
 const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
 
-const favRecipes= document.querySelector(".favorite-recipe-thumbnails");
+let favRecipes= document.querySelector(".favorite-recipes-container");
 
 let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
 
@@ -94,7 +94,9 @@ dropdownContent.addEventListener("click", function(e) {
 
 favDropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
-    applyFavFilter(e.target.dataset.id);
+    console.log(e.target.dataset.fav)
+    applyFavFilter(e.target.dataset.fav);
+    favRecipes.innerHTML = "";
     displayFilteredFavs();
   };
 });
@@ -110,7 +112,7 @@ searchInput.addEventListener("keypress", function(e) {
 favoriteRecipesButton.addEventListener("click", function() {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
-  favoriteRecipes = new RecipeRepository(currentUser.favoriteRecipes)
+  // favoriteRecipes = new RecipeRepository(currentUser.favoriteRecipes)
   displayFavoriteRecipes();
   // injectFavFilterTags();
 })
@@ -270,7 +272,9 @@ const applyFilter = (id) => {
 };
 
 const applyFavFilter = (id) => {
-  favoriteRecipes.filterByTag(id);
+  // console.log(favoriteRecipes.filteredRecipesTag)
+  currentUser.filterFavoriteByTag(id);
+  // console.log(favoriteRecipes.filteredRecipesTag)
 };
 
 const displayFilteredContent = () => {
@@ -336,9 +340,12 @@ const changeStar = (target) => {
 };
 
 const displayFilteredFavs = () => {
+  // console.log(currentUser)
+  console.log(favRecipes.innerHTML)
   favRecipes.innerHTML = "";
+  let title = "<h2>Favorite Recipes</h2>";
   let filteredRecipesHTML = "";
-    favoriteRecipes.filteredRecipesTag.forEach((recipe) => {
+    currentUser.favoritesByTag.forEach((recipe) => {
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
@@ -347,5 +354,6 @@ const displayFilteredFavs = () => {
                 </div>
               </div>`;
   });
-  favRecipes.innerHTML = filteredRecipesHTML;
+  console.log(filteredRecipesHTML);
+  favRecipes.innerHTML = title + filteredRecipesHTML;
 }
