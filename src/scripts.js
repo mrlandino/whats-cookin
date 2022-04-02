@@ -2,17 +2,21 @@ import './styles.css';
 import apiCalls from './apiCalls';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png';
-import recipeData from './data/recipes.js';
-import ingredientsData from './data/ingredients.js';
-import usersData from './data/users.js';
+// import recipeData from './data/recipes.js';
+// import ingredientsData from './data/ingredients.js';
+// import usersData from './data/users.js';
 import RecipeRepository from './classes/RecipeRepository.js';
 import Recipe from './classes/Recipe.js';
 import User from './classes/User.js';
 
 // VARIABLES-----------------------------------------------
+let usersData;
+let ingredientsData;
+let recipeData;
 let currentRecipe;
 let currentUser;
-const recipesList = new RecipeRepository(recipeData);
+let recipesList;
+// const recipesList = new RecipeRepository(recipeData);
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
 const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
@@ -28,10 +32,28 @@ const allRecipesButton = document.querySelector(".all-recipes-button");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
-  displayAllRecipes();
-  injectFilterTags();
-  instantiateUser();
-  recipesList.updateRecipesList();
+  let usersPromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users")
+      .then(usersResponse => usersResponse.json());
+  let ingredientsPromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients")
+      .then(ingredientsResponse => ingredientsResponse.json());
+  let recipePromise = fetch("	https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
+      .then(recipeResponse => recipeResponse.json());
+  Promise.all(
+    [
+      usersPromise,
+      ingredientsPromise,
+      recipePromise
+    ]
+  ).then(jsonArray => {
+    usersData = jsonArray[0].usersData;
+    ingredientsData = jsonArray[1].ingredientsData;
+    recipeData = jsonArray[2].recipeData;
+    recipesList = new RecipeRepository(recipeData);
+    instantiateUser();
+    displayAllRecipes();
+    injectFilterTags();
+    recipesList.updateRecipesList();
+  })
 };
 
 allRecipes.addEventListener('click', function(e) {
@@ -275,7 +297,9 @@ const displaySearchedContent = () => {
 };
 
 const instantiateUser = () => {
+  console.log(usersData);
   let randomUser = usersData[Math.floor(Math.random() * usersData.length)];
+  console.log(randomUser);
   currentUser = new User(randomUser);
 };
 
