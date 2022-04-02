@@ -1,3 +1,5 @@
+import Recipe from './Recipe.js';
+
 class RecipeRepository {
   constructor(recipeData) {
     this.recipes = recipeData;
@@ -28,6 +30,12 @@ class RecipeRepository {
         return recipe.name.includes(upperCaseName);
       });
     };
+  };
+
+  updateRecipesList() {
+    this.recipes = this.recipes.map(recipe => {
+      return new Recipe(recipe);
+    });
   };
 }
 
