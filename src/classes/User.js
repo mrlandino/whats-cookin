@@ -24,7 +24,9 @@ class User {
   };
 
   addRecipeToMenu(recipe) {
-    this.recipesToCook.push(recipe);
+    if (!this.recipesToCook.includes(recipe)) {
+      this.recipesToCook.push(recipe);
+    }
   };
 
   filterFavoriteByTag(tag) {

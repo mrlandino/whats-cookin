@@ -30,10 +30,10 @@ const favoriteRecipesContainer = document.querySelector(".favorite-recipes-conta
 const allSearchBar = document.querySelector(".all-search-bar");
 const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
-
 let favRecipes= document.querySelector(".favorite-recipes-container");
-
 let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
+const aside = document.querySelector('.fav-filter-search-bar');
+let addToMenuButton = document.querySelector('.add-to-menu');
 
 
 
@@ -66,11 +66,19 @@ window.onload = (event) => {
 
 allRecipes.addEventListener('click', function(e) {
   if (e.target.parentElement.classList.contains('recipe-thumbnail')) {
+    hideElement([aside]);
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
   };
 });
+
+recipeDetailsContainer.addEventListener("click", function(e) {
+  if (e.target.classList.contains('add-to-menu')) {
+    addToMenu(e.target.dataset.recipe);
+    console.log(currentUser);
+  }
+})
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
@@ -214,6 +222,7 @@ const updateRecipeCard = () => {
   recipe += `<div class="recipe-card">
               <div class="recipe-title">
               <h2>${currentRecipe.name}</h2>
+              <button class="add-to-menu" data-recipe=${currentRecipe.id}>Add To Menu</button>
               <img class="large-star hidden" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
             </div>
             <div class="image-and-ingredients-container">
@@ -254,6 +263,13 @@ const injectFilterTags = () => {
   dropdownContent.innerHTML = tags;
 };
 
+const addToMenu = (id) => {
+  let menuRecipe = recipesList.recipes.find((recipe) => {
+    return `${recipe.id}` === id;
+  });
+  let recipeToAdd = currentUser.addRecipeToMenu(menuRecipe);
+  return recipeToAdd;
+};
 
 // const injectFavFilterTags = () => {
 //   console.log("it works");
@@ -387,3 +403,9 @@ const displayFavSearchedContent = () => {
   });
   favRecipes.innerHTML = title + favSearchedRecipesHTML;
 };
+
+// Add icon to click in details contain
+// Give it unique properties like the star
+// If clicked, take the id/data attribute and add to currentUser.recipesToCook
+// currentUser.addRecipeToMenu
+// switch images like the star
