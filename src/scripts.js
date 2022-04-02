@@ -9,8 +9,6 @@ import RecipeRepository from './classes/RecipeRepository.js';
 import Recipe from './classes/Recipe.js';
 import User from './classes/User.js';
 
-
-
 // VARIABLES-----------------------------------------------
 let currentRecipe;
 let currentUser;
@@ -40,10 +38,8 @@ allRecipes.addEventListener('click', function(e) {
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
-    console.log('star');
-    addRecipeToFavorites(e.target.id);
-    //function to change star icon
-    //funtion to add recipe to user.favoriteRecipes
+    addRecipeToFavorites(e.target.parentElement.id);
+    changeStar(e.target);
   };
 });
 
@@ -73,12 +69,13 @@ const hideElement = element => {
 
 const displayAllRecipes = () => {
   let allRecipesHTML = "";
-  recipesList.recipes.forEach((recipe) => {
+  recipesList.recipes.forEach((recipe, index) => {
     allRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
-                <div class="thumbnail-details">
+                <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" data-index='${recipe.id}' src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="favorited-star-icon hidden"  src="https://www.flaticon.com/free-icon/star_1828884?term=gold%20star&page=1&position=1&page=1&position=1&related_id=1828884&origin=search" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -190,12 +187,24 @@ const instantiateUser = () => {
 };
 
 const addRecipeToFavorites = (id) => {
-  let recipeClicked = recipesList.recipes.find(recipe => {
-    return `${recipe.id}` === id;
-  })
+  let recipeClicked = recipesList.recipes.find(recipe => `${recipe.id}` === id);
+  // let newRecipe = new Recipe(recipeClicked);
+  // if (!recipeClicked.isFavorite) {
+  //   recipeClicked.isFavorite = true;
+  // } else {
+  //   recipeClicked.isFavorite = false;
+  // };
   currentUser.addFavoriteRecipes(recipeClicked);
-  console.log('1: ', currentUser);
-  console.log('2: ', currentUser.favoriteRecipes);
+  console.log(recipeClicked);
+  console.log(currentUser);
+};
+
+const changeStar = (target) => {
+  if (target.src === "https://cdn-icons-png.flaticon.com/512/1828/1828970.png") {
+    target.src = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+  } else {
+    target.src = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+  };
 };
 
 // Give star icon a unique class and querySelector
