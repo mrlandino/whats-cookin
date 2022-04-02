@@ -26,7 +26,6 @@ const allSearchBar = document.querySelector(".all-search-bar");
 const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
 
-
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
   displayAllRecipes();
@@ -77,7 +76,7 @@ favoriteRecipesButton.addEventListener("click", function() {
   hideElement(allRecipesContainer);
   showElement(favoriteRecipesContainer);
   displayFavoriteRecipes();
-
+  injectFavFilterTags();
   hideElement(favoriteRecipesButton);
   hideElement(allSearchBar);
   hideElement(allFilter);
@@ -138,10 +137,21 @@ const displayFavoriteRecipes = () => {
                 </div>
               </div>`;
   });
-  favoriteRecipesContainer.innerHTML = favRecipesHTML;
-  //hide the search and filter display
-  //show the aside with filter favorites by tag and search favorites by name
+  let asideHTML = `<aside class="fav-filter-search-bar">
+                    <h3>Refine Favorite Recipes</h3>
+                    <form class="fav-search-bar">
+                      <label class="fav-search-button-label" for="fav-recipe-search">Search:</label>
+                      <input class="fav-search-button-input" type="search" id="fav-recipe-search">
+                    </form>
+                    <div class="dropdown-fav-tag">
+                      <button class="fav-filter-tag">Filter</button>
+                    <div class="dropdown-content-fav-tag" id="dropdown"></div>
+                  </div>
+                </aside>`;
+  favoriteRecipesContainer.innerHTML = favRecipesHTML + asideHTML;
 };
+
+
 const displayCard = () => {
   hideElement(allRecipesContainer);
   showElement(recipeDetailsContainer);
@@ -199,6 +209,28 @@ const injectFilterTags = () => {
     tags += `<p class="tag-hover" data-id="${tag}">${tag}</p>`
   });
   dropdownContent.innerHTML = tags;
+};
+
+
+const injectFavFilterTags = () => {
+  let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
+  let favTags = "";
+  let uniqueFavTags;
+  // console.log(currentUser.favoriteRecipes)
+  uniqueFavTags = currentUser.favoriteRecipes.reduce((allTags, recipe) => {
+    recipe.tags.forEach(tag => {
+      if (!allTags.includes(tag)) {
+        allTags.push(tag);
+      };
+    });
+    return allTags;
+  }, []);
+console.log(uniqueFavTags)
+  uniqueFavTags.forEach((tag) => {
+    favTags += `<p class="tag-hover" data-id="${tag}">${tag}</p>`
+  });
+  console.log(favDropdownContent)
+  favDropdownContent.innerHTML += favTags;
 };
 
 const applyFilter = (id) => {
