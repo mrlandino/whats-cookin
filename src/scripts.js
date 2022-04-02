@@ -22,6 +22,9 @@ const searchInput = document.querySelector(".search-button-input");
 const largeStar = document.querySelector(".large-star");
 const favoriteRecipesButton = document.querySelector(".favorite-recipes-button");
 const favoriteRecipesContainer = document.querySelector(".favorite-recipes-container");
+const allSearchBar = document.querySelector(".all-search-bar");
+const allFilter = document.querySelector(".dropdown");
+const allRecipesButton = document.querySelector(".all-recipes-button");
 
 
 // EVENT LISTENERS-----------------------------------------------
@@ -74,6 +77,22 @@ favoriteRecipesButton.addEventListener("click", function() {
   hideElement(allRecipesContainer);
   showElement(favoriteRecipesContainer);
   displayFavoriteRecipes();
+
+  hideElement(favoriteRecipesButton);
+  hideElement(allSearchBar);
+  hideElement(allFilter);
+  showElement(allRecipesButton);
+})
+
+allRecipesButton.addEventListener("click", function() {
+  showElement(favoriteRecipesButton);
+  showElement(allSearchBar);
+  showElement(allFilter);
+  hideElement(allRecipesButton);
+  showElement(allRecipesContainer);
+  hideElement(favoriteRecipesContainer);
+
+  displayAllRecipes();
 })
 
 // EVENT HANDLERS------------------------------------------------
@@ -87,12 +106,20 @@ const hideElement = element => {
 
 const displayAllRecipes = () => {
   let allRecipesHTML = "";
+
   recipesList.recipes.forEach((recipe, index) => {
+    let imageSource = "";
+    if(recipe.isFavorite) {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+    } else {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+    };
+
     allRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" data-index='${recipe.id}' src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" data-index='${recipe.id}' src=${imageSource}>
                 </div>
               </div>`;
   });
@@ -112,6 +139,8 @@ const displayFavoriteRecipes = () => {
               </div>`;
   });
   favoriteRecipesContainer.innerHTML = favRecipesHTML;
+  //hide the search and filter display
+  //show the aside with filter favorites by tag and search favorites by name
 };
 const displayCard = () => {
   hideElement(allRecipesContainer);
@@ -227,9 +256,6 @@ const addRecipeToFavorites = (id) => {
     recipeClicked.isFavorite = false;
     currentUser.removeFavoriteRecipes(recipeClicked);
   };
-
-  // console.log(recipeClicked);
-  console.log(currentUser);
 };
 
 const changeStar = (target) => {
@@ -239,19 +265,3 @@ const changeStar = (target) => {
     target.src = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
   };
 };
-
-// Give star icon a unique class and querySelector
-// If e.target.class.includes(star class), then
-// Get the id of the star's parent element?
-
-// That parent element should represent a recipe thumbnail or recipe card
-// Get that recipe object's information and
-  // if recipe.favorite === false
-    // Add recipe to favorites
-  // if recipe.favorite === true
-    // remove recipe from favorites
-// change color of star when clicked
-
-// Add functionality to not add recipes more than once
-
-// Display favorite recipes (user.favoriteRecipes) when you click the favorite recipes button
