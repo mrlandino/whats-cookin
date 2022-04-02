@@ -2,7 +2,6 @@
 * {
   font-family: 'Karla', sans-serif;
   margin: 0px;
-  /* border: solid 3px green; */
 }
 
 /* BODY---------------------------- */
@@ -18,30 +17,27 @@ body {
   width: 100vw;
   display: flex;
   flex-direction: column;
-  /* height: 100%; */
 }
 
 h2 {
   text-align: center;
   font-size: 30px;
+  margin: 15px;
 }
 
 .recipe-body {
-  /* border: solid 3px green; */
   height: 80%;
 }
 
 .recipe-details-container {
-  /* border: solid 3px yellow; */
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%
+  width: 100%;
+  align-items: center;
 }
 
-.ingredients-container,
 .recipe-image {
-  /* border: solid 3px red; */
   width: 45%;
   height: 100%;
   background-color: #DFDCDC
@@ -51,7 +47,8 @@ h2 {
 .recipe-instructions {
   width: 100%;
   height: 50%;
-  background-color: #DFDCDC
+  background-color: #DFDCDC;
+  margin-bottom: 50px;
 }
 
 .ingredient-columns {
@@ -66,6 +63,28 @@ h2 {
   justify-content: space-around;
   height: 50%;
   width: 100%;
+  align-items: flex-end;
+}
+
+.recipe-card-image {
+  height: 100%;
+  width: 45%;
+}
+
+.ingredients-container {
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+  height: 100%;
+  background-color: #DFDCDC;
+  overflow-y: scroll;
+  padding-left: 20px;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 15px;
 }
 
 .all-recipe-thumbnails {
@@ -108,7 +127,6 @@ h2 {
 }
 
 .fav-filter-search-bar {
-  border: solid 3px blue;
   width: 500px
 }
 
@@ -117,34 +135,102 @@ p {
   margin: 5px;
 }
 
+.favorite-recipes-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.fav-filter-search-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  height: 100vh;
+  width: 400px;
+  margin: 20px;
+  background-color: #F87664;
+  margin: 20px 50px 10px 5px;
+}
+
+.fav-filter-tag {
+  background-color: #F87664;
+  margin: 20px 0px 5px 5px;
+  padding: 0px;
+}
+
+.dropdown-fav-tag {
+  margin: 20px 5px;
+}
+
+.fav-search-bar {
+  margin: 20px 0px 10px 5px;
+}
+
+.fav-search-button-label {
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+h3 {
+  margin: 10px;
+  font-size: 30px;
+}
+
+.recipe-card {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+
 /* HEADER-------------------------- */
 header {
   background-color: #F87664;
-  height: 25%;
+  height: 28%;
   display: flex;
   margin: 0;
 }
 .title-container {
 padding: 40px 0px 10px 20px;
 font-size: calc(18px + 1.1vw);
-/* border: solid 2px black; */
 }
+
 /* NAV----------------------------- */
 nav {
   border-top: solid 3px black;
   border-bottom: solid 3px black;
   width: 80%;
+  height: 80px;
   margin: 20px 10%;
   display: flex;
   justify-content: space-around;
+  align-items: flex-start;
 }
 
+.search-button-label,
 button {
   border: none;
   background-color: white;
-  padding: 15px;
+  padding: 20px;
   font-size: 20px;
   font-weight: bolder;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #F87664;
+  transform: scale(1.02);
+  transition: .4s;
+}
+
+.search-button-label {
+  padding-top: 0px;
+  margin-top: 20px;
+  /* border: 2px solid blue; */
+}
+
+.all-search-bar {
+  margin-top: 15px;
 }
 
 .dropdown-content {
@@ -155,6 +241,8 @@ button {
 .dropdown:hover
 .dropdown-content {
   display: block;
+  background-color: #F87664;
+  position: absolute;
 }
 
 .dropdown-fav-tag:hover
@@ -163,8 +251,11 @@ button {
 }
 
 
-.fav-tag-hover:hover
-.tag-hover:hover{
+.fav-tag-hover:hover {
+  background-color: blanchedalmond;
+}
+
+.tag-hover:hover {
   background-color: blanchedalmond;
 }
 

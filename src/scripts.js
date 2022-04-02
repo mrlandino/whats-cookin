@@ -169,12 +169,13 @@ const updateRecipeCard = () => {
   currentRecipe.findIngredientsNeeded(ingredientsData);
   currentRecipe.getCost(ingredientsData);
   let recipe = "";
-  recipe += `<div class="recipe-title">
+  recipe += `<div class="recipe-card">
+              <div class="recipe-title">
               <h2>${currentRecipe.name}</h2>
-              <img class="large-star" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+              <img class="large-star hidden" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
             </div>
             <div class="image-and-ingredients-container">
-              <img class="recipe-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
+              <img class="recipe-card-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
               <div class="ingredients-container">
                 <h3>Ingredients:</h3>
                 <div class="ingredient-list-name-and-amounts">`;
@@ -184,13 +185,13 @@ const updateRecipeCard = () => {
     ingredientList += `<p>${ingredient.name} ${ingredient.amount} ${ingredient.unit}</p>`;
   });
   let recipeCost = "";
-  recipeCost += `<p>$${currentRecipe.recipeCost}</p>`;
+  recipeCost += `<p class="price">$${currentRecipe.recipeCost}</p>`;
   let instructionsList = "";
   currentRecipe.instructions.forEach(instruction => {
     instructionsList += `<p class="instructions">${instruction.number}. ${instruction.instruction}</p>`;
   });
 
-  recipeDetailsContainer.innerHTML = (recipe + ingredientList + recipeCost + `</div></div></div><div class="recipe-instructions"><h3>Instructions:</h3>` + instructionsList + `</div>`);
+  recipeDetailsContainer.innerHTML = (recipe + ingredientList + recipeCost + `</div></div></div><div class="recipe-instructions"><h3>Instructions:</h3>` + instructionsList + `</div></div>`);
 };
 
 const injectFilterTags = () => {
