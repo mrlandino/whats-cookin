@@ -87,6 +87,13 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
   };
 });
 
+recipeDetailsContainer.addEventListener("click", function(e) {
+  if (e.target.classList.contains('add-to-menu')) {
+    addToMenu(e.target.dataset.recipe);
+    console.log(currentUser);
+  }
+});
+
 dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
     applyFilter(e.target.dataset.id);
@@ -207,7 +214,7 @@ const updateRecipeCard = () => {
   recipe += `<div class="recipe-card">
               <div class="recipe-title">
               <h2>${currentRecipe.name}</h2>
-              <img class="large-star hidden" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+              <button class="add-to-menu" data-recipe=${currentRecipe.id}>Add To Menu</button>
             </div>
             <div class="image-and-ingredients-container">
               <img class="recipe-card-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
@@ -227,6 +234,14 @@ const updateRecipeCard = () => {
   });
 
   recipeDetailsContainer.innerHTML = (recipe + ingredientList + recipeCost + `</div></div></div><div class="recipe-instructions"><h3>Instructions:</h3>` + instructionsList + `</div></div>`);
+};
+
+const addToMenu = (id) => {
+  let menuRecipe = recipesList.recipes.find((recipe) => {
+    return `${recipe.id}` === id;
+  });
+  let recipeToAdd = currentUser.addRecipeToMenu(menuRecipe);
+  return recipeToAdd;
 };
 
 const injectFilterTags = () => {
