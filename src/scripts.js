@@ -35,6 +35,7 @@ let allRecipesTitle = document.querySelector(".all-recipes-title");
 let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
 const favRecipesTitle = document.querySelector(".fav-recipes-title");
 const thumbnailAside = document.querySelector(".thumbnail-aside-container")
+const favSearchInput = document.querySelector(".fav-search-button-input");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
@@ -151,6 +152,13 @@ allRecipesButton.addEventListener("click", function() {
   displayAllRecipes();
 })
 
+favSearchInput.addEventListener("keypress", function(e) {
+  if(e.key === "Enter") {
+    event.preventDefault();
+    applyFavSearch(`${favSearchInput.value}`);
+    displayFavSearchedContent();
+  };
+});
 // EVENT HANDLERS------------------------------------------------
 const showElement = elements => {
   elements.forEach(element => element.classList.remove('hidden'));
@@ -393,3 +401,31 @@ const displayFilteredFavs = () => {
   console.log(filteredRecipesHTML);
   favRecipes.innerHTML = title + filteredRecipesHTML;
 }
+
+const applyFavSearch = (input) => {
+  currentUser.favoritesByTag = [];
+  currentUser.filterFavoriteByName(input);
+  // console.log(currentUser.favoritesByName);
+};
+
+const displayFavSearchedContent = () => {
+  favRecipes.innerHTML = "";
+  let title = "<h2>Favorite Recipes</h2>";
+  let favSearchedRecipesHTML = "";
+  currentUser.favoritesByName.forEach((recipe) => {
+    let imageSource = "";
+    if(recipe.isFavorite) {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+    } else {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+    };
+    favSearchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
+                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <div class="thumbnail-details">
+                  <p>${recipe.name}</p>
+                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
+                </div>
+              </div>`;
+  });
+  favRecipes.innerHTML = title + favSearchedRecipesHTML;
+};
