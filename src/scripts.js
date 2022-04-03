@@ -36,6 +36,7 @@ let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
 const favRecipesTitle = document.querySelector(".fav-recipes-title");
 const thumbnailAside = document.querySelector(".thumbnail-aside-container")
 const favSearchInput = document.querySelector(".fav-search-button-input");
+const clearFilters = document.querySelector(".clear-filters-button");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
@@ -61,9 +62,8 @@ window.onload = (event) => {
     displayAllRecipes();
     injectFilterTags();
     recipesList.updateRecipesList();
-    hideElement([aside])
-
-  })
+    hideElement([aside]);
+  });
 };
 
 allRecipes.addEventListener('click', function(e) {
@@ -113,8 +113,8 @@ dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
     applyFilter(e.target.dataset.id);
     displayFilteredContent();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle])
-    showElement([allRecipesButton])
+    hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
+    showElement([allRecipesButton]);
   };
 });
 
@@ -132,13 +132,13 @@ searchInput.addEventListener("keypress", function(e) {
     event.preventDefault();
     applySearch(`${searchInput.value}`);
     displaySearchedContent();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle])
-    showElement([allRecipesButton])
+    hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
+    showElement([allRecipesButton]);
   };
 });
 
 favoriteRecipesButton.addEventListener("click", function() {
-  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter]);
+  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
   // favoriteRecipes = new RecipeRepository(currentUser.favoriteRecipes)
   displayFavoriteRecipes();
@@ -159,6 +159,11 @@ favSearchInput.addEventListener("keypress", function(e) {
     displayFavSearchedContent();
   };
 });
+
+clearFilters.addEventListener("click", function() {
+  displayFavoriteRecipes();
+});
+
 // EVENT HANDLERS------------------------------------------------
 const showElement = elements => {
   elements.forEach(element => element.classList.remove('hidden'));
