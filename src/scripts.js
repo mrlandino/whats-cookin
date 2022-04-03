@@ -29,10 +29,13 @@ const favoriteRecipesContainer = document.querySelector(".favorite-recipes-conta
 const allSearchBar = document.querySelector(".all-search-bar");
 const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
-const aside = document.querySelector(".fav-filter-search-bar")
+const aside = document.querySelector(".fav-filter-search-bar");
 let favRecipes= document.querySelector(".favorite-recipes-container");
-let allRecipesTitle = document.querySelector(".all-recipes-title")
+let allRecipesTitle = document.querySelector(".all-recipes-title");
 let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
+const favRecipesTitle = document.querySelector(".fav-recipes-title");
+const thumbnailAside = document.querySelector(".thumbnail-aside-container")
+const favSearchInput = document.querySelector(".fav-search-button-input");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
@@ -68,12 +71,24 @@ allRecipes.addEventListener('click', function(e) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
+    hideElement([aside, allSearchBar, allFilter, allRecipesTitle])
+    showElement([allRecipesButton])
   };
 });
 
+favoriteRecipesContainer.addEventListener("click", function(e) {
+  if (e.target.parentElement.classList.contains('recipe-thumbnail')) {
+    displayCard();
+    findRecipeInfo(e.target.parentElement.id);
+    updateRecipeCard();
+    hideElement([aside, thumbnailAside])
+    showElement([favoriteRecipesButton])
+  };
+})
+
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
-    addRecipeToFavorites(e.target.parentElement.id);
+    addRecipeToFavorites(e.target.id);
     changeStar(e.target);
   };
 });
@@ -81,7 +96,7 @@ allRecipes.addEventListener("click", function(e) {
 favoriteRecipesContainer.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
     changeStar(e.target);
-    addRecipeToFavorites(e.target.parentElement.id);
+    addRecipeToFavorites(e.target.id);
     displayFavoriteRecipes();
     // injectFavFilterTags();
   };
@@ -133,10 +148,17 @@ favoriteRecipesButton.addEventListener("click", function() {
 
 allRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
-  hideElement([allRecipesButton, favoriteRecipesContainer]);
+  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside]);
   displayAllRecipes();
 })
 
+favSearchInput.addEventListener("keypress", function(e) {
+  if(e.key === "Enter") {
+    event.preventDefault();
+    applyFavSearch(`${favSearchInput.value}`);
+    displayFavSearchedContent();
+  };
+});
 // EVENT HANDLERS------------------------------------------------
 const showElement = elements => {
   elements.forEach(element => element.classList.remove('hidden'));
@@ -161,7 +183,7 @@ const displayAllRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" data-index='${recipe.id}' src=${imageSource}>
+                  <img class="star-icon" id='${recipe.id}' src=${imageSource}>
                 </div>
               </div>`;
   });
@@ -171,12 +193,12 @@ const displayAllRecipes = () => {
 const displayFavoriteRecipes = () => {
   favoriteRecipesContainer.innerHTML = "";
   let favRecipesHTML = "";
-  currentUser.favoriteRecipes.forEach((recipe, index) => {
+  currentUser.favoriteRecipes.forEach((recipe) => {
     favRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" data-index='${index}' src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="favorite recipe icon">
+                  <img class="star-icon" id='${recipe.id}' src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -303,11 +325,17 @@ const displayFilteredContent = () => {
   allRecipes.innerHTML = "";
   let filteredRecipesHTML = "";
   recipesList.filteredRecipesTag.forEach((recipe) => {
+    let imageSource = "";
+    if(recipe.isFavorite) {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+    } else {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+    };
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -323,11 +351,17 @@ const displaySearchedContent = () => {
   allRecipes.innerHTML = "";
   let searchedRecipesHTML = "";
   recipesList.filteredRecipesName.forEach((recipe) => {
+    let imageSource = "";
+    if(recipe.isFavorite) {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+    } else {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+    };
     searchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -368,14 +402,48 @@ const displayFilteredFavs = () => {
   let title = "<h2>Favorite Recipes</h2>";
   let filteredRecipesHTML = "";
     currentUser.favoritesByTag.forEach((recipe) => {
+      let imageSource = "";
+      if(recipe.isFavorite) {
+        imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+      } else {
+        imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+      };
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
   console.log(filteredRecipesHTML);
   favRecipes.innerHTML = title + filteredRecipesHTML;
 }
+
+const applyFavSearch = (input) => {
+  currentUser.favoritesByTag = [];
+  currentUser.filterFavoriteByName(input);
+  // console.log(currentUser.favoritesByName);
+};
+
+const displayFavSearchedContent = () => {
+  favRecipes.innerHTML = "";
+  let title = "<h2>Favorite Recipes</h2>";
+  let favSearchedRecipesHTML = "";
+  currentUser.favoritesByName.forEach((recipe) => {
+    let imageSource = "";
+    if(recipe.isFavorite) {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+    } else {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+    };
+    favSearchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
+                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <div class="thumbnail-details">
+                  <p>${recipe.name}</p>
+                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
+                </div>
+              </div>`;
+  });
+  favRecipes.innerHTML = title + favSearchedRecipesHTML;
+};
