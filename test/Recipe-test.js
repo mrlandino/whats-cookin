@@ -106,20 +106,25 @@ describe('Recipe', () => {
   });
 
   it('Should have a method that will store a list of ingredients needed', () => {
+
     recipe.findIngredientsNeeded(ingredients);
+
     expect(recipe.ingredientsNeeded.length).to.equal(3);
     expect(recipe.ingredientsNeeded[0].name).to.equal("wheat flour");
     expect(recipe.ingredientsNeeded[0].amount).to.equal(1.5);
-
   });
 
   it('Should have a method that will determine the cost of the recipe', () => {
+
     recipe.getCost(ingredients);
+
     expect(recipe.recipeCost).to.equal("9.76");
   });
 
   it('Should have a method that will return the recipe instructions', () => {
+
     let instructions = recipe.getInstructions();
+
     expect(instructions).to.equal(recipeData[0].instructions);
   });
 })
