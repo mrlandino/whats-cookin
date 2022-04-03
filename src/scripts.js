@@ -23,19 +23,16 @@ const recipeDetailsContainer = document.querySelector(".recipe-details-container
 const filterByTag = document.querySelector(".filter-tag-button");
 const dropdownContent = document.querySelector(".dropdown-content");
 const searchInput = document.querySelector(".search-button-input");
-const favSearchInput = document.querySelector(".fav-search-button-input");
 const largeStar = document.querySelector(".large-star");
 const favoriteRecipesButton = document.querySelector(".favorite-recipes-button");
 const favoriteRecipesContainer = document.querySelector(".favorite-recipes-container");
 const allSearchBar = document.querySelector(".all-search-bar");
 const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
+const aside = document.querySelector(".fav-filter-search-bar")
 let favRecipes= document.querySelector(".favorite-recipes-container");
+
 let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
-const aside = document.querySelector('.fav-filter-search-bar');
-let addToMenuButton = document.querySelector('.add-to-menu');
-
-
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
@@ -61,24 +58,18 @@ window.onload = (event) => {
     displayAllRecipes();
     injectFilterTags();
     recipesList.updateRecipesList();
+    hideElement([aside])
+
   })
 };
 
 allRecipes.addEventListener('click', function(e) {
   if (e.target.parentElement.classList.contains('recipe-thumbnail')) {
-    hideElement([aside]);
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
   };
 });
-
-recipeDetailsContainer.addEventListener("click", function(e) {
-  if (e.target.classList.contains('add-to-menu')) {
-    addToMenu(e.target.dataset.recipe);
-    console.log(currentUser);
-  }
-})
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
@@ -100,6 +91,7 @@ dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
     applyFilter(e.target.dataset.id);
     displayFilteredContent();
+    hideElement([aside])
   };
 });
 
@@ -120,27 +112,20 @@ searchInput.addEventListener("keypress", function(e) {
   };
 });
 
-favSearchInput.addEventListener("keypress", function(e) {
-  if(e.key === "Enter") {
-    event.preventDefault();
-    applyFavSearch(`${favSearchInput.value}`);
-    displayFavSearchedContent();
-  };
-});
-
 favoriteRecipesButton.addEventListener("click", function() {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
   // favoriteRecipes = new RecipeRepository(currentUser.favoriteRecipes)
   displayFavoriteRecipes();
+  showElement([aside])
   // injectFavFilterTags();
-});
+})
 
 allRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer]);
   hideElement([allRecipesButton, favoriteRecipesContainer]);
   displayAllRecipes();
-});
+})
 
 // EVENT HANDLERS------------------------------------------------
 const showElement = elements => {
@@ -197,7 +182,7 @@ const displayFavoriteRecipes = () => {
   //                 </div>
   //               </aside>`;
 
-  let title = `<h2>Favorite Recipes</h2>`
+  let title = `<div class="fav-recipe-title"><h2>Favorite Recipes</h2></div>`
   favoriteRecipesContainer.innerHTML = title + favRecipesHTML;
 };
 
@@ -222,7 +207,6 @@ const updateRecipeCard = () => {
   recipe += `<div class="recipe-card">
               <div class="recipe-title">
               <h2>${currentRecipe.name}</h2>
-              <button class="add-to-menu" data-recipe=${currentRecipe.id}>Add To Menu</button>
               <img class="large-star hidden" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
             </div>
             <div class="image-and-ingredients-container">
@@ -263,13 +247,6 @@ const injectFilterTags = () => {
   dropdownContent.innerHTML = tags;
 };
 
-const addToMenu = (id) => {
-  let menuRecipe = recipesList.recipes.find((recipe) => {
-    return `${recipe.id}` === id;
-  });
-  let recipeToAdd = currentUser.addRecipeToMenu(menuRecipe);
-  return recipeToAdd;
-};
 
 // const injectFavFilterTags = () => {
 //   console.log("it works");
@@ -324,12 +301,6 @@ const applySearch = (input) => {
   recipesList.filterByName(input);
 };
 
-const applyFavSearch = (input) => {
-  currentUser.favoritesByTag = [];
-  currentUser.filterFavoriteByName(input);
-  // console.log(currentUser.favoritesByName);
-};
-
 const displaySearchedContent = () => {
   allRecipes.innerHTML = "";
   let searchedRecipesHTML = "";
@@ -373,6 +344,8 @@ const changeStar = (target) => {
 };
 
 const displayFilteredFavs = () => {
+  // console.log(currentUser)
+  console.log(favRecipes.innerHTML)
   favRecipes.innerHTML = "";
   let title = "<h2>Favorite Recipes</h2>";
   let filteredRecipesHTML = "";
@@ -385,27 +358,6 @@ const displayFilteredFavs = () => {
                 </div>
               </div>`;
   });
+  console.log(filteredRecipesHTML);
   favRecipes.innerHTML = title + filteredRecipesHTML;
-};
-
-const displayFavSearchedContent = () => {
-  favRecipes.innerHTML = "";
-  let title = "<h2>Favorite Recipes</h2>";
-  let favSearchedRecipesHTML = "";
-  currentUser.favoritesByName.forEach((recipe) => {
-    favSearchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
-                <div class="thumbnail-details">
-                  <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
-                </div>
-              </div>`;
-  });
-  favRecipes.innerHTML = title + favSearchedRecipesHTML;
-};
-
-// Add icon to click in details contain
-// Give it unique properties like the star
-// If clicked, take the id/data attribute and add to currentUser.recipesToCook
-// currentUser.addRecipeToMenu
-// switch images like the star
+}

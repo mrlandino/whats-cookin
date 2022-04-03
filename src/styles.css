@@ -100,7 +100,14 @@ h2 {
   height: 200px;
   width: 350px;
   margin: 15px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
 }
+
+.recipe-thumbnail:hover {
+  transform: scale(1.02);
+  transition: .4s;
+}
+
 
 .recipe-image {
   height: 75%;
@@ -112,7 +119,7 @@ h2 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: blanchedalmond;
+  background-color: #F9F5EF;
   height: 25%
 }
 .star-icon {
@@ -127,7 +134,7 @@ h2 {
 }
 
 .fav-filter-search-bar {
-  width: 500px
+  width: 25%;
 }
 
 p {
@@ -135,16 +142,34 @@ p {
   margin: 5px;
 }
 
-.favorite-recipes-container {
+.thumbnail-aside-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
+  width: 100%
+}
+
+.favorite-recipes-container {
+  /* border: solid 3px blue; */
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.fav-recipe-title {
+  display: flex;
+  width: 100%;
+  /* border: solid 3px blue; */
+  justify-content: flex-start;
 }
 
 .fav-filter-search-bar {
   display: flex;
   flex-direction: column;
   align-items: start;
+  justify-content: center;
   height: 100vh;
   width: 400px;
   margin: 20px;
@@ -160,10 +185,20 @@ p {
 
 .dropdown-fav-tag {
   margin: 20px 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
 }
 
 .fav-search-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   margin: 20px 0px 10px 5px;
+  width: 100%
 }
 
 .fav-search-button-label {
@@ -185,7 +220,7 @@ h3 {
 
 /* HEADER-------------------------- */
 header {
-  background-color: #F87664;
+  background-color: #f87664;
   height: 28%;
   display: flex;
   margin: 0;
@@ -215,10 +250,12 @@ button {
   font-size: 20px;
   font-weight: bolder;
   border-radius: 5px;
+  margin: 10px 0px;
 }
 
 button:hover {
   background-color: #F87664;
+  border-radius: 25px;
   transform: scale(1.02);
   transition: .4s;
 }
@@ -230,7 +267,27 @@ button:hover {
 }
 
 .all-search-bar {
-  margin-top: 15px;
+  margin-top: 5px;
+  display: flex;
+  /* border: 2px solid blue; */
+  /* width: 33%; */
+  flex-direction: row;
+  justify-content: baseline;
+  align-items: center;
+}
+
+.search-button-input{
+  border-radius: 25px;
+  height: 45px;
+  width: 200px;
+  margin-left: 0;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .dropdown-content {
@@ -242,21 +299,28 @@ button:hover {
 .dropdown-content {
   display: block;
   background-color: #F87664;
-  position: absolute;
+  z-index: 10;
+  /* position: absolute; */
 }
 
 .dropdown-fav-tag:hover
 .dropdown-content-fav-tag {
   display: block;
 }
+.fav-tag-hover,
+.tag-hover {
+  margin: 0;
+  padding: 5px 20px;
+  text-align: center;
+}
 
 
 .fav-tag-hover:hover {
-  background-color: blanchedalmond;
+  background-color: #FAA498;
 }
 
 .tag-hover:hover {
-  background-color: blanchedalmond;
+  background-color: #FAA498;
 }
 
 .hidden {
