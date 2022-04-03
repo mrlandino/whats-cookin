@@ -29,10 +29,12 @@ const favoriteRecipesContainer = document.querySelector(".favorite-recipes-conta
 const allSearchBar = document.querySelector(".all-search-bar");
 const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
-const aside = document.querySelector(".fav-filter-search-bar")
+const aside = document.querySelector(".fav-filter-search-bar");
 let favRecipes= document.querySelector(".favorite-recipes-container");
-let allRecipesTitle = document.querySelector(".all-recipes-title")
+let allRecipesTitle = document.querySelector(".all-recipes-title");
 let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
+const favRecipesTitle = document.querySelector(".fav-recipes-title");
+const thumbnailAside = document.querySelector(".thumbnail-aside-container")
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
@@ -72,6 +74,16 @@ allRecipes.addEventListener('click', function(e) {
     showElement([allRecipesButton])
   };
 });
+
+favoriteRecipesContainer.addEventListener("click", function(e) {
+  if (e.target.parentElement.classList.contains('recipe-thumbnail')) {
+    displayCard();
+    findRecipeInfo(e.target.parentElement.id);
+    updateRecipeCard();
+    hideElement([aside, thumbnailAside])
+    showElement([favoriteRecipesButton])
+  };
+})
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
