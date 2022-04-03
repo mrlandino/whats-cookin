@@ -1,10 +1,6 @@
 import './styles.css';
-import apiCalls from './apiCalls';
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
+import {usersPromise, ingredientsPromise, recipePromise} from './apiCalls';
 import './images/turing-logo.png';
-// import recipeData from './data/recipes.js';
-// import ingredientsData from './data/ingredients.js';
-// import usersData from './data/users.js';
 import RecipeRepository from './classes/RecipeRepository.js';
 import Recipe from './classes/Recipe.js';
 import User from './classes/User.js';
@@ -42,13 +38,6 @@ const removeFromMenuButton = document.querySelector(".remove-from-menu");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
-  //apiCalls();
-  let usersPromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users")
-      .then(usersResponse => usersResponse.json());
-  let ingredientsPromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients")
-      .then(ingredientsResponse => ingredientsResponse.json());
-  let recipePromise = fetch("	https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
-      .then(recipeResponse => recipeResponse.json());
   Promise.all(
     [
       usersPromise,
@@ -100,7 +89,6 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
     changeStar(e.target);
     addRecipeToFavorites(e.target.id);
     displayFavoriteRecipes();
-    // injectFavFilterTags();
   };
 });
 
@@ -146,17 +134,15 @@ searchInput.addEventListener("keypress", function(e) {
 favoriteRecipesButton.addEventListener("click", function() {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
-  // favoriteRecipes = new RecipeRepository(currentUser.favoriteRecipes)
   displayFavoriteRecipes();
   showElement([aside])
-  // injectFavFilterTags();
-})
+});
 
 allRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
   hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton]);
   displayAllRecipes();
-})
+});
 
 favSearchInput.addEventListener("keypress", function(e) {
   if(e.key === "Enter") {
@@ -199,8 +185,6 @@ const displayAllRecipes = () => {
               </div>`;
   });
   allRecipes.innerHTML = allRecipesHTML;
-
-  // hideElement([addToMenuButton, removeFromMenuButton]);
 };
 
 const displayFavoriteRecipes = () => {
@@ -215,18 +199,6 @@ const displayFavoriteRecipes = () => {
                 </div>
               </div>`;
   });
-  // let asideHTML = `<aside class="fav-filter-search-bar">
-  //                   <h3>Refine Favorite Recipes</h3>
-  //                   <form class="fav-search-bar">
-  //                     <label class="fav-search-button-label" for="fav-recipe-search">Search:</label>
-  //                     <input class="fav-search-button-input" type="search" id="fav-recipe-search">
-  //                   </form>
-  //                   <div class="dropdown-fav-tag">
-  //                     <button class="fav-filter-tag">Filter</button>
-  //                   <div class="dropdown-content-fav-tag" ></div>
-  //                 </div>
-  //               </aside>`;
-
   let title = `<div class="fav-recipe-title"><h2>Favorite Recipes</h2></div>`
   favoriteRecipesContainer.innerHTML = title + favRecipesHTML;
 };
@@ -259,8 +231,6 @@ const updateRecipeCard = () => {
                 <h3>Ingredients:</h3>
                 <div class="ingredient-list-name-and-amounts">`;
 
-                // <button class="add-to-menu" data-recipe=${currentRecipe.id}>Add To Menu</button>
-                // <button class="remove-from-menu hidden" data-recipe-info=${currentRecipe.id}>Remove from Menu</button>
   let ingredientList = "";
   currentRecipe.ingredientsNeeded.forEach(ingredient => {
     ingredientList += `<p>${ingredient.name} ${ingredient.amount} ${ingredient.unit}</p>`;
@@ -309,38 +279,12 @@ const injectFilterTags = () => {
   dropdownContent.innerHTML = tags;
 };
 
-
-// const injectFavFilterTags = () => {
-//   console.log("it works");
-//
-//   // let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
-//   let favTags = "";
-//   let uniqueFavTags;
-//   // console.log(currentUser.favoriteRecipes)
-//   uniqueFavTags = currentUser.favoriteRecipes.reduce((allTags, recipe) => {
-//     recipe.tags.forEach(tag => {
-//       if (!allTags.includes(tag)) {
-//         allTags.push(tag);
-//       };
-//     });
-//     return allTags;
-//   }, []);
-// console.log(uniqueFavTags)
-//   uniqueFavTags.forEach((tag) => {
-//     favTags += `<p class="tag-hover" data-id="${tag}">${tag}</p>`
-//   });
-//   console.log(favTags);
-//   favDropdownContent.innerHTML = favTags;
-// };
-
 const applyFilter = (id) => {
   recipesList.filterByTag(id);
 };
 
 const applyFavFilter = (id) => {
-  // console.log(favoriteRecipes.filteredRecipesTag)
   currentUser.filterFavoriteByTag(id);
-  // console.log(favoriteRecipes.filteredRecipesTag)
 };
 
 const displayFilteredContent = () => {
@@ -391,9 +335,7 @@ const displaySearchedContent = () => {
 };
 
 const instantiateUser = () => {
-  console.log(usersData);
   let randomUser = usersData[Math.floor(Math.random() * usersData.length)];
-  console.log(randomUser);
   currentUser = new User(randomUser);
 };
 
@@ -418,8 +360,6 @@ const changeStar = (target) => {
 };
 
 const displayFilteredFavs = () => {
-  // console.log(currentUser)
-  console.log(favRecipes.innerHTML)
   favRecipes.innerHTML = "";
   let title = "<h2>Favorite Recipes</h2>";
   let filteredRecipesHTML = "";
@@ -438,14 +378,12 @@ const displayFilteredFavs = () => {
                 </div>
               </div>`;
   });
-  console.log(filteredRecipesHTML);
   favRecipes.innerHTML = title + filteredRecipesHTML;
-}
+};
 
 const applyFavSearch = (input) => {
   currentUser.favoritesByTag = [];
   currentUser.filterFavoriteByName(input);
-  // console.log(currentUser.favoritesByName);
 };
 
 const displayFavSearchedContent = () => {
