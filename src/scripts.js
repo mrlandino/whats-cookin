@@ -117,6 +117,7 @@ favoriteRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesContainer, allRecipesButton]);
   // favoriteRecipes = new RecipeRepository(currentUser.favoriteRecipes)
   displayFavoriteRecipes();
+  showElement([aside])
   // injectFavFilterTags();
 })
 
@@ -181,7 +182,7 @@ const displayFavoriteRecipes = () => {
   //                 </div>
   //               </aside>`;
 
-  let title = `<h2>Favorite Recipes</h2>`
+  let title = `<div class="fav-recipe-title"><h2>Favorite Recipes</h2></div>`
   favoriteRecipesContainer.innerHTML = title + favRecipesHTML;
 };
 
