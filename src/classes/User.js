@@ -29,6 +29,16 @@ class User {
     }
   };
 
+  removeRecipeFromMenu(recipe) {
+    this.recipesToCook = this.recipesToCook.reduce((acc, meal) => {
+      if(recipe.id !== meal.id) {
+        acc.push(meal);
+      }
+      return acc;
+    }, []);
+    return this.recipesToCook;
+  };
+
   filterFavoriteByTag(tag) {
     if(this.favoritesByName.length > 0) {
       this.favoritesByTag = this.favoritesByName.filter(recipe => {
