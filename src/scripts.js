@@ -120,14 +120,13 @@ dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
     applyFilter(e.target.dataset.id);
     displayFilteredContent();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
+    hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
     showElement([allRecipesButton]);
   };
 });
 
 favDropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
-    console.log(e.target.dataset.fav)
     applyFavFilter(e.target.dataset.fav);
     favRecipes.innerHTML = "";
     displayFilteredFavs();
@@ -139,13 +138,13 @@ searchInput.addEventListener("keypress", function(e) {
     event.preventDefault();
     applySearch(`${searchInput.value}`);
     displaySearchedContent();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
+    hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
     showElement([allRecipesButton]);
   };
 });
 
 favoriteRecipesButton.addEventListener("click", function() {
-  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer]);
+  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
   // favoriteRecipes = new RecipeRepository(currentUser.favoriteRecipes)
   displayFavoriteRecipes();
@@ -155,7 +154,7 @@ favoriteRecipesButton.addEventListener("click", function() {
 
 allRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
-  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside]);
+  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton]);
   displayAllRecipes();
 })
 
@@ -200,6 +199,8 @@ const displayAllRecipes = () => {
               </div>`;
   });
   allRecipes.innerHTML = allRecipesHTML;
+
+  // hideElement([addToMenuButton, removeFromMenuButton]);
 };
 
 const displayFavoriteRecipes = () => {
