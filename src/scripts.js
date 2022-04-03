@@ -68,6 +68,8 @@ allRecipes.addEventListener('click', function(e) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
+    hideElement([aside, allSearchBar, allFilter, allRecipesTitle])
+    showElement([allRecipesButton])
   };
 });
 
@@ -133,7 +135,7 @@ favoriteRecipesButton.addEventListener("click", function() {
 
 allRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
-  hideElement([allRecipesButton, favoriteRecipesContainer]);
+  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside]);
   displayAllRecipes();
 })
 
