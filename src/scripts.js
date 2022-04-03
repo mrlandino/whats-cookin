@@ -31,7 +31,7 @@ const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
 const aside = document.querySelector(".fav-filter-search-bar")
 let favRecipes= document.querySelector(".favorite-recipes-container");
-
+let allRecipesTitle = document.querySelector(".all-recipes-title")
 let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
 
 // EVENT LISTENERS-----------------------------------------------
@@ -98,7 +98,8 @@ dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
     applyFilter(e.target.dataset.id);
     displayFilteredContent();
-    hideElement([aside])
+    hideElement([aside, allSearchBar, allFilter, allRecipesTitle])
+    showElement([allRecipesButton])
   };
 });
 
@@ -116,6 +117,8 @@ searchInput.addEventListener("keypress", function(e) {
     event.preventDefault();
     applySearch(`${searchInput.value}`);
     displaySearchedContent();
+    hideElement([aside, allSearchBar, allFilter, allRecipesTitle])
+    showElement([allRecipesButton])
   };
 });
 
@@ -129,7 +132,7 @@ favoriteRecipesButton.addEventListener("click", function() {
 })
 
 allRecipesButton.addEventListener("click", function() {
-  showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer]);
+  showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
   hideElement([allRecipesButton, favoriteRecipesContainer]);
   displayAllRecipes();
 })
