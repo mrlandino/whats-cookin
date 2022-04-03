@@ -16,18 +16,26 @@ let recipeData;
 let currentRecipe;
 let currentUser;
 let recipesList;
+let favoriteRecipes;
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
 const allRecipesContainer = document.querySelector(".all-recipes-container");
 const recipeDetailsContainer = document.querySelector(".recipe-details-container");
 const filterByTag = document.querySelector(".filter-tag-button");
 const dropdownContent = document.querySelector(".dropdown-content");
 const searchInput = document.querySelector(".search-button-input");
+const favSearchInput = document.querySelector(".fav-search-button-input");
 const largeStar = document.querySelector(".large-star");
 const favoriteRecipesButton = document.querySelector(".favorite-recipes-button");
 const favoriteRecipesContainer = document.querySelector(".favorite-recipes-container");
 const allSearchBar = document.querySelector(".all-search-bar");
 const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
+let favRecipes= document.querySelector(".favorite-recipes-container");
+let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
+const aside = document.querySelector('.fav-filter-search-bar');
+let addToMenuButton = document.querySelector('.add-to-menu');
+
+
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => {
@@ -58,11 +66,19 @@ window.onload = (event) => {
 
 allRecipes.addEventListener('click', function(e) {
   if (e.target.parentElement.classList.contains('recipe-thumbnail')) {
+    hideElement([aside]);
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
   };
 });
+
+recipeDetailsContainer.addEventListener("click", function(e) {
+  if (e.target.classList.contains('add-to-menu')) {
+    addToMenu(e.target.dataset.recipe);
+    console.log(currentUser);
+  }
+})
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
@@ -76,6 +92,7 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
     changeStar(e.target);
     addRecipeToFavorites(e.target.parentElement.id);
     displayFavoriteRecipes();
+    // injectFavFilterTags();
   };
 });
 
@@ -83,6 +100,15 @@ dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains('tag-hover')) {
     applyFilter(e.target.dataset.id);
     displayFilteredContent();
+  };
+});
+
+favDropdownContent.addEventListener("click", function(e) {
+  if(e.target.classList.contains('tag-hover')) {
+    console.log(e.target.dataset.fav)
+    applyFavFilter(e.target.dataset.fav);
+    favRecipes.innerHTML = "";
+    displayFilteredFavs();
   };
 });
 
@@ -94,18 +120,27 @@ searchInput.addEventListener("keypress", function(e) {
   };
 });
 
+favSearchInput.addEventListener("keypress", function(e) {
+  if(e.key === "Enter") {
+    event.preventDefault();
+    applyFavSearch(`${favSearchInput.value}`);
+    displayFavSearchedContent();
+  };
+});
+
 favoriteRecipesButton.addEventListener("click", function() {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
+  // favoriteRecipes = new RecipeRepository(currentUser.favoriteRecipes)
   displayFavoriteRecipes();
-  injectFavFilterTags();
-})
+  // injectFavFilterTags();
+});
 
 allRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer]);
   hideElement([allRecipesButton, favoriteRecipesContainer]);
   displayAllRecipes();
-})
+});
 
 // EVENT HANDLERS------------------------------------------------
 const showElement = elements => {
@@ -150,18 +185,20 @@ const displayFavoriteRecipes = () => {
                 </div>
               </div>`;
   });
-  let asideHTML = `<aside class="fav-filter-search-bar">
-                    <h3>Refine Favorite Recipes</h3>
-                    <form class="fav-search-bar">
-                      <label class="fav-search-button-label" for="fav-recipe-search">Search:</label>
-                      <input class="fav-search-button-input" type="search" id="fav-recipe-search">
-                    </form>
-                    <div class="dropdown-fav-tag">
-                      <button class="fav-filter-tag">Filter</button>
-                    <div class="dropdown-content-fav-tag" id="dropdown"></div>
-                  </div>
-                </aside>`;
-  favoriteRecipesContainer.innerHTML = favRecipesHTML + asideHTML;
+  // let asideHTML = `<aside class="fav-filter-search-bar">
+  //                   <h3>Refine Favorite Recipes</h3>
+  //                   <form class="fav-search-bar">
+  //                     <label class="fav-search-button-label" for="fav-recipe-search">Search:</label>
+  //                     <input class="fav-search-button-input" type="search" id="fav-recipe-search">
+  //                   </form>
+  //                   <div class="dropdown-fav-tag">
+  //                     <button class="fav-filter-tag">Filter</button>
+  //                   <div class="dropdown-content-fav-tag" ></div>
+  //                 </div>
+  //               </aside>`;
+
+  let title = `<h2>Favorite Recipes</h2>`
+  favoriteRecipesContainer.innerHTML = title + favRecipesHTML;
 };
 
 
@@ -185,6 +222,7 @@ const updateRecipeCard = () => {
   recipe += `<div class="recipe-card">
               <div class="recipe-title">
               <h2>${currentRecipe.name}</h2>
+              <button class="add-to-menu" data-recipe=${currentRecipe.id}>Add To Menu</button>
               <img class="large-star hidden" src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
             </div>
             <div class="image-and-ingredients-container">
@@ -225,31 +263,45 @@ const injectFilterTags = () => {
   dropdownContent.innerHTML = tags;
 };
 
-
-const injectFavFilterTags = () => {
-  let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
-  let favTags = "";
-  let uniqueFavTags;
-  // console.log(currentUser.favoriteRecipes)
-  uniqueFavTags = currentUser.favoriteRecipes.reduce((allTags, recipe) => {
-    recipe.tags.forEach(tag => {
-      if (!allTags.includes(tag)) {
-        allTags.push(tag);
-      };
-    });
-    return allTags;
-  }, []);
-console.log(uniqueFavTags)
-  uniqueFavTags.forEach((tag) => {
-    favTags += `<p class="tag-hover" data-id="${tag}">${tag}</p>`
+const addToMenu = (id) => {
+  let menuRecipe = recipesList.recipes.find((recipe) => {
+    return `${recipe.id}` === id;
   });
-  console.log(favDropdownContent)
-  favDropdownContent.innerHTML += favTags;
+  let recipeToAdd = currentUser.addRecipeToMenu(menuRecipe);
+  return recipeToAdd;
 };
 
+// const injectFavFilterTags = () => {
+//   console.log("it works");
+//
+//   // let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
+//   let favTags = "";
+//   let uniqueFavTags;
+//   // console.log(currentUser.favoriteRecipes)
+//   uniqueFavTags = currentUser.favoriteRecipes.reduce((allTags, recipe) => {
+//     recipe.tags.forEach(tag => {
+//       if (!allTags.includes(tag)) {
+//         allTags.push(tag);
+//       };
+//     });
+//     return allTags;
+//   }, []);
+// console.log(uniqueFavTags)
+//   uniqueFavTags.forEach((tag) => {
+//     favTags += `<p class="tag-hover" data-id="${tag}">${tag}</p>`
+//   });
+//   console.log(favTags);
+//   favDropdownContent.innerHTML = favTags;
+// };
+
 const applyFilter = (id) => {
-  let tag = id;
-  recipesList.filterByTag(tag);
+  recipesList.filterByTag(id);
+};
+
+const applyFavFilter = (id) => {
+  // console.log(favoriteRecipes.filteredRecipesTag)
+  currentUser.filterFavoriteByTag(id);
+  // console.log(favoriteRecipes.filteredRecipesTag)
 };
 
 const displayFilteredContent = () => {
@@ -270,6 +322,12 @@ const displayFilteredContent = () => {
 const applySearch = (input) => {
   recipesList.filteredRecipesTag = [];
   recipesList.filterByName(input);
+};
+
+const applyFavSearch = (input) => {
+  currentUser.favoritesByTag = [];
+  currentUser.filterFavoriteByName(input);
+  // console.log(currentUser.favoritesByName);
 };
 
 const displaySearchedContent = () => {
@@ -313,3 +371,41 @@ const changeStar = (target) => {
     target.src = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
   };
 };
+
+const displayFilteredFavs = () => {
+  favRecipes.innerHTML = "";
+  let title = "<h2>Favorite Recipes</h2>";
+  let filteredRecipesHTML = "";
+    currentUser.favoritesByTag.forEach((recipe) => {
+    filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
+                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <div class="thumbnail-details">
+                  <p>${recipe.name}</p>
+                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                </div>
+              </div>`;
+  });
+  favRecipes.innerHTML = title + filteredRecipesHTML;
+};
+
+const displayFavSearchedContent = () => {
+  favRecipes.innerHTML = "";
+  let title = "<h2>Favorite Recipes</h2>";
+  let favSearchedRecipesHTML = "";
+  currentUser.favoritesByName.forEach((recipe) => {
+    favSearchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
+                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <div class="thumbnail-details">
+                  <p>${recipe.name}</p>
+                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                </div>
+              </div>`;
+  });
+  favRecipes.innerHTML = title + favSearchedRecipesHTML;
+};
+
+// Add icon to click in details contain
+// Give it unique properties like the star
+// If clicked, take the id/data attribute and add to currentUser.recipesToCook
+// currentUser.addRecipeToMenu
+// switch images like the star
