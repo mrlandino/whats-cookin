@@ -88,7 +88,7 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
-    addRecipeToFavorites(e.target.parentElement.id);
+    addRecipeToFavorites(e.target.id);
     changeStar(e.target);
   };
 });
@@ -96,7 +96,7 @@ allRecipes.addEventListener("click", function(e) {
 favoriteRecipesContainer.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
     changeStar(e.target);
-    addRecipeToFavorites(e.target.parentElement.id);
+    addRecipeToFavorites(e.target.id);
     displayFavoriteRecipes();
     // injectFavFilterTags();
   };
@@ -183,7 +183,7 @@ const displayAllRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" data-index='${recipe.id}' src=${imageSource}>
+                  <img class="star-icon" id='${recipe.id}' src=${imageSource}>
                 </div>
               </div>`;
   });
@@ -193,12 +193,12 @@ const displayAllRecipes = () => {
 const displayFavoriteRecipes = () => {
   favoriteRecipesContainer.innerHTML = "";
   let favRecipesHTML = "";
-  currentUser.favoriteRecipes.forEach((recipe, index) => {
+  currentUser.favoriteRecipes.forEach((recipe) => {
     favRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" data-index='${index}' src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="favorite recipe icon">
+                  <img class="star-icon" id='${recipe.id}' src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -325,11 +325,17 @@ const displayFilteredContent = () => {
   allRecipes.innerHTML = "";
   let filteredRecipesHTML = "";
   recipesList.filteredRecipesTag.forEach((recipe) => {
+    let imageSource = "";
+    if(recipe.isFavorite) {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+    } else {
+      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+    };
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -390,11 +396,17 @@ const displayFilteredFavs = () => {
   let title = "<h2>Favorite Recipes</h2>";
   let filteredRecipesHTML = "";
     currentUser.favoritesByTag.forEach((recipe) => {
+      let imageSource = "";
+      if(recipe.isFavorite) {
+        imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+      } else {
+        imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+      };
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
