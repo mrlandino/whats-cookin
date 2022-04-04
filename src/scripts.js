@@ -1,11 +1,10 @@
-import './styles.css';
-import {usersPromise, ingredientsPromise, recipePromise} from './apiCalls';
-import './images/turing-logo.png';
-import './images/favorite-star.png';
-import './images/empty-star.png';
-import RecipeRepository from './classes/RecipeRepository.js';
-import Recipe from './classes/Recipe.js';
-import User from './classes/User.js';
+import "./styles.css";
+import {usersPromise, ingredientsPromise, recipePromise} from "./apiCalls";
+import "./images/favorite-star.png";
+import "./images/empty-star.png";
+import RecipeRepository from "./classes/RecipeRepository.js";
+import Recipe from "./classes/Recipe.js";
+import User from "./classes/User.js";
 
 // VARIABLES-----------------------------------------------
 let usersData;
@@ -58,8 +57,8 @@ window.onload = (event) => {
   });
 };
 
-allRecipes.addEventListener('click', function(e) {
-  if (e.target.parentElement.classList.contains('recipe-thumbnail')) {
+allRecipes.addEventListener("click", function(e) {
+  if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
@@ -67,14 +66,14 @@ allRecipes.addEventListener('click', function(e) {
     showElement([allRecipesButton]);
     menuButtonStatus();
   };
-  if (e.target.classList.contains('star-icon')) {
+  if (e.target.classList.contains("star-icon")) {
     addRecipeToFavorites(e.target.id);
     changeStar(e.target);
   };
 });
 
 favoriteRecipesContainer.addEventListener("click", function(e) {
-  if (e.target.parentElement.classList.contains('recipe-thumbnail')) {
+  if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
@@ -82,7 +81,7 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
     showElement([favoriteRecipesButton]);
     menuButtonStatus();
   };
-  if (e.target.classList.contains('star-icon')) {
+  if (e.target.classList.contains("star-icon")) {
     changeStar(e.target);
     addRecipeToFavorites(e.target.id);
     displayFavoriteRecipes();
@@ -100,16 +99,15 @@ removeFromMenuButton.addEventListener("click", function() {
 });
 
 dropdownContent.addEventListener("click", function(e) {
-  if(e.target.classList.contains('tag-hover')) {
+  if(e.target.classList.contains("tag-hover")) {
     applyFilter(e.target.dataset.id);
     displayFilteredContent();
     hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
     showElement([allRecipesButton]);
   };
 });
-
 favDropdownContent.addEventListener("click", function(e) {
-  if(e.target.classList.contains('tag-hover')) {
+  if(e.target.classList.contains("tag-hover")) {
     applyFavFilter(e.target.dataset.fav);
     favRecipes.innerHTML = "";
     displayFilteredFavs();
@@ -157,11 +155,11 @@ clearFilters.addEventListener("click", function() {
 
 // EVENT HANDLERS------------------------------------------------
 const showElement = elements => {
-  elements.forEach(element => element.classList.remove('hidden'));
+  elements.forEach(element => element.classList.remove("hidden"));
 };
 
 const hideElement = elements => {
-  elements.forEach(element => element.classList.add('hidden'));
+  elements.forEach(element => element.classList.add("hidden"));
 };
 
 const displayAllRecipes = () => {
@@ -330,7 +328,6 @@ const addRecipeToFavorites = (id) => {
 };
 
 const changeStar = (target) => {
-  console.log(target.src)
   if (target.src === "http://localhost:8080/images/empty-star.png") {
     target.src = "http://localhost:8080/images/favorite-star.png";
   } else {

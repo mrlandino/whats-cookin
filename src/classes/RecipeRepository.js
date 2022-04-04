@@ -1,4 +1,4 @@
-import Recipe from './Recipe.js';
+import Recipe from "./Recipe.js";
 
 class RecipeRepository {
   constructor(recipeData) {
@@ -37,6 +37,6 @@ class RecipeRepository {
       return new Recipe(recipe);
     });
   };
-}
+};
 
 export default RecipeRepository;
