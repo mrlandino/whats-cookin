@@ -14,13 +14,35 @@ class User {
   };
 
   removeFavoriteRecipes(recipe) {
-    this.favoriteRecipes = this.favoriteRecipes.reduce((acc, meal) => {
-      if(recipe.id !== meal.id) {
-        acc.push(meal);
-      }
-      return acc;
-    }, []);
-    return this.favoriteRecipes;
+    if(this.favoritesByTag.length > 0) {
+      this.favoritesByTag = this.favoritesByTag.reduce((acc, meal) => {
+        if(recipe.id !== meal.id) {
+          acc.push(meal);
+        }
+        return acc;
+      }, []);
+      // return this.favoriteByTag;
+    };
+
+    if(this.favoritesByName.length > 0) {
+      this.favoritesByName = this.favoritesByName.reduce((acc, meal) => {
+        if(recipe.id !== meal.id) {
+          acc.push(meal);
+        }
+        return acc;
+      }, []);
+      // return this.favoriteByName;
+    };
+
+    if(this.favoriteRecipes.length > 0) {
+      this.favoriteRecipes = this.favoriteRecipes.reduce((acc, meal) => {
+        if(recipe.id !== meal.id) {
+          acc.push(meal);
+        }
+        return acc;
+      }, []);
+    };
+    return (this.favoriteBytag, this.favoriteByName, this.favoriteRecipes);
   };
 
   addRecipeToMenu(recipe) {
