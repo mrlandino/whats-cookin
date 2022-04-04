@@ -21,7 +21,6 @@ class User {
         }
         return acc;
       }, []);
-      // return this.favoriteByTag;
     };
 
     if(this.favoritesByName.length > 0) {
@@ -31,7 +30,6 @@ class User {
         }
         return acc;
       }, []);
-      // return this.favoriteByName;
     };
 
     if(this.favoriteRecipes.length > 0) {
@@ -48,14 +46,14 @@ class User {
   addRecipeToMenu(recipe) {
     if (!this.recipesToCook.includes(recipe)) {
       this.recipesToCook.push(recipe);
-    }
+    };
   };
 
   removeRecipeFromMenu(recipe) {
     this.recipesToCook = this.recipesToCook.reduce((acc, meal) => {
       if(recipe.id !== meal.id) {
         acc.push(meal);
-      }
+      };
       return acc;
     }, []);
     return this.recipesToCook;
@@ -85,6 +83,6 @@ class User {
       });
     };
   };
-}
+};
 
 export default User;

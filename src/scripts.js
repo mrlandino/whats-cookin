@@ -72,11 +72,11 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
-    hideElement([aside, favoriteRecipesContainer])
+    hideElement([aside, favoriteRecipesContainer]);
     showElement([favoriteRecipesButton]);
     menuButtonStatus();
   };
-})
+});
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
@@ -134,7 +134,7 @@ favoriteRecipesButton.addEventListener("click", function() {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
   displayFavoriteRecipes();
-  showElement([aside])
+  showElement([aside]);
 });
 
 allRecipesButton.addEventListener("click", function() {
@@ -420,11 +420,11 @@ const menuButtonStatus = () => {
         return currentUser.recipesToCook;
       } else {
         hideElement([removeFromMenuButton]);
-        showElement([addToMenuButton])
+        showElement([addToMenuButton]);
       };
     });
   } else {
     hideElement([removeFromMenuButton]);
-    showElement([addToMenuButton])
+    showElement([addToMenuButton]);
   };
-}
+};
