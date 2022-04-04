@@ -96,13 +96,11 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
 addToMenuButton.addEventListener("click", function() {
   addToMenu(currentRecipe.id);
   menuButtonStatus();
-  // console.log("USER MENU: ", currentUser.recipesToCook)
 });
 
 removeFromMenuButton.addEventListener("click", function() {
   removeFromMenu(currentRecipe.id);
   menuButtonStatus();
-  // console.log("USER MENU: ", currentUser.recipesToCook)
 });
 
 dropdownContent.addEventListener("click", function(e) {
@@ -414,20 +412,16 @@ const displayFavSearchedContent = () => {
 };
 
 const menuButtonStatus = () => {
-  console.log("MENU BUTTON STATUS RUN");
-  console.log("RECIPE MENU: ", currentUser.recipesToCook)
   if (currentUser.recipesToCook.length > 0) {
     const update = currentUser.recipesToCook.find(recipe => {
-    if (recipe.id === currentRecipe.id) {
-      console.log("RECIPE IS IN MENU")
-      showElement([removeFromMenuButton]);
-      hideElement([addToMenuButton]);
-      return currentUser.recipesToCook;
-    } else {
-      console.log("RECIPE IS NOT IN MENU")
-      hideElement([removeFromMenuButton]);
-      showElement([addToMenuButton])
-    };
+      if (recipe.id === currentRecipe.id) {
+        showElement([removeFromMenuButton]);
+        hideElement([addToMenuButton]);
+        return currentUser.recipesToCook;
+      } else {
+        hideElement([removeFromMenuButton]);
+        showElement([addToMenuButton])
+      };
     });
   } else {
     hideElement([removeFromMenuButton]);
