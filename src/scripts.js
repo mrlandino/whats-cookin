@@ -62,7 +62,7 @@ allRecipes.addEventListener('click', function(e) {
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
     hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
-    showElement([allRecipesButton, addToMenuButton]);
+    showElement([allRecipesButton]);
     menuButtonStatus();
   };
 });
@@ -93,16 +93,16 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
   };
 });
 
-addToMenuButton.addEventListener("click", function(e) {
+addToMenuButton.addEventListener("click", function() {
   addToMenu(currentRecipe.id);
   menuButtonStatus();
-  console.log(currentUser.recipesToCook)
+  // console.log("USER MENU: ", currentUser.recipesToCook)
 });
 
 removeFromMenuButton.addEventListener("click", function() {
   removeFromMenu(currentRecipe.id);
   menuButtonStatus();
-  console.log(currentUser.recipesToCook)
+  // console.log("USER MENU: ", currentUser.recipesToCook)
 });
 
 dropdownContent.addEventListener("click", function(e) {
@@ -119,9 +119,6 @@ favDropdownContent.addEventListener("click", function(e) {
     applyFavFilter(e.target.dataset.fav);
     favRecipes.innerHTML = "";
     displayFilteredFavs();
-    console.log("USER FAVORITES: ", currentUser.favoriteRecipes);
-    console.log("FAVORITES BY TAG: ", currentUser.favoritesByTag);
-    console.log("FAVORITES BY NAME: ", currentUser.favoritesByName);
   };
 });
 
@@ -155,9 +152,6 @@ favSearchInput.addEventListener("keypress", function(e) {
     event.preventDefault();
     applyFavSearch(`${favSearchInput.value}`);
     displayFavSearchedContent();
-    console.log("USER FAVORITES: ", currentUser.favoriteRecipes);
-    console.log("FAVORITES BY TAG: ", currentUser.favoritesByTag);
-    console.log("FAVORITES BY NAME: ", currentUser.favoritesByName);
   };
 });
 
@@ -165,9 +159,6 @@ clearFilters.addEventListener("click", function() {
   currentUser.favoritesByTag = [];
   currentUser.favoritesByName = [];
   displayFavoriteRecipes();
-  console.log("USER FAVORITES: ", currentUser.favoriteRecipes);
-  console.log("FAVORITES BY TAG: ", currentUser.favoritesByTag);
-  console.log("FAVORITES BY NAME: ", currentUser.favoritesByName);
 });
 
 // EVENT HANDLERS------------------------------------------------
@@ -362,11 +353,6 @@ const addRecipeToFavorites = (id) => {
     recipeClicked.isFavorite = false;
     currentUser.removeFavoriteRecipes(recipeClicked);
   };
-
-  console.log("USER FAVORITES: ", currentUser.favoriteRecipes);
-  console.log("FAVORITES BY TAG: ", currentUser.favoritesByTag);
-  console.log("FAVORITES BY NAME: ", currentUser.favoritesByName);
-
 };
 
 const changeStar = (target) => {
@@ -428,14 +414,23 @@ const displayFavSearchedContent = () => {
 };
 
 const menuButtonStatus = () => {
-  const update = currentUser.recipesToCook.find(recipe => {
+  console.log("MENU BUTTON STATUS RUN");
+  console.log("RECIPE MENU: ", currentUser.recipesToCook)
+  if (currentUser.recipesToCook.length > 0) {
+    const update = currentUser.recipesToCook.find(recipe => {
     if (recipe.id === currentRecipe.id) {
+      console.log("RECIPE IS IN MENU")
       showElement([removeFromMenuButton]);
       hideElement([addToMenuButton]);
       return currentUser.recipesToCook;
     } else {
+      console.log("RECIPE IS NOT IN MENU")
       hideElement([removeFromMenuButton]);
       showElement([addToMenuButton])
     };
-  });
+    });
+  } else {
+    hideElement([removeFromMenuButton]);
+    showElement([addToMenuButton])
+  };
 }
