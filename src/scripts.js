@@ -53,7 +53,6 @@ window.onload = (event) => {
     displayAllRecipes();
     injectFilterTags();
     recipesList.updateRecipesList();
-    hideElement([aside]);
   });
 };
 
@@ -63,7 +62,8 @@ allRecipes.addEventListener('click', function(e) {
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
     hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
-    showElement([allRecipesButton, addToMenuButton]);
+    showElement([allRecipesButton]);
+    menuButtonStatus();
   };
 });
 
@@ -72,10 +72,11 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
-    hideElement([aside, thumbnailAside])
+    hideElement([aside, favoriteRecipesContainer]);
     showElement([favoriteRecipesButton]);
+    menuButtonStatus();
   };
-})
+});
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
@@ -92,16 +93,14 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
   };
 });
 
-addToMenuButton.addEventListener("click", function(e) {
+addToMenuButton.addEventListener("click", function() {
   addToMenu(currentRecipe.id);
-  hideElement([addToMenuButton]);
-  showElement([removeFromMenuButton]);
+  menuButtonStatus();
 });
 
 removeFromMenuButton.addEventListener("click", function() {
   removeFromMenu(currentRecipe.id);
-  hideElement([removeFromMenuButton]);
-  showElement([addToMenuButton]);
+  menuButtonStatus();
 });
 
 dropdownContent.addEventListener("click", function(e) {
@@ -135,13 +134,15 @@ favoriteRecipesButton.addEventListener("click", function() {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
   displayFavoriteRecipes();
-  showElement([aside])
+  showElement([aside]);
 });
 
 allRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
   hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton]);
   displayAllRecipes();
+  currentUser.favoritesByTag = [];
+  currentUser.favoritesByName = [];
 });
 
 favSearchInput.addEventListener("keypress", function(e) {
@@ -153,6 +154,8 @@ favSearchInput.addEventListener("keypress", function(e) {
 });
 
 clearFilters.addEventListener("click", function() {
+  currentUser.favoritesByTag = [];
+  currentUser.favoritesByName = [];
   displayFavoriteRecipes();
 });
 
@@ -202,7 +205,6 @@ const displayFavoriteRecipes = () => {
   let title = `<div class="fav-recipe-title"><h2>Favorite Recipes</h2></div>`
   favoriteRecipesContainer.innerHTML = title + favRecipesHTML;
 };
-
 
 const displayCard = () => {
   hideElement([allRecipesContainer]);
@@ -361,7 +363,9 @@ const changeStar = (target) => {
 
 const displayFilteredFavs = () => {
   favRecipes.innerHTML = "";
-  let title = "<h2>Favorite Recipes</h2>";
+  let title = `<div class="fav-recipe-title">
+                <h2>Favorite Recipes</h2>
+                  </div>`;
   let filteredRecipesHTML = "";
     currentUser.favoritesByTag.forEach((recipe) => {
       let imageSource = "";
@@ -382,7 +386,6 @@ const displayFilteredFavs = () => {
 };
 
 const applyFavSearch = (input) => {
-  currentUser.favoritesByTag = [];
   currentUser.filterFavoriteByName(input);
 };
 
@@ -406,4 +409,22 @@ const displayFavSearchedContent = () => {
               </div>`;
   });
   favRecipes.innerHTML = title + favSearchedRecipesHTML;
+};
+
+const menuButtonStatus = () => {
+  if (currentUser.recipesToCook.length > 0) {
+    const update = currentUser.recipesToCook.find(recipe => {
+      if (recipe.id === currentRecipe.id) {
+        showElement([removeFromMenuButton]);
+        hideElement([addToMenuButton]);
+        return currentUser.recipesToCook;
+      } else {
+        hideElement([removeFromMenuButton]);
+        showElement([addToMenuButton]);
+      };
+    });
+  } else {
+    hideElement([removeFromMenuButton]);
+    showElement([addToMenuButton]);
+  };
 };

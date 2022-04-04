@@ -593,7 +593,7 @@ describe('User', () => {
   });
 
   it('should have a property that holds the users pantry items', () => {
-    expect(user.pantry).to.equal(usersData[0].pantry)
+    expect(user.pantry).to.equal(usersData[0].pantry);
   });
 
   it('should have a method that allows the users to favorite a recipe', () => {
@@ -613,6 +613,27 @@ describe('User', () => {
     user.removeFavoriteRecipes(recipe1);
 
     expect(user.favoriteRecipes.length).to.equal(1);
+    expect(user.favoriteRecipes[0]).to.equal(recipe2);
+
+    user.removeFavoriteRecipes('banana');
+
+    expect(user.favoriteRecipes.length).to.equal(1);
+    expect(user.favoriteRecipes[0]).to.equal(recipe2);
+  });
+
+  it('should have a method that allows the users to remove a favorite recipe while there is a tag or filter applied', () => {
+
+    user.addFavoriteRecipes(recipe1);
+    user.addFavoriteRecipes(recipe2);
+    user.filterFavoriteByTag("snack");
+
+    expect(user.favoritesByTag.length).to.equal(1);
+    expect(user.favoriteRecipes.length).to.equal(2);
+
+    user.removeFavoriteRecipes(recipe1);
+
+    expect(user.favoriteRecipes.length).to.equal(1);
+    expect(user.favoritesByTag.length).to.equal(0);
     expect(user.favoriteRecipes[0]).to.equal(recipe2);
 
     user.removeFavoriteRecipes('banana');
