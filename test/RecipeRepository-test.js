@@ -152,11 +152,25 @@ describe('Recipe Repository', () => {
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
   });
 
+  it('should not return anything if the tag does not apply to the data', () => {
+
+    recipeRepository.filterByTag("dinner");
+
+    expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
+  });
+
   it('should have a method that filters recipes by name', () => {
 
     recipeRepository.filterByName("chocolate");
 
     expect(recipeRepository.filteredRecipesName).to.deep.equal([recipeData[0]]);
+
+    recipeRepository.filterByName("bread");
+
+    expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
+  });
+
+  it('should return nothing if the name in not in the data', () => {
 
     recipeRepository.filterByName("bread");
 
@@ -169,20 +183,29 @@ describe('Recipe Repository', () => {
     recipeRepository.filterByTag("snack");
 
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([recipeData[0]]);
+  });
+
+  it('it should return nothing if the search term is contained in the data but not the tag', () => {
 
     recipeRepository.filterByName("chocolate");
     recipeRepository.filterByTag("dinner");
 
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([]);
     expect(recipeRepository.filteredRecipesName).to.deep.equal([recipeData[0]]);
+  });
+
+  it('it should return nothing if the search term is not contained in the data but the tag is', () => {
 
     recipeRepository.filterByName("bread");
     recipeRepository.filterByTag("snack");
 
     expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
     expect(recipeRepository.filteredRecipesTag).to.deep.equal([recipeData[0]]);
+  });
 
-    recipeRepository.filterByName("milk");
+  it('it should return nothing if the search term and tag are not contained in the data', () => {
+
+    recipeRepository.filterByName("Milk");
     recipeRepository.filterByTag("dinner");
 
     expect(recipeRepository.filteredRecipesName).to.deep.equal([]);
