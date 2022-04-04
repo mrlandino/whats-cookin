@@ -171,19 +171,12 @@ const hideElement = elements => {
 const displayAllRecipes = () => {
   let allRecipesHTML = "";
 
-  recipesList.recipes.forEach((recipe, index) => {
-    let imageSource = "";
-    if(recipe.isFavorite) {
-      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
-    } else {
-      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
-    };
-
+  recipesList.recipes.forEach((recipe) => {
     allRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src=${imageSource}>
+                  <img class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)}>
                 </div>
               </div>`;
   });
@@ -293,17 +286,11 @@ const displayFilteredContent = () => {
   allRecipes.innerHTML = "";
   let filteredRecipesHTML = "";
   recipesList.filteredRecipesTag.forEach((recipe) => {
-    let imageSource = "";
-    if(recipe.isFavorite) {
-      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
-    } else {
-      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
-    };
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -319,17 +306,11 @@ const displaySearchedContent = () => {
   allRecipes.innerHTML = "";
   let searchedRecipesHTML = "";
   recipesList.filteredRecipesName.forEach((recipe) => {
-    let imageSource = "";
-    if(recipe.isFavorite) {
-      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
-    } else {
-      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
-    };
     searchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -368,17 +349,11 @@ const displayFilteredFavs = () => {
                   </div>`;
   let filteredRecipesHTML = "";
     currentUser.favoritesByTag.forEach((recipe) => {
-      let imageSource = "";
-      if(recipe.isFavorite) {
-        imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
-      } else {
-        imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
-      };
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -394,17 +369,11 @@ const displayFavSearchedContent = () => {
   let title = "<h2>Favorite Recipes</h2>";
   let favSearchedRecipesHTML = "";
   currentUser.favoritesByName.forEach((recipe) => {
-    let imageSource = "";
-    if(recipe.isFavorite) {
-      imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
-    } else {
-      imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
-    };
     favSearchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${imageSource}" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -428,3 +397,13 @@ const menuButtonStatus = () => {
     showElement([addToMenuButton]);
   };
 };
+
+const findImageSource = (recipe) => {
+  let imageSource = "";
+  if(recipe.isFavorite) {
+    imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+  } else {
+    imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+  };
+  return imageSource;
+}
