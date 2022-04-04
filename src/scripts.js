@@ -1,6 +1,8 @@
 import './styles.css';
 import {usersPromise, ingredientsPromise, recipePromise} from './apiCalls';
 import './images/turing-logo.png';
+import './images/favorite-star.png';
+import './images/empty-star.png';
 import RecipeRepository from './classes/RecipeRepository.js';
 import Recipe from './classes/Recipe.js';
 import User from './classes/User.js';
@@ -50,9 +52,9 @@ window.onload = (event) => {
     recipeData = jsonArray[2].recipeData;
     recipesList = new RecipeRepository(recipeData);
     instantiateUser();
+    recipesList.updateRecipesList();
     displayAllRecipes();
     injectFilterTags();
-    recipesList.updateRecipesList();
   });
 };
 
@@ -170,7 +172,6 @@ const hideElement = elements => {
 
 const displayAllRecipes = () => {
   let allRecipesHTML = "";
-
   recipesList.recipes.forEach((recipe) => {
     allRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
@@ -191,7 +192,7 @@ const displayFavoriteRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="favorite recipe icon">
+                  <img class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="favorite recipe icon">
                 </div>
               </div>`;
   });
@@ -335,10 +336,11 @@ const addRecipeToFavorites = (id) => {
 };
 
 const changeStar = (target) => {
-  if (target.src === "https://cdn-icons-png.flaticon.com/512/1828/1828970.png") {
-    target.src = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+  console.log(target.src)
+  if (target.src === "http://localhost:8080/images/empty-star.png") {
+    target.src = "http://localhost:8080/images/favorite-star.png";
   } else {
-    target.src = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+    target.src = "http://localhost:8080/images/empty-star.png";
   };
 };
 
@@ -401,9 +403,9 @@ const menuButtonStatus = () => {
 const findImageSource = (recipe) => {
   let imageSource = "";
   if(recipe.isFavorite) {
-    imageSource = "https://cdn-icons-png.flaticon.com/512/1040/1040230.png";
+    imageSource = "http://localhost:8080/images/favorite-star.png";
   } else {
-    imageSource = "https://cdn-icons-png.flaticon.com/512/1828/1828970.png";
+    imageSource = "http://localhost:8080/images/empty-star.png";
   };
   return imageSource;
 }
