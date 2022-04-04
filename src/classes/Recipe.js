@@ -23,13 +23,6 @@ class Recipe {
     filteredIngredients.forEach(ingredient => {
       this.ingredientsNeeded.push({name: ingredient.name, id:ingredient.id});
     });
-    //iterate through the ingredientsNeeded array  to match the ID in the this.ingredients
-
-    //need to return an array of objects containing the ingredients needed with name, id, amount
-
-    // this.ingredients.forEach(ingredient => {
-    //   if(ingredient.id )
-    // })
 
     this.ingredientsNeeded.map(ingredient => {
         this.ingredients.forEach(ingredient2 => {
@@ -37,7 +30,6 @@ class Recipe {
           ingredient.amount = ingredient2.quantity.amount;
           ingredient.unit = ingredient2.quantity.unit;
         };
-
       });
     });
   };
@@ -58,7 +50,7 @@ class Recipe {
     getInstructions() {
       return this.instructions;
     };
-  }
+  };
 
 
 export default Recipe;

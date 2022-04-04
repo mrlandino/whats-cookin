@@ -6,7 +6,7 @@
   .then(ingredientsResponse => ingredientsResponse.json())
   .catch(err => console.log(error));
 
-  let recipePromise = fetch("	https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
+  let recipePromise = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
   .then(recipeResponse => recipeResponse.json())
   .catch(err => console.log(error));
 

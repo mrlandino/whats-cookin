@@ -1,11 +1,11 @@
 # What's Cookin
 
-<img width="500" alt="What's Cookin Homepage" src="">
+<img width="500" alt="What's Cookin Homepage" src="https://user-images.githubusercontent.com/96928474/161637847-e019f7c8-5746-4c64-a303-45dfcb86f6f3.png">
 
 ## Table of Contents
 
   - [Introduction](#introduction)
-  - [Deploy Link](#deploy-link)
+  - [Learning Goals](#learning-goals)
   - [Technologies](#technologies)
   - [Features](#features)
   - [Page Demo](#page-demo)
@@ -14,16 +14,23 @@
   - [Contributors](#contributors)
   - [Project Specs](#project-specs)
   - [Project GitHub Repo](#project-github-repo)
+  - [Additional Resources](#additional-resources)
 
 ## Introduction
 The What's Cookin project was a group assignment for Turing School of Software and Design's Front End Module 2. Students were instructed to work in groups of three, with a time frame of 10 days to make a recipe tracking app with a minimum functionality laid out in the rubric. A user on the site is able to view a repository of recipes, favoriting and unfavoriting them as they like, as well as adding them to a list of recipes they intend to cook during a given week.
 
 The goals for students while completing this project, included incorporating Fetch calls and interaction with a backend API for the first time. They were also expected to write test files for each of their classes and the methods within those classes - getting more comfortable with Mocha and Chai in the process.
 
-The biggest wins for our group were __ .
+The biggest wins for our group were sticking to our DTR, becoming more familiar with fetch requests, and gaining a deeper understanding of real-world application of iterator methods. We did a great job of communicating and had an organized approach with the Daily Standup.
 
-## Deploy Link
-The deploy link for the project can be found [here](https://whiteheadol.github.io/whats-cookin/).
+Our biggest challenge was grasping the vastness of the project. In comparison to our previous works, this project is significantly larger in scale and complexity. 
+
+
+## Learning Goals
+  - Utilize and employ class to class interaction with ES6 syntax.
+  - Practice iterator methods to perform data manipulation in an effort to achieve desired functionalities.
+  - Implement a robust testing suite using TDD
+  - Make network requests to retrieve data using Fetch API.
 
 ## Technologies
   - Javascript
@@ -33,7 +40,7 @@ The deploy link for the project can be found [here](https://whiteheadol.github.i
   - Chai
   - Fetch API
   - Webpack
-  - Node (?)
+  - NPM
 
 ## Features
 - When a user loads the browser, they should see a home page with a navigation bar and a display of different recipe thumbnails.
@@ -48,11 +55,8 @@ The deploy link for the project can be found [here](https://whiteheadol.github.i
 ## Page Demo
 Adding a recipe to your favorites:
 
-![Favoriting a recipe]()
+![Favoriting a recipe](https://media.giphy.com/media/1NsLtAmPAbZIs9WU9E/giphy.gif)
 
-Filtering through a recipe database:
-
-![Filtering through recipes]()
 
 ## Possible Future Extensions
 - At the moment, a user is instantiated from an array of user objects, and the information for these user objects is pulled from a database. We would love to add functionality for a site visiter to actually provide their information and instantiate their own user object.
@@ -78,3 +82,8 @@ Filtering through a recipe database:
 
 ## Project GitHub Repo
 - The project repo can be found [here](https://github.com/whiteheadol/whats-cookin).
+
+## Additional Resources
+- [Figma Wireframe](https://www.figma.com/file/ZpXIc9Qrf5QWYVkUAs7iJ0/Whats-Cookin-Mod-2-Group-Proj?node-id=0%3A1)
+- [Standup Log](https://docs.google.com/spreadsheets/d/1MZotFEv9hxh9mh32oMXeKmdRtaM0Y_BEl9TlVCWziGg/edit?usp=sharing)
+- [Project Board](https://github.com/whiteheadol/whats-cookin/projects/1)

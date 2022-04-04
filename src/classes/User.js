@@ -27,7 +27,7 @@ class User {
       this.favoritesByName = this.favoritesByName.reduce((acc, meal) => {
         if(recipe.id !== meal.id) {
           acc.push(meal);
-        }
+        };
         return acc;
       }, []);
     };
@@ -36,7 +36,7 @@ class User {
       this.favoriteRecipes = this.favoriteRecipes.reduce((acc, meal) => {
         if(recipe.id !== meal.id) {
           acc.push(meal);
-        }
+        };
         return acc;
       }, []);
     };
