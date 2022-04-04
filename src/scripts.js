@@ -53,7 +53,6 @@ window.onload = (event) => {
     displayAllRecipes();
     injectFilterTags();
     recipesList.updateRecipesList();
-    hideElement([aside]);
   });
 };
 
@@ -72,7 +71,7 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
     displayCard();
     findRecipeInfo(e.target.parentElement.id);
     updateRecipeCard();
-    hideElement([aside, thumbnailAside])
+    hideElement([aside, favoriteRecipesContainer])
     showElement([favoriteRecipesButton]);
   };
 })
@@ -118,6 +117,9 @@ favDropdownContent.addEventListener("click", function(e) {
     applyFavFilter(e.target.dataset.fav);
     favRecipes.innerHTML = "";
     displayFilteredFavs();
+    console.log("USER FAVORITES: ", currentUser.favoriteRecipes);
+    console.log("FAVORITES BY TAG: ", currentUser.favoritesByTag);
+    console.log("FAVORITES BY NAME: ", currentUser.favoritesByName);
   };
 });
 
@@ -142,6 +144,8 @@ allRecipesButton.addEventListener("click", function() {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
   hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton]);
   displayAllRecipes();
+  currentUser.favoritesByTag = [];
+  currentUser.favoritesByName = [];
 });
 
 favSearchInput.addEventListener("keypress", function(e) {
@@ -149,11 +153,19 @@ favSearchInput.addEventListener("keypress", function(e) {
     event.preventDefault();
     applyFavSearch(`${favSearchInput.value}`);
     displayFavSearchedContent();
+    console.log("USER FAVORITES: ", currentUser.favoriteRecipes);
+    console.log("FAVORITES BY TAG: ", currentUser.favoritesByTag);
+    console.log("FAVORITES BY NAME: ", currentUser.favoritesByName);
   };
 });
 
 clearFilters.addEventListener("click", function() {
+  currentUser.favoritesByTag = [];
+  currentUser.favoritesByName = [];
   displayFavoriteRecipes();
+  console.log("USER FAVORITES: ", currentUser.favoriteRecipes);
+  console.log("FAVORITES BY TAG: ", currentUser.favoritesByTag);
+  console.log("FAVORITES BY NAME: ", currentUser.favoritesByName);
 });
 
 // EVENT HANDLERS------------------------------------------------
@@ -349,6 +361,11 @@ const addRecipeToFavorites = (id) => {
     recipeClicked.isFavorite = false;
     currentUser.removeFavoriteRecipes(recipeClicked);
   };
+
+  console.log("USER FAVORITES: ", currentUser.favoriteRecipes);
+  console.log("FAVORITES BY TAG: ", currentUser.favoritesByTag);
+  console.log("FAVORITES BY NAME: ", currentUser.favoritesByName);
+
 };
 
 const changeStar = (target) => {
@@ -382,7 +399,8 @@ const displayFilteredFavs = () => {
 };
 
 const applyFavSearch = (input) => {
-  currentUser.favoritesByTag = [];
+  // currentUser.favoritesByTag = [];
+  //UNSURE WHY WE DID THE ABOVE
   currentUser.filterFavoriteByName(input);
 };
 
