@@ -67,6 +67,10 @@ allRecipes.addEventListener('click', function(e) {
     showElement([allRecipesButton]);
     menuButtonStatus();
   };
+  if (e.target.classList.contains('star-icon')) {
+    addRecipeToFavorites(e.target.id);
+    changeStar(e.target);
+  };
 });
 
 favoriteRecipesContainer.addEventListener("click", function(e) {
@@ -78,16 +82,6 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
     showElement([favoriteRecipesButton]);
     menuButtonStatus();
   };
-});
-
-allRecipes.addEventListener("click", function(e) {
-  if (e.target.classList.contains('star-icon')) {
-    addRecipeToFavorites(e.target.id);
-    changeStar(e.target);
-  };
-});
-
-favoriteRecipesContainer.addEventListener("click", function(e) {
   if (e.target.classList.contains('star-icon')) {
     changeStar(e.target);
     addRecipeToFavorites(e.target.id);
