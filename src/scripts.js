@@ -27,9 +27,9 @@ const allSearchBar = document.querySelector(".all-search-bar");
 const allFilter = document.querySelector(".dropdown");
 const allRecipesButton = document.querySelector(".all-recipes-button");
 const aside = document.querySelector(".fav-filter-search-bar");
-let favRecipes= document.querySelector(".favorite-recipes-container");
-let allRecipesTitle = document.querySelector(".all-recipes-title");
-let favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
+const favRecipes= document.querySelector(".favorite-recipes-container");
+const allRecipesTitle = document.querySelector(".all-recipes-title");
+const favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
 const favRecipesTitle = document.querySelector(".fav-recipes-title");
 const thumbnailAside = document.querySelector(".thumbnail-aside-container")
 const favSearchInput = document.querySelector(".fav-search-button-input");
@@ -184,7 +184,7 @@ const displayFavoriteRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="favorite recipe icon">
+                  <img class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="star icon">
                 </div>
               </div>`;
   });
@@ -283,7 +283,7 @@ const displayFilteredContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
                 </div>
               </div>`;
   });
@@ -303,7 +303,7 @@ const displaySearchedContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
                 </div>
               </div>`;
   });
@@ -346,7 +346,7 @@ const displayFilteredFavs = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
                 </div>
               </div>`;
   });
@@ -366,7 +366,7 @@ const displayFavSearchedContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="favorite recipe icon">
+                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
                 </div>
               </div>`;
   });
