@@ -63,6 +63,7 @@ allRecipes.addEventListener('click', function(e) {
     updateRecipeCard();
     hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
     showElement([allRecipesButton, addToMenuButton]);
+    menuButtonStatus();
   };
 });
 
@@ -73,6 +74,7 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
     updateRecipeCard();
     hideElement([aside, favoriteRecipesContainer])
     showElement([favoriteRecipesButton]);
+    menuButtonStatus();
   };
 })
 
@@ -93,14 +95,14 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
 
 addToMenuButton.addEventListener("click", function(e) {
   addToMenu(currentRecipe.id);
-  hideElement([addToMenuButton]);
-  showElement([removeFromMenuButton]);
+  menuButtonStatus();
+  console.log(currentUser.recipesToCook)
 });
 
 removeFromMenuButton.addEventListener("click", function() {
   removeFromMenu(currentRecipe.id);
-  hideElement([removeFromMenuButton]);
-  showElement([addToMenuButton]);
+  menuButtonStatus();
+  console.log(currentUser.recipesToCook)
 });
 
 dropdownContent.addEventListener("click", function(e) {
@@ -214,7 +216,6 @@ const displayFavoriteRecipes = () => {
   let title = `<div class="fav-recipe-title"><h2>Favorite Recipes</h2></div>`
   favoriteRecipesContainer.innerHTML = title + favRecipesHTML;
 };
-
 
 const displayCard = () => {
   hideElement([allRecipesContainer]);
@@ -378,7 +379,9 @@ const changeStar = (target) => {
 
 const displayFilteredFavs = () => {
   favRecipes.innerHTML = "";
-  let title = "<h2>Favorite Recipes</h2>";
+  let title = `<div class="fav-recipe-title">
+                <h2>Favorite Recipes</h2>
+                  </div>`;
   let filteredRecipesHTML = "";
     currentUser.favoritesByTag.forEach((recipe) => {
       let imageSource = "";
@@ -399,8 +402,6 @@ const displayFilteredFavs = () => {
 };
 
 const applyFavSearch = (input) => {
-  // currentUser.favoritesByTag = [];
-  //UNSURE WHY WE DID THE ABOVE
   currentUser.filterFavoriteByName(input);
 };
 
@@ -425,3 +426,16 @@ const displayFavSearchedContent = () => {
   });
   favRecipes.innerHTML = title + favSearchedRecipesHTML;
 };
+
+const menuButtonStatus = () => {
+  const update = currentUser.recipesToCook.find(recipe => {
+    if (recipe.id === currentRecipe.id) {
+      showElement([removeFromMenuButton]);
+      hideElement([addToMenuButton]);
+      return currentUser.recipesToCook;
+    } else {
+      hideElement([removeFromMenuButton]);
+      showElement([addToMenuButton])
+    };
+  });
+}
