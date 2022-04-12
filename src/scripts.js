@@ -38,53 +38,23 @@ const addToMenuButton = document.querySelector(".add-to-menu");
 const removeFromMenuButton = document.querySelector(".remove-from-menu");
 
 // EVENT LISTENERS-----------------------------------------------
-window.onload = (event) => {
-  Promise.all(
-    [
-      usersPromise,
-      ingredientsPromise,
-      recipePromise
-    ]
-  ).then(jsonArray => {
-    usersData = jsonArray[0].usersData;
-    ingredientsData = jsonArray[1].ingredientsData;
-    recipeData = jsonArray[2].recipeData;
-    recipesList = new RecipeRepository(recipeData);
-    instantiateUser();
-    recipesList.updateRecipesList();
-    displayAllRecipes();
-    injectFilterTags();
-  });
-};
+window.onload = (event) => loadWindow();
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
-    displayCard();
-    findRecipeInfo(e.target.parentElement.id);
-    updateRecipeCard();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
-    showElement([allRecipesButton]);
-    menuButtonStatus();
+    loadThumbnail(e);
   };
   if (e.target.classList.contains("star-icon")) {
-    addRecipeToFavorites(e.target.id);
-    changeStar(e.target);
+    clickStar(e);
   };
 });
 
 favoriteRecipesContainer.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
-    displayCard();
-    findRecipeInfo(e.target.parentElement.id);
-    updateRecipeCard();
-    hideElement([aside, favoriteRecipesContainer]);
-    showElement([favoriteRecipesButton]);
-    menuButtonStatus();
+    loadFavThumbnail(e);
   };
   if (e.target.classList.contains("star-icon")) {
-    changeStar(e.target);
-    addRecipeToFavorites(e.target.id);
-    displayFavoriteRecipes();
+    clickFavStar(e);
   };
 });
 
@@ -100,60 +70,137 @@ removeFromMenuButton.addEventListener("click", function() {
 
 dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains("tag-hover")) {
-    applyFilter(e.target.dataset.id);
-    displayFilteredContent();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
-    showElement([allRecipesButton]);
+    loadDropdown(e);
   };
 });
+
 favDropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains("tag-hover")) {
-    applyFavFilter(e.target.dataset.fav);
-    favRecipes.innerHTML = "";
-    displayFilteredFavs();
+    loadFavDropdown(e);
   };
 });
 
 searchInput.addEventListener("keypress", function(e) {
   if(e.key === "Enter") {
-    event.preventDefault();
-    applySearch(`${searchInput.value}`);
-    displaySearchedContent();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
-    showElement([allRecipesButton]);
+    loadSearch(e);
   };
 });
 
 favoriteRecipesButton.addEventListener("click", function() {
+  loadFavPage();
+});
+
+allRecipesButton.addEventListener("click", function() {
+  loadAllPage();
+});
+
+favSearchInput.addEventListener("keypress", function(e) {
+  if(e.key === "Enter") {
+    loadFavSearch(e);
+  };
+});
+
+clearFilters.addEventListener("click", function() {
+  loadFilterClear();
+});
+
+// EVENT HANDLERS------------------------------------------------
+const loadWindow = () => {
+  Promise.all(
+    [
+      usersPromise,
+      ingredientsPromise,
+      recipePromise
+    ]
+  ).then(jsonArray => {
+    usersData = jsonArray[0];
+    ingredientsData = jsonArray[1];
+    recipeData = jsonArray[2];
+    recipesList = new RecipeRepository(recipeData);
+    instantiateUser();
+    recipesList.updateRecipesList();
+    displayAllRecipes();
+    injectFilterTags();
+  })
+};
+
+const loadThumbnail = (e) => {
+  displayCard();
+  findRecipeInfo(e.target.parentElement.id);
+  updateRecipeCard();
+  hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
+  showElement([allRecipesButton]);
+  menuButtonStatus();
+};
+
+const clickStar = (e) => {
+  addRecipeToFavorites(e.target.id);
+  changeStar(e.target);
+};
+
+const loadFavThumbnail = (e) => {
+  displayCard();
+  findRecipeInfo(e.target.parentElement.id);
+  updateRecipeCard();
+  hideElement([aside, favoriteRecipesContainer]);
+  showElement([favoriteRecipesButton]);
+  menuButtonStatus();
+};
+
+const clickFavStar = (e) => {
+  changeStar(e.target);
+  addRecipeToFavorites(e.target.id);
+  displayFavoriteRecipes();
+};
+
+const loadDropdown = (e) => {
+  applyFilter(e.target.dataset.id);
+  displayFilteredContent();
+  hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
+  showElement([allRecipesButton]);
+};
+
+const loadFavDropdown = (e) => {
+  applyFavFilter(e.target.dataset.fav);
+  favRecipes.innerHTML = "";
+  displayFilteredFavs();
+};
+
+const loadSearch = (e) => {
+  event.preventDefault();
+  applySearch(`${searchInput.value}`);
+  displaySearchedContent();
+  hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
+  showElement([allRecipesButton]);
+};
+
+const loadFavSearch = (e) => {
+  event.preventDefault();
+  applyFavSearch(`${favSearchInput.value}`);
+  displayFavSearchedContent();
+};
+
+const loadFavPage = () => {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
   displayFavoriteRecipes();
   showElement([aside]);
-});
+};
 
-allRecipesButton.addEventListener("click", function() {
+const loadAllPage = () => {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
   hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton]);
   displayAllRecipes();
   currentUser.favoritesByTag = [];
   currentUser.favoritesByName = [];
-});
+};
 
-favSearchInput.addEventListener("keypress", function(e) {
-  if(e.key === "Enter") {
-    event.preventDefault();
-    applyFavSearch(`${favSearchInput.value}`);
-    displayFavSearchedContent();
-  };
-});
-
-clearFilters.addEventListener("click", function() {
+const loadFilterClear = () => {
   currentUser.favoritesByTag = [];
   currentUser.favoritesByName = [];
   displayFavoriteRecipes();
-});
+};
 
-// EVENT HANDLERS------------------------------------------------
 const showElement = elements => {
   elements.forEach(element => element.classList.remove("hidden"));
 };
@@ -169,7 +216,7 @@ const displayAllRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)}>
+                  <img class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -184,7 +231,7 @@ const displayFavoriteRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="star icon">
+                  <img class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="favorited">
                 </div>
               </div>`;
   });
@@ -283,7 +330,7 @@ const displayFilteredContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
+                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -303,7 +350,7 @@ const displaySearchedContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
+                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -330,8 +377,10 @@ const addRecipeToFavorites = (id) => {
 const changeStar = (target) => {
   if (target.src === "http://localhost:8080/images/empty-star.png") {
     target.src = "http://localhost:8080/images/favorite-star.png";
+    target.alt = "favorited";
   } else {
     target.src = "http://localhost:8080/images/empty-star.png";
+    target.alt = "unfavorited";
   };
 };
 
@@ -346,7 +395,7 @@ const displayFilteredFavs = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
+                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -366,7 +415,7 @@ const displayFavSearchedContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
+                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -399,4 +448,14 @@ const findImageSource = (recipe) => {
     imageSource = "http://localhost:8080/images/empty-star.png";
   };
   return imageSource;
+};
+
+const findImageAlt = (recipe) => {
+  let altText = "";
+  if(recipe.isFavorite) {
+    altText = "favorited";
+  } else {
+    altText = "unfavorited";
+  };
+  return altText;
 }
