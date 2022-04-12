@@ -38,53 +38,23 @@ const addToMenuButton = document.querySelector(".add-to-menu");
 const removeFromMenuButton = document.querySelector(".remove-from-menu");
 
 // EVENT LISTENERS-----------------------------------------------
-window.onload = (event) => {
-  Promise.all(
-    [
-      usersPromise,
-      ingredientsPromise,
-      recipePromise
-    ]
-  ).then(jsonArray => {
-    usersData = jsonArray[0].usersData;
-    ingredientsData = jsonArray[1].ingredientsData;
-    recipeData = jsonArray[2].recipeData;
-    recipesList = new RecipeRepository(recipeData);
-    instantiateUser();
-    recipesList.updateRecipesList();
-    displayAllRecipes();
-    injectFilterTags();
-  });
-};
+window.onload = (event) => loadWindow();
 
 allRecipes.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
-    displayCard();
-    findRecipeInfo(e.target.parentElement.id);
-    updateRecipeCard();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
-    showElement([allRecipesButton]);
-    menuButtonStatus();
+    loadThumbnail(e);
   };
   if (e.target.classList.contains("star-icon")) {
-    addRecipeToFavorites(e.target.id);
-    changeStar(e.target);
+    clickStar(e);
   };
 });
 
 favoriteRecipesContainer.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
-    displayCard();
-    findRecipeInfo(e.target.parentElement.id);
-    updateRecipeCard();
-    hideElement([aside, favoriteRecipesContainer]);
-    showElement([favoriteRecipesButton]);
-    menuButtonStatus();
+    loadFavThumbnail(e);
   };
   if (e.target.classList.contains("star-icon")) {
-    changeStar(e.target);
-    addRecipeToFavorites(e.target.id);
-    displayFavoriteRecipes();
+    clickFavStar(e);
   };
 });
 
@@ -100,60 +70,137 @@ removeFromMenuButton.addEventListener("click", function() {
 
 dropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains("tag-hover")) {
-    applyFilter(e.target.dataset.id);
-    displayFilteredContent();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
-    showElement([allRecipesButton]);
+    loadDropdown(e);
   };
 });
+
 favDropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains("tag-hover")) {
-    applyFavFilter(e.target.dataset.fav);
-    favRecipes.innerHTML = "";
-    displayFilteredFavs();
+    loadFavDropdown(e);
   };
 });
 
 searchInput.addEventListener("keypress", function(e) {
   if(e.key === "Enter") {
-    event.preventDefault();
-    applySearch(`${searchInput.value}`);
-    displaySearchedContent();
-    hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
-    showElement([allRecipesButton]);
+    loadSearch(e);
   };
 });
 
 favoriteRecipesButton.addEventListener("click", function() {
+  loadFavPage();
+});
+
+allRecipesButton.addEventListener("click", function() {
+  loadAllPage();
+});
+
+favSearchInput.addEventListener("keypress", function(e) {
+  if(e.key === "Enter") {
+    loadFavSearch(e);
+  };
+});
+
+clearFilters.addEventListener("click", function() {
+  loadFilterClear();
+});
+
+// EVENT HANDLERS------------------------------------------------
+const loadWindow = () => {
+  Promise.all(
+    [
+      usersPromise,
+      ingredientsPromise,
+      recipePromise
+    ]
+  ).then(jsonArray => {
+    usersData = jsonArray[0].usersData;
+    ingredientsData = jsonArray[1].ingredientsData;
+    recipeData = jsonArray[2].recipeData;
+    recipesList = new RecipeRepository(recipeData);
+    instantiateUser();
+    recipesList.updateRecipesList();
+    displayAllRecipes();
+    injectFilterTags();
+  })
+};
+
+const loadThumbnail = (e) => {
+  displayCard();
+  findRecipeInfo(e.target.parentElement.id);
+  updateRecipeCard();
+  hideElement([aside, allSearchBar, allFilter, allRecipesTitle]);
+  showElement([allRecipesButton]);
+  menuButtonStatus();
+};
+
+const clickStar = (e) => {
+  addRecipeToFavorites(e.target.id);
+  changeStar(e.target);
+};
+
+const loadFavThumbnail = (e) => {
+  displayCard();
+  findRecipeInfo(e.target.parentElement.id);
+  updateRecipeCard();
+  hideElement([aside, favoriteRecipesContainer]);
+  showElement([favoriteRecipesButton]);
+  menuButtonStatus();
+};
+
+const clickFavStar = (e) => {
+  changeStar(e.target);
+  addRecipeToFavorites(e.target.id);
+  displayFavoriteRecipes();
+};
+
+const loadDropdown = (e) => {
+  applyFilter(e.target.dataset.id);
+  displayFilteredContent();
+  hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
+  showElement([allRecipesButton]);
+};
+
+const loadFavDropdown = (e) => {
+  applyFavFilter(e.target.dataset.fav);
+  favRecipes.innerHTML = "";
+  displayFilteredFavs();
+};
+
+const loadSearch = (e) => {
+  event.preventDefault();
+  applySearch(`${searchInput.value}`);
+  displaySearchedContent();
+  hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
+  showElement([allRecipesButton]);
+};
+
+const loadFavSearch = (e) => {
+  event.preventDefault();
+  applyFavSearch(`${favSearchInput.value}`);
+  displayFavSearchedContent();
+};
+
+const loadFavPage = () => {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton]);
   showElement([favoriteRecipesContainer, allRecipesButton]);
   displayFavoriteRecipes();
   showElement([aside]);
-});
+};
 
-allRecipesButton.addEventListener("click", function() {
+const loadAllPage = () => {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
   hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton]);
   displayAllRecipes();
   currentUser.favoritesByTag = [];
   currentUser.favoritesByName = [];
-});
+};
 
-favSearchInput.addEventListener("keypress", function(e) {
-  if(e.key === "Enter") {
-    event.preventDefault();
-    applyFavSearch(`${favSearchInput.value}`);
-    displayFavSearchedContent();
-  };
-});
-
-clearFilters.addEventListener("click", function() {
+const loadFilterClear = () => {
   currentUser.favoritesByTag = [];
   currentUser.favoritesByName = [];
   displayFavoriteRecipes();
-});
+};
 
-// EVENT HANDLERS------------------------------------------------
 const showElement = elements => {
   elements.forEach(element => element.classList.remove("hidden"));
 };
