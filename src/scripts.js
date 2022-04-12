@@ -113,9 +113,9 @@ const loadWindow = () => {
       recipePromise
     ]
   ).then(jsonArray => {
-    usersData = jsonArray[0].usersData;
-    ingredientsData = jsonArray[1].ingredientsData;
-    recipeData = jsonArray[2].recipeData;
+    usersData = jsonArray[0];
+    ingredientsData = jsonArray[1];
+    recipeData = jsonArray[2];
     recipesList = new RecipeRepository(recipeData);
     instantiateUser();
     recipesList.updateRecipesList();
