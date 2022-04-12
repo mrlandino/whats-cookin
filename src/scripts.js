@@ -216,7 +216,7 @@ const displayAllRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)}>
+                  <img class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -231,7 +231,7 @@ const displayFavoriteRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="star icon">
+                  <img class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="favorited">
                 </div>
               </div>`;
   });
@@ -330,7 +330,7 @@ const displayFilteredContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
+                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -350,7 +350,7 @@ const displaySearchedContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
+                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -377,8 +377,10 @@ const addRecipeToFavorites = (id) => {
 const changeStar = (target) => {
   if (target.src === "http://localhost:8080/images/empty-star.png") {
     target.src = "http://localhost:8080/images/favorite-star.png";
+    target.alt = "favorited";
   } else {
     target.src = "http://localhost:8080/images/empty-star.png";
+    target.alt = "unfavorited";
   };
 };
 
@@ -393,7 +395,7 @@ const displayFilteredFavs = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
+                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -413,7 +415,7 @@ const displayFavSearchedContent = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src="${findImageSource(recipe)}" alt="star icon">
+                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -446,4 +448,14 @@ const findImageSource = (recipe) => {
     imageSource = "http://localhost:8080/images/empty-star.png";
   };
   return imageSource;
+};
+
+const findImageAlt = (recipe) => {
+  let altText = "";
+  if(recipe.isFavorite) {
+    altText = "favorited";
+  } else {
+    altText = "unfavorited";
+  };
+  return altText;
 }
