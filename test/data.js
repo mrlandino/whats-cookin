@@ -99,56 +99,56 @@ let recipeData = [
         "amount": 1,
         "unit": "clove"
       }
-    },
-    {
-      "id": 1012046,
-      "quantity": {
-        "amount": 1,
-        "unit": "tablespoon"
-      }
-    },
-    {
-      "id": 19911,
-      "quantity": {
-        "amount": 0.25,
-        "unit": "cup"
-      }
-    },
-    {
-      "id": 16112,
-      "quantity": {
-        "amount": 1,
-        "unit": "tablespoon"
-      }
-    },
-    {
-      "id": 10010062,
-      "quantity": {
-        "amount": 24,
-        "unit": "ounce"
-      }
-    },
-    {
-      "id": 1102047,
-      "quantity": {
-        "amount": 4,
-        "unit": "servings"
-      }
-    },
-    {
-      "id": 16124,
-      "quantity": {
-        "amount": 1,
-        "unit": "tablespoon"
-      }
-    },
-    {
-      "id": 1016168,
-      "quantity": {
-        "amount": 1,
-        "unit": "tablespoon"
-      }
     }
+    // {
+    //   "id": 1012046,
+    //   "quantity": {
+    //     "amount": 1,
+    //     "unit": "tablespoon"
+    //   }
+    // },
+    // {
+    //   "id": 19911,
+    //   "quantity": {
+    //     "amount": 0.25,
+    //     "unit": "cup"
+    //   }
+    // },
+    // {
+    //   "id": 16112,
+    //   "quantity": {
+    //     "amount": 1,
+    //     "unit": "tablespoon"
+    //   }
+    // },
+    // {
+    //   "id": 10010062,
+    //   "quantity": {
+    //     "amount": 24,
+    //     "unit": "ounce"
+    //   }
+    // },
+    // {
+    //   "id": 1102047,
+    //   "quantity": {
+    //     "amount": 4,
+    //     "unit": "servings"
+    //   }
+    // },
+    // {
+    //   "id": 16124,
+    //   "quantity": {
+    //     "amount": 1,
+    //     "unit": "tablespoon"
+    //   }
+    // },
+    // {
+    //   "id": 1016168,
+    //   "quantity": {
+    //     "amount": 1,
+    //     "unit": "tablespoon"
+    //   }
+    // }
   ],
   "instructions": [
     {
@@ -566,21 +566,51 @@ let usersData = [
 ];
 
 let ingredients = [
-    {
-      "id": 20081,
-      "name": "wheat flour",
-      "estimatedCostInCents": 142
-    },
-    {
-      "id": 18372,
-      "name": "bicarbonate of soda",
-      "estimatedCostInCents": 582
-    },
-    {
-      "id": 1123,
-      "name": "eggs",
-      "estimatedCostInCents": 472
-    } ];
+  {
+    "id": 20081,
+    "name": "wheat flour",
+    "estimatedCostInCents": 142
+  },
+  {
+    "id": 18372,
+    "name": "bicarbonate of soda",
+    "estimatedCostInCents": 582
+  },
+  {
+    "id": 1123,
+    "name": "eggs",
+    "estimatedCostInCents": 472
+  }
+];
+
+let ingredients2 = [
+  {
+    "id": 1009016,
+    "name": "apple cider",
+    "estimatedCostInCents": 468
+  },
+  {
+    "id": 9003,
+    "name": "apple",
+    "estimatedCostInCents": 207
+  },
+  {
+    "id": 20027,
+    "name": "corn starch",
+    "estimatedCostInCents": 236
+  },
+  {
+    "id": 1002046,
+    "name": "dijon style mustard",
+    "estimatedCostInCents": 619
+  },
+  {
+    "id": 11215,
+    "name": "whole garlic clove",
+    "estimatedCostInCents": 220
+  },
+];
 
 
-export {recipeData, usersData, ingredients}
+
+export {recipeData, usersData, ingredients, ingredients2}
