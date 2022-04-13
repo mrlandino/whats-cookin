@@ -305,7 +305,7 @@ let usersData = [
       },
       {
         "ingredient": 18372,
-        "amount": 3
+        "amount": .25
       },
       {
         "ingredient": 2027,

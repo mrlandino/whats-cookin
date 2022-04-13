@@ -26,9 +26,9 @@ describe('Pantry', () => {
 
   it ("Should be able to assess ingredients in the user's pantry and decide if a recipe can be cooked or not", () => {
 
-    pantry.assessIngredients(recipe)
-    console.log("PANTRY", pantry.ingredientsMissing)
-    console.log("RECIPE", recipe.canBeCooked)
+    pantry.assessIngredients(recipe);
+    console.log("PANTRY", pantry.ingredientsMissing);
+    console.log("RECIPE", recipe.canBeCooked);
     // expect()
   });
 
