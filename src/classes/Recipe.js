@@ -9,6 +9,7 @@ class Recipe {
     this.ingredientsNeeded = [];
     this.recipeCost = 0;
     this.isFavorite = false;
+    this.canBeCooked = true;
   };
 
   findIngredientsNeeded(ingredients) {

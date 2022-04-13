@@ -180,7 +180,7 @@ let usersData = [
         "amount": 10
       },
       {
-        "ingredient": 20081,
+        "ingredient": 0,
         "amount": 5
       },
       {
@@ -193,7 +193,7 @@ let usersData = [
       },
       {
         "ingredient": 1123,
-        "amount": 8
+        "amount": 0
       },
       {
         "ingredient": 11282,
