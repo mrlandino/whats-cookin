@@ -1,6 +1,6 @@
 let getPromise = (url) => {
   return fetch(url)
-  .then(usersResponse => usersResponse.json())
+  .then(response => response.json())
   .catch(err => console.log(error));
 };
 
