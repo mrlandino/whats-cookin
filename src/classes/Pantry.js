@@ -51,6 +51,7 @@ class Pantry {
     } else {
       recipe.canBeCooked = false;
     };
+    // MOVE above method into its own function as a helper function
   };
 }
 
