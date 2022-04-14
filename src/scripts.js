@@ -475,7 +475,7 @@ const findImageAlt = (recipe) => {
 }
 
 const displayUserProfile = () => {
-  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside]);
+  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside, recipeDetailsContainer]);
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   currentPantry.updateCurrentPantry(ingredientsData);
   displayPantry();
