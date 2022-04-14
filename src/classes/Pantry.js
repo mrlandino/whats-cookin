@@ -53,6 +53,35 @@ class Pantry {
     };
     // MOVE above method into its own function as a helper function
   };
+
+  // Update current pantry array to hold ingredient names, amounts, and units
+  // Parameter is our ingredientsData global variable when invoked
+  updateCurrentPantry(ingredients) {
+    const ingredientIds = this.userPantry.map(ingredient => {
+      return ingredient.ingredient;
+    });
+
+    const filteredIngredients = ingredients.filter(ingredient => {
+      if (ingredientIds.includes(ingredient.id)) {
+        return ingredient;
+      }
+    });
+
+    filteredIngredients.forEach(ingredient => {
+      this.currentPantry.push({name: ingredient.name, id:ingredient.id})
+    });
+
+    this.currentPantry.map(ingredient => {
+      this.userPantry.forEach(ingredient2 => {
+        if (ingredient.ingredient === ingredient2.id) {
+          ingredient.amount = ingredient2.amount;
+          // ingredient.unit = ingredient2.quantity.unit;
+        };
+      });
+    });
+  };
+
+
 }
 
 export default Pantry
