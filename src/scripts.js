@@ -2,6 +2,8 @@ import "./styles.css";
 import {usersPromise, ingredientsPromise, recipePromise} from "./apiCalls";
 import "./images/favorite-star.png";
 import "./images/empty-star.png";
+import "./images/check-mark.png";
+import "./images/shopping-cart.png";
 import RecipeRepository from "./classes/RecipeRepository.js";
 import Recipe from "./classes/Recipe.js";
 import User from "./classes/User.js";
@@ -41,6 +43,8 @@ const removeFromMenuButton = document.querySelector(".remove-from-menu");
 const profileButton = document.querySelector(".profile-button");
 const profileContainer = document.querySelector(".profile-container");
 const itemizedPantry = document.querySelector(".itemized-pantry");
+const pantryPage = document.querySelector(".pantry-page");
+const menuThumbnails = document.querySelector(".menu-thumbnails");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
@@ -190,7 +194,7 @@ const loadFavSearch = (e) => {
 };
 
 const loadFavPage = () => {
-  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton]);
+  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton, pantryPage]);
   showElement([favoriteRecipesContainer, allRecipesButton, profileButton]);
   displayFavoriteRecipes();
   showElement([aside]);
@@ -198,7 +202,7 @@ const loadFavPage = () => {
 
 const loadAllPage = () => {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle, profileButton]);
-  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton]);
+  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton, pantryPage]);
   displayAllRecipes();
   currentUser.favoritesByTag = [];
   currentUser.favoritesByName = [];
@@ -472,11 +476,13 @@ const findImageAlt = (recipe) => {
 
 const displayUserProfile = () => {
   hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside]);
-  showElement([allRecipesButton, favoriteRecipesButton, profileContainer]);
+  showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   currentPantry.updateCurrentPantry(ingredientsData);
   displayPantry();
-  console.log(currentPantry);
-  console.log(currentUser);
+  checkCookability();
+  displayMenuRecipes();
+  // console.log(currentPantry);
+  // console.log(currentUser);
 };
 
 const displayPantry = () => {
@@ -493,4 +499,48 @@ const displayPantry = () => {
   });
 
   itemizedPantry.innerHTML = pantryList;
+};
+
+const displayMenuRecipes = () => {
+  menuThumbnails.innerHTML = "";
+  let recipesHTML = "";
+
+  currentUser.recipesToCook.forEach((recipe) => {
+    recipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
+                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <div class="thumbnail-details" id=${recipe.id}>
+                  <p>${recipe.name}</p>
+                  <img class="menu-icon" id='${recipe.id}' src=${findCookableSource(recipe)} alt=${findCookableAlt(recipe)}>
+                </div>
+              </div>`;
+  });
+  let title = `<div class="menu-recipe-title"><h2>Menu</h2></div>`
+  menuThumbnails.innerHTML = title + recipesHTML;
+};
+
+const checkCookability = () => {
+  currentUser.recipesToCook.forEach(recipe => {
+    currentPantry.assessIngredients(recipe);
+  });
+  console.log(currentUser);
+};
+
+const findCookableSource = (recipe) => {
+  let imageSource = "";
+  if(recipe.canBeCooked) {
+    imageSource = "http://localhost:8080/images/check-mark.png"
+  } else {
+    imageSource = "http://localhost:8080/images/shopping-cart.png"
+  }
+  return imageSource;
+};
+
+const findCookableAlt = (recipe) => {
+  let imageAlt = "";
+  if(recipe.canBeCooked) {
+    imageAlt = "cookable"
+  } else {
+    imageAlt = "uncookable"
+  }
+  return imageAlt;
 };

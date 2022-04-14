@@ -34,7 +34,7 @@ class Pantry {
       });
 
       recipeIngredientIds.forEach(idNum => {
-        console.log("MISSING INGREDIENTS", missingIngredIds);
+        // console.log("MISSING INGREDIENTS", missingIngredIds);
         // console.log("RECIPEINGREDIENT ID", recipeIngredient.id)
 
         if(!pantryIngredientIds.includes(idNum) && !missingIngredIds.includes(idNum) && recipeIngredient.id === idNum) {
