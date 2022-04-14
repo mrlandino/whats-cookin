@@ -479,6 +479,7 @@ const displayUserProfile = () => {
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   currentPantry.updateCurrentPantry(ingredientsData);
   displayPantry();
+  checkCookability();
   displayMenuRecipes();
   // console.log(currentPantry);
   // console.log(currentUser);
@@ -509,10 +510,37 @@ const displayMenuRecipes = () => {
                 <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="menu-icon" id='${recipe.id}' src="http://localhost:8080/images/check-mark.png" alt="cookable">
+                  <img class="menu-icon" id='${recipe.id}' src=${findCookableSource(recipe)} alt=${findCookableAlt(recipe)}>
                 </div>
               </div>`;
   });
   let title = `<div class="menu-recipe-title"><h2>Menu</h2></div>`
   menuThumbnails.innerHTML = title + recipesHTML;
+};
+
+const checkCookability = () => {
+  currentUser.recipesToCook.forEach(recipe => {
+    currentPantry.assessIngredients(recipe);
+  });
+  console.log(currentUser);
+};
+
+const findCookableSource = (recipe) => {
+  let imageSource = "";
+  if(recipe.canBeCooked) {
+    imageSource = "http://localhost:8080/images/check-mark.png"
+  } else {
+    imageSource = "http://localhost:8080/images/shopping-cart.png"
+  }
+  return imageSource;
+};
+
+const findCookableAlt = (recipe) => {
+  let imageAlt = "";
+  if(recipe.canBeCooked) {
+    imageAlt = "cookable"
+  } else {
+    imageAlt = "uncookable"
+  }
+  return imageAlt;
 };
