@@ -5,6 +5,7 @@ import "./images/empty-star.png";
 import RecipeRepository from "./classes/RecipeRepository.js";
 import Recipe from "./classes/Recipe.js";
 import User from "./classes/User.js";
+import Pantry from "./classes/Pantry.js";
 
 // VARIABLES-----------------------------------------------
 let usersData;
@@ -12,6 +13,7 @@ let ingredientsData;
 let recipeData;
 let currentRecipe;
 let currentUser;
+let currentPantry;
 let recipesList;
 let favoriteRecipes;
 const allRecipes = document.querySelector(".all-recipe-thumbnails");
@@ -36,6 +38,9 @@ const favSearchInput = document.querySelector(".fav-search-button-input");
 const clearFilters = document.querySelector(".clear-filters-button");
 const addToMenuButton = document.querySelector(".add-to-menu");
 const removeFromMenuButton = document.querySelector(".remove-from-menu");
+const profileButton = document.querySelector(".profile-button");
+const profileContainer = document.querySelector(".profile-container");
+const itemizedPantry = document.querySelector(".itemized-pantry");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
@@ -92,6 +97,10 @@ favoriteRecipesButton.addEventListener("click", function() {
 
 allRecipesButton.addEventListener("click", function() {
   loadAllPage();
+});
+
+profileButton.addEventListener("click", function() {
+  displayUserProfile();
 });
 
 favSearchInput.addEventListener("keypress", function(e) {
@@ -182,13 +191,13 @@ const loadFavSearch = (e) => {
 
 const loadFavPage = () => {
   hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton]);
-  showElement([favoriteRecipesContainer, allRecipesButton]);
+  showElement([favoriteRecipesContainer, allRecipesButton, profileButton]);
   displayFavoriteRecipes();
   showElement([aside]);
 };
 
 const loadAllPage = () => {
-  showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle]);
+  showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle, profileButton]);
   hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton]);
   displayAllRecipes();
   currentUser.favoritesByTag = [];
@@ -360,6 +369,7 @@ const displaySearchedContent = () => {
 const instantiateUser = () => {
   let randomUser = usersData[Math.floor(Math.random() * usersData.length)];
   currentUser = new User(randomUser);
+  currentPantry = new Pantry(currentUser);
 };
 
 const addRecipeToFavorites = (id) => {
@@ -459,3 +469,28 @@ const findImageAlt = (recipe) => {
   };
   return altText;
 }
+
+const displayUserProfile = () => {
+  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside]);
+  showElement([allRecipesButton, favoriteRecipesButton, profileContainer]);
+  currentPantry.updateCurrentPantry(ingredientsData);
+  displayPantry();
+  console.log(currentPantry);
+  console.log(currentUser);
+};
+
+const displayPantry = () => {
+  let pantryList = "";
+  let pantryItems;
+
+  pantryItems = currentPantry.currentPantry.reduce((allItems, item) => {
+    allItems.push(item)
+    return allItems;
+  }, []);
+
+  pantryItems.forEach(item => {
+    pantryList += `<p class="pantry-item" data-id="${item.name}">${item.name} X ${item.amount}</p>`
+  });
+
+  itemizedPantry.innerHTML = pantryList;
+};
