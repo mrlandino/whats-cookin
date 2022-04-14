@@ -126,6 +126,7 @@ h2 {
   height: 25%;
   justify-content: space-between;
 }
+.menu-icon,
 .star-icon {
   height: 80%;
   margin: 5px;
@@ -180,6 +181,34 @@ p {
   width: 400px;
 }
 
+.user-pantry {
+  align-items: center;
+  background-color: #F87664;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  justify-content: center;
+  margin: 20px 50px 10px 5px;
+  width: 25%;
+  text-align: center;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.menu-thumbnails {
+  margin: 20px 50px 10px 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 75%;
+}
+
+
 .fav-filter-tag {
   background-color: #F87664;
   margin: 20px 0px 5px 5px;
@@ -211,6 +240,7 @@ p {
 h3 {
   font-size: 30px;
   margin: 10px;
+  text-align: center;
 }
 
 .recipe-card {

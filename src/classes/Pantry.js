@@ -73,7 +73,8 @@ class Pantry {
 
     this.currentPantry.map(ingredient => {
       this.userPantry.forEach(ingredient2 => {
-        if (ingredient.ingredient === ingredient2.id) {
+        if (ingredient.id === ingredient2.ingredient) {
+
           ingredient.amount = ingredient2.amount;
           // ingredient.unit = ingredient2.quantity.unit;
         };
