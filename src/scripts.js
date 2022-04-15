@@ -129,6 +129,14 @@ menuThumbnails.addEventListener("click", function(e) {
   };
 });
 
+cookButton.addEventListener("click", function(e) {
+  currentPantry.removeIngredients(currentRecipe)
+
+  // displayPantry()
+  //redisplay pantry - inside we can make cooked boolean toggle by invoking a separate fn
+  // n take out of user.recipes to cook
+
+})
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
   Promise.all(
@@ -588,10 +596,14 @@ const displayMissingIngredients = () => {
 
 const canCookToggle = () => {
   if(currentPantry.ingredientsMissing.length > 0) {
-    cookButton.disabled = true;
-    cookButton.classList.add("disabled")
+    cookButton.disabled = false;
+    cookButton.classList.remove("disabled")
   } else {
     cookButton.disabled = false;
     cookButton.classList.remove("disabled")
   };
 };
+
+// const redisplayPantry = () => {
+//
+// }
