@@ -45,6 +45,8 @@ const profileContainer = document.querySelector(".profile-container");
 const itemizedPantry = document.querySelector(".itemized-pantry");
 const pantryPage = document.querySelector(".pantry-page");
 const menuThumbnails = document.querySelector(".menu-thumbnails");
+const cookButton = document.querySelector("#cookRecipe");
+const missingItems = document.querySelector(".missing-items");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
@@ -565,7 +567,27 @@ const findCookableAlt = (recipe) => {
 };
 
 const displayMissingIngredients = () => {
-  console.log("BEFORE", currentPantry.ingredientsMissing);
   currentPantry.updateMissingIngredients(ingredientsData);
-  console.log("AFTER", currentPantry.ingredientsMissing);
+  canCookToggle();
+
+  let missingIngredientList = "";
+  let missing;
+
+  missing = currentPantry.ingredientsMissing.reduce((allItems, item) => {
+    allItems.push(item)
+    return allItems;
+  }, []);
+
+  missing.forEach(item => {
+    missingIngredientList += `<p class="missing-item" data-id="${item.name}">${item.name} X ${item.amount}</p>`
+  });
+  missingItems.innerHTML = missingIngredientList;
+};
+
+const canCookToggle = () => {
+  if(currentPantry.ingredientsMissing.length > 0) {
+    cookButton.disabled = true;
+  } else {
+    cookButton.disabled = false;
+  };
 };
