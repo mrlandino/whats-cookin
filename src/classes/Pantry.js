@@ -74,8 +74,35 @@ class Pantry {
         };
       });
     });
-    this.userPantry = this.currentPantry
+    // this.userPantry = this.currentPantry
   };
+
+  repopulateCurrentPantry(ingredients) {
+    const ingredientIds = this.currentPantry.map(ingredient => {
+      return ingredient.id;
+    });
+
+    // this.currentPantry = [];
+    const filteredIngredients = ingredients.filter(ingredient => {
+      if (ingredientIds.includes(ingredient.id)) {
+        return ingredient;
+      }
+    });
+
+    filteredIngredients.forEach(ingredient => {
+      this.currentPantry.push({name: ingredient.name, id: ingredient.id, amount: ingredient.amount})
+    });
+    // 
+    // this.currentPantry.map(ingredient => {
+    //   this.userPantry.forEach(ingredient2 => {
+    //     if (ingredient.id === ingredient2.ingredient) {
+    //
+    //       ingredient.amount = ingredient2.amount;
+    //       // ingredient.unit = ingredient2.quantity.unit;
+    //     };
+    //   });
+    // });
+  }
 
   updateMissingIngredients(ingredients) {
     let completeMissingIngredients = [];
