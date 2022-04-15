@@ -89,7 +89,6 @@ class Pantry {
     });
 
     filteredIngredients.forEach(ingredient => {
-      console.log("INGREDIENT", ingredient)
       completeMissingIngredients.push({name: ingredient.name, id:ingredient.id, amount: 0})
     });
 
