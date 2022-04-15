@@ -47,6 +47,7 @@ const pantryPage = document.querySelector(".pantry-page");
 const menuThumbnails = document.querySelector(".menu-thumbnails");
 const cookButton = document.querySelector("#cookRecipe");
 const missingItems = document.querySelector(".missing-items");
+const missingIngredients = document.querySelector(".missing-ingredients");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
@@ -124,6 +125,7 @@ clearFilters.addEventListener("click", function() {
 menuThumbnails.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
       loadMenuThumbnail(e);
+      showElement([missingIngredients])
   };
 });
 
@@ -174,7 +176,7 @@ const loadMenuThumbnail = (e) => {
   displayCard();
   findRecipeInfo(e.target.parentElement.id);
   updateRecipeCard();
-  hideElement([aside, favoriteRecipesContainer, pantryPage]);
+  hideElement([aside, favoriteRecipesContainer, pantryPage, missingIngredients]);
   showElement([favoriteRecipesButton, profileButton]);
   menuButtonStatus();
   displayMissingIngredients();
@@ -204,7 +206,7 @@ const loadSearch = (e) => {
   event.preventDefault();
   applySearch(`${searchInput.value}`);
   displaySearchedContent();
-  hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
+  hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton, missingIngredients]);
   showElement([allRecipesButton]);
 };
 
@@ -215,7 +217,7 @@ const loadFavSearch = (e) => {
 };
 
 const loadFavPage = () => {
-  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton, pantryPage]);
+  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton, pantryPage, missingIngredients]);
   showElement([favoriteRecipesContainer, allRecipesButton, profileButton]);
   displayFavoriteRecipes();
   showElement([aside]);
@@ -223,7 +225,7 @@ const loadFavPage = () => {
 
 const loadAllPage = () => {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle, profileButton]);
-  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton, pantryPage]);
+  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton, pantryPage, missingIngredients]);
   displayAllRecipes();
   currentUser.favoritesByTag = [];
   currentUser.favoritesByName = [];
@@ -496,7 +498,7 @@ const findImageAlt = (recipe) => {
 }
 
 const displayUserProfile = () => {
-  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside, recipeDetailsContainer]);
+  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside, recipeDetailsContainer, missingIngredients]);
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   currentPantry.updateCurrentPantry(ingredientsData);
   displayPantry();
@@ -587,7 +589,9 @@ const displayMissingIngredients = () => {
 const canCookToggle = () => {
   if(currentPantry.ingredientsMissing.length > 0) {
     cookButton.disabled = true;
+    cookButton.classList.add("disabled")
   } else {
     cookButton.disabled = false;
+    cookButton.classList.remove("disabled")
   };
 };
