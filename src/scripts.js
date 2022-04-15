@@ -126,12 +126,16 @@ menuThumbnails.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
       loadMenuThumbnail(e);
       showElement([missingIngredients])
+      toggleCookButton()
   };
 });
 
 cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe)
-
+  // change button and include the timeout
+  toggleCookButton()
+  setTimeout(() => {displayUserProfile()}, 2500);
+  // displayUserProfile()
   // displayPantry()
   //redisplay pantry - inside we can make cooked boolean toggle by invoking a separate fn
   // n take out of user.recipes to cook
@@ -510,8 +514,10 @@ const displayUserProfile = () => {
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   if (!currentPantry.currentPantry.length) {
     currentPantry.updateCurrentPantry(ingredientsData);
+    console.log("UPDATE")
   } else {
     currentPantry.repopulateCurrentPantry(ingredientsData);
+    console.log("REPOPULATE")
   }
   displayPantry();
   checkCookability();
@@ -521,6 +527,8 @@ const displayUserProfile = () => {
 const displayPantry = () => {
   let pantryList = "";
   let pantryItems;
+
+  // itemizedPantry.innerHTML = "";
 
   pantryItems = currentPantry.currentPantry.reduce((allItems, item) => {
     allItems.push(item)
@@ -606,6 +614,10 @@ const canCookToggle = () => {
   };
 };
 
-// const redisplayPantry = () => {
-//
-// }
+const toggleCookButton = () => {
+  if (cookButton.innerText === "Cook Recipe") {
+    cookButton.innerText = "Recipe Cooked!"
+  } else {
+    cookButton.innerText = "Cook Recipe"
+  }
+}
