@@ -508,12 +508,14 @@ const findImageAlt = (recipe) => {
 const displayUserProfile = () => {
   hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside, recipeDetailsContainer, missingIngredients]);
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
-  currentPantry.updateCurrentPantry(ingredientsData);
+  if (!currentPantry.currentPantry.length) {
+    currentPantry.updateCurrentPantry(ingredientsData);
+  } else {
+    currentPantry.repopulateCurrentPantry(ingredientsData);
+  }
   displayPantry();
   checkCookability();
   displayMenuRecipes();
-  // console.log(currentPantry);
-  // console.log(currentUser);
 };
 
 const displayPantry = () => {
