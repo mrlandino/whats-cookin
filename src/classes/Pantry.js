@@ -34,11 +34,7 @@ class Pantry {
       });
 
       recipeIngredientIds.forEach(idNum => {
-        // console.log("MISSING INGREDIENTS", missingIngredIds);
-        // console.log("RECIPEINGREDIENT ID", recipeIngredient.id)
-
         if(!pantryIngredientIds.includes(idNum) && !missingIngredIds.includes(idNum) && recipeIngredient.id === idNum) {
-          // console.log(idNum, recipeIngredient.id);
           acc.push({id: idNum, quantity: recipeIngredient.quantity.amount});
           missingIngredIds.push(idNum);
         };
@@ -54,8 +50,6 @@ class Pantry {
     // MOVE above method into its own function as a helper function
   };
 
-  // Update current pantry array to hold ingredient names, amounts, and units
-  // Parameter is our ingredientsData global variable when invoked
   updateCurrentPantry(ingredients) {
     const ingredientIds = this.userPantry.map(ingredient => {
       return ingredient.ingredient;
@@ -82,7 +76,34 @@ class Pantry {
     });
   };
 
+  updateMissingIngredients(ingredients) {
+    let completeMissingIngredients = [];
+    const ingredientIds = this.ingredientsMissing.map(ingredient => {
+      return ingredient.id;
+    });
 
+    const filteredIngredients = ingredients.filter(ingredient => {
+      if (ingredientIds.includes(ingredient.id)) {
+        return ingredient;
+      }
+    });
+
+    filteredIngredients.forEach(ingredient => {
+      completeMissingIngredients.push({name: ingredient.name, id:ingredient.id, amount: 0})
+    });
+
+    completeMissingIngredients.map(ingredient => {
+      this.ingredientsMissing.forEach(ingredient2 => {
+        if (ingredient.id === ingredient2.id) {
+
+          ingredient.amount = ingredient2.quantity;
+          // ingredient.unit = ingredient2.quantity.unit;
+        };
+      });
+    });
+
+    this.ingredientsMissing = completeMissingIngredients;
+  }
 }
 
 export default Pantry

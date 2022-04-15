@@ -45,6 +45,9 @@ const profileContainer = document.querySelector(".profile-container");
 const itemizedPantry = document.querySelector(".itemized-pantry");
 const pantryPage = document.querySelector(".pantry-page");
 const menuThumbnails = document.querySelector(".menu-thumbnails");
+const cookButton = document.querySelector("#cookRecipe");
+const missingItems = document.querySelector(".missing-items");
+const missingIngredients = document.querySelector(".missing-ingredients");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
@@ -117,6 +120,15 @@ clearFilters.addEventListener("click", function() {
   loadFilterClear();
 });
 
+//need an eventListener to allow the user to click on the recipes in the menu
+//need to method that injects the html to show the recipe details
+menuThumbnails.addEventListener("click", function(e) {
+  if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
+      loadMenuThumbnail(e);
+      showElement([missingIngredients])
+  };
+});
+
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
   Promise.all(
@@ -160,6 +172,17 @@ const loadFavThumbnail = (e) => {
   menuButtonStatus();
 };
 
+const loadMenuThumbnail = (e) => {
+  displayCard();
+  findRecipeInfo(e.target.parentElement.id);
+  updateRecipeCard();
+  hideElement([aside, favoriteRecipesContainer, pantryPage, missingIngredients]);
+  showElement([favoriteRecipesButton, profileButton]);
+  menuButtonStatus();
+  displayMissingIngredients();
+
+}
+
 const clickFavStar = (e) => {
   changeStar(e.target);
   addRecipeToFavorites(e.target.id);
@@ -183,7 +206,7 @@ const loadSearch = (e) => {
   event.preventDefault();
   applySearch(`${searchInput.value}`);
   displaySearchedContent();
-  hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton]);
+  hideElement([aside, allSearchBar, allFilter, allRecipesTitle, addToMenuButton, removeFromMenuButton, missingIngredients]);
   showElement([allRecipesButton]);
 };
 
@@ -194,7 +217,7 @@ const loadFavSearch = (e) => {
 };
 
 const loadFavPage = () => {
-  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton, pantryPage]);
+  hideElement([allRecipesContainer, favoriteRecipesButton, allSearchBar, allFilter, recipeDetailsContainer, addToMenuButton, removeFromMenuButton, pantryPage, missingIngredients]);
   showElement([favoriteRecipesContainer, allRecipesButton, profileButton]);
   displayFavoriteRecipes();
   showElement([aside]);
@@ -202,7 +225,7 @@ const loadFavPage = () => {
 
 const loadAllPage = () => {
   showElement([favoriteRecipesButton, allSearchBar, allFilter, allRecipesContainer, allRecipesTitle, profileButton]);
-  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton, pantryPage]);
+  hideElement([allRecipesButton, favoriteRecipesContainer, recipeDetailsContainer, aside, addToMenuButton, removeFromMenuButton, pantryPage, missingIngredients]);
   displayAllRecipes();
   currentUser.favoritesByTag = [];
   currentUser.favoritesByName = [];
@@ -475,7 +498,7 @@ const findImageAlt = (recipe) => {
 }
 
 const displayUserProfile = () => {
-  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside, recipeDetailsContainer]);
+  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside, recipeDetailsContainer, missingIngredients]);
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   currentPantry.updateCurrentPantry(ingredientsData);
   displayPantry();
@@ -543,4 +566,32 @@ const findCookableAlt = (recipe) => {
     imageAlt = "uncookable"
   }
   return imageAlt;
+};
+
+const displayMissingIngredients = () => {
+  currentPantry.updateMissingIngredients(ingredientsData);
+  canCookToggle();
+
+  let missingIngredientList = "";
+  let missing;
+
+  missing = currentPantry.ingredientsMissing.reduce((allItems, item) => {
+    allItems.push(item)
+    return allItems;
+  }, []);
+
+  missing.forEach(item => {
+    missingIngredientList += `<p class="missing-item" data-id="${item.name}">${item.name} X ${item.amount}</p>`
+  });
+  missingItems.innerHTML = missingIngredientList;
+};
+
+const canCookToggle = () => {
+  if(currentPantry.ingredientsMissing.length > 0) {
+    cookButton.disabled = true;
+    cookButton.classList.add("disabled")
+  } else {
+    cookButton.disabled = false;
+    cookButton.classList.remove("disabled")
+  };
 };
