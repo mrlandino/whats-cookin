@@ -134,7 +134,7 @@ cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe)
   // change button and include the timeout
   toggleCookButton()
-  setTimeout(() => {displayUserProfile()}, 2500);
+  setTimeout(() => {displayUserProfile()}, 500);
   // displayUserProfile()
   // displayPantry()
   //redisplay pantry - inside we can make cooked boolean toggle by invoking a separate fn
