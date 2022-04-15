@@ -117,6 +117,14 @@ clearFilters.addEventListener("click", function() {
   loadFilterClear();
 });
 
+//need an eventListener to allow the user to click on the recipes in the menu
+//need to method that injects the html to show the recipe details
+menuThumbnails.addEventListener("click", function(e) {
+  if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
+      loadMenuThumbnail(e);
+  };
+});
+
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
   Promise.all(
@@ -159,6 +167,17 @@ const loadFavThumbnail = (e) => {
   showElement([favoriteRecipesButton]);
   menuButtonStatus();
 };
+
+const loadMenuThumbnail = (e) => {
+  displayCard();
+  findRecipeInfo(e.target.parentElement.id);
+  updateRecipeCard();
+  hideElement([aside, favoriteRecipesContainer, pantryPage]);
+  showElement([favoriteRecipesButton, profileButton]);
+  menuButtonStatus();
+  displayMissingIngredients();
+
+}
 
 const clickFavStar = (e) => {
   changeStar(e.target);
@@ -543,4 +562,10 @@ const findCookableAlt = (recipe) => {
     imageAlt = "uncookable"
   }
   return imageAlt;
+};
+
+const displayMissingIngredients = () => {
+  console.log("BEFORE", currentPantry.ingredientsMissing);
+  currentPantry.updateMissingIngredients(ingredientsData);
+  console.log("AFTER", currentPantry.ingredientsMissing);
 };
