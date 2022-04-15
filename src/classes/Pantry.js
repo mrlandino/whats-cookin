@@ -90,9 +90,12 @@ class Pantry {
     });
 
     filteredIngredients.forEach(ingredient => {
-      this.currentPantry.push({name: ingredient.name, id: ingredient.id, amount: ingredient.amount})
+      if (!this.currentPantry.includes({name: ingredient.name, id: ingredient.id, amount: ingredient.amount}) && ingredient.amount !== undefined) {
+        this.currentPantry.push({name: ingredient.name, id: ingredient.id, amount: ingredient.amount})
+      }
+
     });
-    // 
+    //
     // this.currentPantry.map(ingredient => {
     //   this.userPantry.forEach(ingredient2 => {
     //     if (ingredient.id === ingredient2.ingredient) {
