@@ -65,11 +65,31 @@ allRecipes.addEventListener("click", function(e) {
   };
 });
 
+// Duplicate code, talk to group about
+allRecipes.addEventListener("keypress", function(e) {
+  if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
+    loadThumbnail(e);
+  };
+  if (e.target.classList.contains("star-icon") && e.key === "Enter") {
+    clickStar(e);
+  };
+});
+
 favoriteRecipesContainer.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
     loadFavThumbnail(e);
   };
   if (e.target.classList.contains("star-icon")) {
+    clickFavStar(e);
+  };
+});
+
+// Duplicate code, talk to group about
+favoriteRecipesContainer.addEventListener("keypress", function(e) {
+  if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
+    loadFavThumbnail(e);
+  };
+  if (e.target.classList.contains("star-icon") && e.key === "Enter") {
     clickFavStar(e);
   };
 });
@@ -90,8 +110,17 @@ dropdownContent.addEventListener("click", function(e) {
   };
 });
 
+// How can we make the dropdown accessible with just keys? Both all recipes & favs
+
 favDropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains("tag-hover")) {
+    loadFavDropdown(e);
+  };
+});
+
+// Duplicate code
+favDropdownContent.addEventListener("keypress", function(e) {
+  if(e.target.classList.contains("tag-hover") && e.key === "Enter") {
     loadFavDropdown(e);
   };
 });
@@ -128,6 +157,15 @@ clearFilters.addEventListener("click", function() {
 //need to method that injects the html to show the recipe details
 menuThumbnails.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
+      loadMenuThumbnail(e);
+      showElement([missingIngredients])
+      toggleCookButton()
+  };
+});
+
+// Duplicate code, talk to group about
+menuThumbnails.addEventListener("keypress", function(e) {
+  if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
       loadMenuThumbnail(e);
       showElement([missingIngredients])
       toggleCookButton()
@@ -270,10 +308,10 @@ const displayAllRecipes = () => {
   let allRecipesHTML = "";
   recipesList.recipes.forEach((recipe) => {
     allRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
+                  <img tabindex="0" class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -285,10 +323,10 @@ const displayFavoriteRecipes = () => {
   let favRecipesHTML = "";
   currentUser.favoriteRecipes.forEach((recipe) => {
     favRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="favorited">
+                  <img tabindex="0" class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="favorited">
                 </div>
               </div>`;
   });
@@ -384,10 +422,10 @@ const displayFilteredContent = () => {
   let filteredRecipesHTML = "";
   recipesList.filteredRecipesTag.forEach((recipe) => {
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
+                  <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -404,10 +442,10 @@ const displaySearchedContent = () => {
   let searchedRecipesHTML = "";
   recipesList.filteredRecipesName.forEach((recipe) => {
     searchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
+                  <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -450,10 +488,10 @@ const displayFilteredFavs = () => {
   let filteredRecipesHTML = "";
     currentUser.favoritesByTag.forEach((recipe) => {
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
+                  <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -470,10 +508,10 @@ const displayFavSearchedContent = () => {
   let favSearchedRecipesHTML = "";
   currentUser.favoritesByName.forEach((recipe) => {
     favSearchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
-                  <img class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
+                  <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -519,7 +557,7 @@ const findImageAlt = (recipe) => {
 }
 
 const displayUserProfile = () => {
-  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside, recipeDetailsContainer, missingIngredients]);
+  hideElement([profileButton, allRecipesContainer, allSearchBar, allFilter, favRecipes, aside, recipeDetailsContainer, missingIngredients, addToMenuButton, removeFromMenuButton]);
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   if (!currentPantry.currentPantry.length) {
     currentPantry.updateCurrentPantry(ingredientsData);
@@ -556,7 +594,7 @@ const displayMenuRecipes = () => {
 
   currentUser.recipesToCook.forEach((recipe) => {
     recipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
                   <img class="menu-icon" id='${recipe.id}' src=${findCookableSource(recipe)} alt=${findCookableAlt(recipe)}>
