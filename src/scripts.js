@@ -180,7 +180,7 @@ cookButton.addEventListener("click", function(e) {
 
 addToPantryButton.addEventListener("click", function(e) {
   // disablePantryButton();
-  injectForm();
+  injectForm(ingredientsData);
   disablePantryButton();
 
 // change text on button to say add item (submit)
@@ -675,12 +675,12 @@ const toggleCookButton = () => {
   }
 };
 
-const injectForm = () => {
+const injectForm = (ingredientsData) => {
   pantryForm.innerHTML = ""
-  const ingredientNames = ingredientsData.map((ingredient) => {
-    return ingredient.name.toLowerCase()
-  })
-  ingredientNames.sort()
+  // const ingredientNames = ingredientsData.map((ingredient) => {
+  //   return ingredient.name.toLowerCase()
+  // })
+  // ingredientNames.sort()
 
   let options;
   let label = `<label class="form-label" for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
@@ -690,11 +690,28 @@ const injectForm = () => {
   let numInput = `<label class="form-label" for="amount">Select a Quantity:</label>
                   <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100">`
 
+  ingredientsData.forEach(item => {
+    item.name = item.name.toLowerCase();
+  });
 
-  ingredientNames.forEach((ingredient) => {
-    options += `<option value=${ingredient}>${ingredient}</option>`
-  })
+  ingredientsData.sort((a, b) => {
+    let nameA = a.name;
+    let nameB = b.name;
 
-  pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput
+    if (nameA < nameB) {
+      return -1;
+    } if (nameA > nameB) {
+      return 1;
+    }
+    return 0
+  });
+
+  console.log('sorted data: ', ingredientsData);
+
+  ingredientsData.forEach((ingredient) => {
+    options += `<option id=${ingredient.id} value=${ingredient.name}>${ingredient.name}</option>`
+  });
+
+  pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
   showElement([submitButton])
-}
+};
