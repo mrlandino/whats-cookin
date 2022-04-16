@@ -50,6 +50,9 @@ const missingItems = document.querySelector(".missing-items");
 const missingIngredients = document.querySelector(".missing-ingredients");
 const addToPantryButton = document.querySelector(".add-to-pantry");
 const pantryForm = document.querySelector(".add-to-panty-form");
+const submitButton = document.querySelector(".submit-button")
+// const pantryFormAside = document.querySelector(".pantry-form-container");
+
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
 
@@ -138,7 +141,10 @@ cookButton.addEventListener("click", function(e) {
 })
 
 addToPantryButton.addEventListener("click", function(e) {
-  injectForm()
+  // disablePantryButton();
+  injectForm();
+  disablePantryButton();
+
 // change text on button to say add item (submit)
 // one fn to target for- we input select and the num input all in one chunk
 // in fn to inject dropdown inputs, we should alphabetize
@@ -525,6 +531,7 @@ const displayUserProfile = () => {
   displayPantry();
   checkCookability();
   displayMenuRecipes();
+  disablePantryButton();
 };
 
 const displayPantry = () => {
@@ -617,13 +624,21 @@ const canCookToggle = () => {
   };
 };
 
+const disablePantryButton = () => {
+  if (submitButton.classList.contains("hidden")) {
+    addToPantryButton.disabled = false;
+  } else {
+    addToPantryButton.disabled = true;
+  }
+};
+
 const toggleCookButton = () => {
   if (cookButton.innerText === "Cook Recipe") {
     cookButton.innerText = "Recipe Cooked!"
   } else {
     cookButton.innerText = "Cook Recipe"
   }
-}
+};
 
 const injectForm = () => {
   pantryForm.innerHTML = ""
@@ -637,11 +652,14 @@ const injectForm = () => {
   let selectOpen = `<select class="ingredient-selection">`;
   let selectClose = `</select>`
   let placeholder = `<option value selected>Select Ingredient</option>`
+  let numInput = `<label for="amount">Select a Quantity:</label>
+                  <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100">`
 
 
   ingredientNames.forEach((ingredient) => {
     options += `<option value=${ingredient}>${ingredient}</option>`
   })
 
-  pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose
+  pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput
+  showElement([submitButton])
 }
