@@ -134,7 +134,8 @@ class Pantry {
     });
 
     this.ingredientsMissing = completeMissingIngredients;
-  }
+  };
+
   removeIngredients(recipe) {
     // when a recipe is cooked, the ings required for that recipe are removed from the pantry.
     // might be cool to do a .hasBeenCooked on recipe class to apply conditional if it has been cooked, remove these ingredients
@@ -149,7 +150,23 @@ class Pantry {
       })
     })
     return this.currentPantry
-  }
+  };
+
+
+  addIngredients(id, name, amount) {
+    // see if the id exists in currentPantry, if exists, add to the amount
+    // If doesn't exists, create it
+    let counter = 0;
+    this.currentPantry.forEach(item => {
+      if (item.id === id) {
+        item.amount += amount;
+      } else if (counter < 1) {
+        counter++;
+        this.currentPantry.push({name: name, id: id, amount: amount})
+      };
+    });
+    return this.currentPantry;
+  };
 }
 
 export default Pantry

@@ -706,7 +706,6 @@ const injectForm = (ingredientsData) => {
     return 0
   });
 
-  console.log('sorted data: ', ingredientsData);
 
   ingredientsData.forEach((ingredient) => {
     options += `<option id=${ingredient.id} value=${ingredient.name}>${ingredient.name}</option>`
@@ -714,4 +713,9 @@ const injectForm = (ingredientsData) => {
 
   pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
   showElement([submitButton])
+
+  console.log(currentPantry.currentPantry);
+  currentPantry.addIngredients(100, 'chocolate', 2);
+  console.log(currentPantry.currentPantry);
+
 };
