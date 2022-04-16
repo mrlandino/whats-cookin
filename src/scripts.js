@@ -523,10 +523,8 @@ const displayUserProfile = () => {
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   if (!currentPantry.currentPantry.length) {
     currentPantry.updateCurrentPantry(ingredientsData);
-    console.log("UPDATE")
   } else {
     currentPantry.repopulateCurrentPantry(ingredientsData);
-    console.log("REPOPULATE")
   }
   displayPantry();
   checkCookability();
@@ -573,7 +571,6 @@ const checkCookability = () => {
   currentUser.recipesToCook.forEach(recipe => {
     currentPantry.assessIngredients(recipe);
   });
-  console.log(currentUser);
 };
 
 const findCookableSource = (recipe) => {
@@ -648,11 +645,11 @@ const injectForm = () => {
   ingredientNames.sort()
 
   let options;
-  let label = `<label for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
+  let label = `<label class="form-label" for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
   let selectOpen = `<select class="ingredient-selection">`;
   let selectClose = `</select>`
   let placeholder = `<option value selected>Select Ingredient</option>`
-  let numInput = `<label for="amount">Select a Quantity:</label>
+  let numInput = `<label class="form-label" for="amount">Select a Quantity:</label>
                   <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100">`
 
 
