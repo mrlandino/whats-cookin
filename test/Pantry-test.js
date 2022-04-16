@@ -36,6 +36,14 @@ describe('Pantry', () => {
     expect(pantry.userPantry).to.deep.equal(user.pantry);
   });
 
+  it("Should have the ability to store a current pantry", () => {
+    expect(pantry.currentPantry).to.deep.equal([]);
+  });
+
+  it("Should have the ability to store the ingredients missing to cook a recipe", () => {
+    expect(pantry.ingredientsMissing).to.deep.equal([]);
+  });
+
   it ("Should be able to assess ingredients in the user's pantry and decide if a recipe can be cooked or not", () => {
 
     pantry.assessIngredients(recipe);
@@ -45,22 +53,21 @@ describe('Pantry', () => {
     expect(recipe2.canBeCooked).to.equal(true);
   });
 
-// Want group input on this test, I'm a little confused about how it's working
   it("Should be able to update the user's current pantry with information needed", () => {
 
     pantry.updateCurrentPantry(ingredients);
-    expect(pantry.currentPantry[0].name).to.equal('bicarbonate of soda');
-    expect(pantry.currentPantry[0].id).to.equal(18372);
-    expect(pantry.currentPantry[0].amount).to.equal(0.25);
+    expect(pantry.currentPantry[0].name).to.equal('wheat flour');
+    expect(pantry.currentPantry[0].id).to.equal(20081);
+    expect(pantry.currentPantry[0].amount).to.equal(5);
   });
 
   it("Should be able to repopulate the current pantry", () => {
 
     pantry.updateCurrentPantry(ingredients);
     pantry.repopulateCurrentPantry(ingredients);
-    expect(pantry.currentPantry[0].name).to.equal('bicarbonate of soda');
-    expect(pantry.currentPantry[0].id).to.equal(18372);
-    expect(pantry.currentPantry[0].amount).to.equal(0.25);
+    expect(pantry.currentPantry[0].name).to.equal('wheat flour');
+    expect(pantry.currentPantry[0].id).to.equal(20081);
+    expect(pantry.currentPantry[0].amount).to.equal(5);
   });
 
   it("Should be able to update ingredients once a recipe is cooked", () => {

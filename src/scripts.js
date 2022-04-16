@@ -118,6 +118,13 @@ favDropdownContent.addEventListener("click", function(e) {
   };
 });
 
+// Duplicate code
+favDropdownContent.addEventListener("keypress", function(e) {
+  if(e.target.classList.contains("tag-hover") && e.key === "Enter") {
+    loadFavDropdown(e);
+  };
+});
+
 searchInput.addEventListener("keypress", function(e) {
   if(e.key === "Enter") {
     loadSearch(e);
