@@ -48,7 +48,8 @@ const menuThumbnails = document.querySelector(".menu-thumbnails");
 const cookButton = document.querySelector("#cookRecipe");
 const missingItems = document.querySelector(".missing-items");
 const missingIngredients = document.querySelector(".missing-ingredients");
-
+const addToPantryButton = document.querySelector(".add-to-pantry");
+const pantryForm = document.querySelector(".add-to-panty-form");
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
 
@@ -132,14 +133,16 @@ menuThumbnails.addEventListener("click", function(e) {
 
 cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe)
-  // change button and include the timeout
   toggleCookButton()
   setTimeout(() => {displayUserProfile()}, 500);
-  // displayUserProfile()
-  // displayPantry()
-  //redisplay pantry - inside we can make cooked boolean toggle by invoking a separate fn
-  // n take out of user.recipes to cook
+})
 
+addToPantryButton.addEventListener("click", function(e) {
+  injectForm()
+// change text on button to say add item (submit)
+// one fn to target for- we input select and the num input all in one chunk
+// in fn to inject dropdown inputs, we should alphabetize
+// sort .name before injecting
 })
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
@@ -620,4 +623,25 @@ const toggleCookButton = () => {
   } else {
     cookButton.innerText = "Cook Recipe"
   }
+}
+
+const injectForm = () => {
+  pantryForm.innerHTML = ""
+  const ingredientNames = ingredientsData.map((ingredient) => {
+    return ingredient.name.toLowerCase()
+  })
+  ingredientNames.sort()
+
+  let options;
+  let label = `<label for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
+  let selectOpen = `<select class="ingredient-selection">`;
+  let selectClose = `</select>`
+  let placeholder = `<option value selected>Select Ingredient</option>`
+
+
+  ingredientNames.forEach((ingredient) => {
+    options += `<option value=${ingredient}>${ingredient}</option>`
+  })
+
+  pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose
 }
