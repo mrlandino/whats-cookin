@@ -181,17 +181,35 @@ p {
   width: 400px;
 }
 
+.pantry-form-container,
 .user-pantry {
   align-items: center;
   background-color: #F87664;
   display: flex;
   flex-direction: column;
   height: auto;
-  justify-content: center;
+  justify-content: flex-start;
   margin: 20px 50px 10px 5px;
   width: 25%;
   text-align: center;
 }
+
+.pantry-form-container {
+  margin: 20px 5px 10px 50px;
+}
+
+
+.form-label {
+  font-size: 20px;
+  padding: 10px;
+}
+
+.add-to-panty-form {
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 .card-and-missing-ingredients-container {
   display: flex;
@@ -216,12 +234,12 @@ p {
 }
 
 .menu-thumbnails {
-  margin: 20px 50px 10px 5px;
+  margin: 20px 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 75%;
+  width: 70%;
 }
 
 
