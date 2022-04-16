@@ -48,6 +48,10 @@ const menuThumbnails = document.querySelector(".menu-thumbnails");
 const cookButton = document.querySelector("#cookRecipe");
 const missingItems = document.querySelector(".missing-items");
 const missingIngredients = document.querySelector(".missing-ingredients");
+const addToPantryButton = document.querySelector(".add-to-pantry");
+const pantryForm = document.querySelector(".add-to-panty-form");
+const submitButton = document.querySelector(".submit-button")
+// const pantryFormAside = document.querySelector(".pantry-form-container");
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
@@ -132,14 +136,19 @@ menuThumbnails.addEventListener("click", function(e) {
 
 cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe)
-  // change button and include the timeout
   toggleCookButton()
   setTimeout(() => {displayUserProfile()}, 500);
-  // displayUserProfile()
-  // displayPantry()
-  //redisplay pantry - inside we can make cooked boolean toggle by invoking a separate fn
-  // n take out of user.recipes to cook
+})
 
+addToPantryButton.addEventListener("click", function(e) {
+  // disablePantryButton();
+  injectForm();
+  disablePantryButton();
+
+// change text on button to say add item (submit)
+// one fn to target for- we input select and the num input all in one chunk
+// in fn to inject dropdown inputs, we should alphabetize
+// sort .name before injecting
 })
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
@@ -514,14 +523,13 @@ const displayUserProfile = () => {
   showElement([allRecipesButton, favoriteRecipesButton, pantryPage]);
   if (!currentPantry.currentPantry.length) {
     currentPantry.updateCurrentPantry(ingredientsData);
-    console.log("UPDATE")
   } else {
     currentPantry.repopulateCurrentPantry(ingredientsData);
-    console.log("REPOPULATE")
   }
   displayPantry();
   checkCookability();
   displayMenuRecipes();
+  disablePantryButton();
 };
 
 const displayPantry = () => {
@@ -563,7 +571,6 @@ const checkCookability = () => {
   currentUser.recipesToCook.forEach(recipe => {
     currentPantry.assessIngredients(recipe);
   });
-  console.log(currentUser);
 };
 
 const findCookableSource = (recipe) => {
@@ -614,10 +621,42 @@ const canCookToggle = () => {
   };
 };
 
+const disablePantryButton = () => {
+  if (submitButton.classList.contains("hidden")) {
+    addToPantryButton.disabled = false;
+  } else {
+    addToPantryButton.disabled = true;
+  }
+};
+
 const toggleCookButton = () => {
   if (cookButton.innerText === "Cook Recipe") {
     cookButton.innerText = "Recipe Cooked!"
   } else {
     cookButton.innerText = "Cook Recipe"
   }
+};
+
+const injectForm = () => {
+  pantryForm.innerHTML = ""
+  const ingredientNames = ingredientsData.map((ingredient) => {
+    return ingredient.name.toLowerCase()
+  })
+  ingredientNames.sort()
+
+  let options;
+  let label = `<label class="form-label" for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
+  let selectOpen = `<select class="ingredient-selection">`;
+  let selectClose = `</select>`
+  let placeholder = `<option value selected>Select Ingredient</option>`
+  let numInput = `<label class="form-label" for="amount">Select a Quantity:</label>
+                  <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100">`
+
+
+  ingredientNames.forEach((ingredient) => {
+    options += `<option value=${ingredient}>${ingredient}</option>`
+  })
+
+  pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput
+  showElement([submitButton])
 }
