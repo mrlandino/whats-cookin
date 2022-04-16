@@ -52,6 +52,8 @@ const addToPantryButton = document.querySelector(".add-to-pantry");
 const pantryForm = document.querySelector(".add-to-panty-form");
 const submitButton = document.querySelector(".submit-button")
 // const pantryFormAside = document.querySelector(".pantry-form-container");
+// const ingredientInput = document.querySelector("#select1");
+const amountInput = document.querySelector('#amount');
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
@@ -176,18 +178,22 @@ cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe)
   toggleCookButton()
   setTimeout(() => {displayUserProfile()}, 500);
-})
+});
 
 addToPantryButton.addEventListener("click", function(e) {
   // disablePantryButton();
   injectForm(ingredientsData);
   disablePantryButton();
+});
 
-// change text on button to say add item (submit)
-// one fn to target for- we input select and the num input all in one chunk
-// in fn to inject dropdown inputs, we should alphabetize
-// sort .name before injecting
-})
+
+submitButton.addEventListener("click", function(e) {
+  getOutput();
+  getId();
+  // addIngredientToPantry(getOutput(), getId());
+});
+
+
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
   Promise.all(
@@ -684,11 +690,11 @@ const injectForm = (ingredientsData) => {
 
   let options;
   let label = `<label class="form-label" for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
-  let selectOpen = `<select class="ingredient-selection">`;
+  let selectOpen = `<select id="select1" class="ingredient-selection" required>`;
   let selectClose = `</select>`
   let placeholder = `<option value selected>Select Ingredient</option>`
   let numInput = `<label class="form-label" for="amount">Select a Quantity:</label>
-                  <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100">`
+                  <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100" required>`
 
   ingredientsData.forEach(item => {
     item.name = item.name.toLowerCase();
@@ -706,16 +712,35 @@ const injectForm = (ingredientsData) => {
     return 0
   });
 
-
   ingredientsData.forEach((ingredient) => {
-    options += `<option id=${ingredient.id} value=${ingredient.name}>${ingredient.name}</option>`
+    options += `<option data-id=${ingredient.id} value=${ingredient.name}>${ingredient.name}</option>`
   });
 
   pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
-  showElement([submitButton])
-
-  console.log(currentPantry.currentPantry);
-  currentPantry.addIngredients(100, 'chocolate', 2);
-  console.log(currentPantry.currentPantry);
-
+  showElement([submitButton]);
 };
+
+// Function to invoke pantry method
+// Pull values from form
+
+const getOutput = () => {
+  let ingredientInput = document.querySelector("#select1");
+  let output = ingredientInput.value;
+  console.log(output);
+  return output;
+};
+
+const getId = () => {
+  let ingredientInput = document.querySelector("#select1");
+  let output = ingredientInput;
+  console.log(output);
+  return output;
+};
+
+// const addIngredientToPantry = (option, number) => {
+//   // console.log('option: ', option);
+//   let id = option.id;
+//   let name = option.value;
+//   // let amount = number.value;
+//   currentPantry.addIngredients()
+// };

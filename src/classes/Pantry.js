@@ -154,8 +154,6 @@ class Pantry {
 
 
   addIngredients(id, name, amount) {
-    // see if the id exists in currentPantry, if exists, add to the amount
-    // If doesn't exists, create it
     let counter = 0;
     this.currentPantry.forEach(item => {
       if (item.id === id) {
