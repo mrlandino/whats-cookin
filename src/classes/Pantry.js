@@ -154,13 +154,14 @@ class Pantry {
 
 
   addIngredients(id, name, amount) {
+    let amountToAdd = Number(amount)
     let counter = 0;
     this.currentPantry.forEach(item => {
       if (item.id === id) {
-        item.amount += amount;
+        item.amount += amountToAdd;
       } else if (counter < 1) {
         counter++;
-        this.currentPantry.push({name: name, id: id, amount: amount})
+        this.currentPantry.push({name: name, id: id, amount: amountToAdd})
       };
     });
     return this.currentPantry;
