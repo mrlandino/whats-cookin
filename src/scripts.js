@@ -1,5 +1,5 @@
 import "./styles.css";
-import {usersPromise, ingredientsPromise, recipePromise} from "./apiCalls";
+import {usersPromise, ingredientsPromise, recipePromise, postIngredient} from "./apiCalls";
 import "./images/favorite-star.png";
 import "./images/empty-star.png";
 import "./images/check-mark.png";
@@ -52,6 +52,8 @@ const addToPantryButton = document.querySelector(".add-to-pantry");
 const pantryForm = document.querySelector(".add-to-panty-form");
 const submitButton = document.querySelector(".submit-button")
 // const pantryFormAside = document.querySelector(".pantry-form-container");
+// const ingredientInput = document.querySelector("#select1");
+const amountInput = document.querySelector('#amount');
 
 // EVENT LISTENERS-----------------------------------------------
 window.onload = (event) => loadWindow();
@@ -141,6 +143,8 @@ allRecipesButton.addEventListener("click", function() {
 
 profileButton.addEventListener("click", function() {
   displayUserProfile();
+  hideElement([pantryForm, submitButton])
+  disablePantryButton();
 });
 
 favSearchInput.addEventListener("keypress", function(e) {
@@ -176,18 +180,26 @@ cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe)
   toggleCookButton()
   setTimeout(() => {displayUserProfile()}, 500);
-})
+});
 
 addToPantryButton.addEventListener("click", function(e) {
   // disablePantryButton();
-  injectForm();
+  injectForm(ingredientsData);
   disablePantryButton();
+  showElement([pantryForm]);
+});
 
-// change text on button to say add item (submit)
-// one fn to target for- we input select and the num input all in one chunk
-// in fn to inject dropdown inputs, we should alphabetize
-// sort .name before injecting
-})
+
+submitButton.addEventListener("click", function(e) {
+  postIngredient(postToPantry());
+  currentPantry.addIngredients(getId(), getName(), getAmount());
+  pantryForm.reset();
+  displayUserProfile();
+  hideElement([pantryForm, submitButton]);
+  disablePantryButton();
+});
+
+
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
   Promise.all(
@@ -675,26 +687,78 @@ const toggleCookButton = () => {
   }
 };
 
-const injectForm = () => {
+const injectForm = (ingredientsData) => {
   pantryForm.innerHTML = ""
-  const ingredientNames = ingredientsData.map((ingredient) => {
-    return ingredient.name.toLowerCase()
-  })
-  ingredientNames.sort()
+  // const ingredientNames = ingredientsData.map((ingredient) => {
+  //   return ingredient.name.toLowerCase()
+  // })
+  // ingredientNames.sort()
 
   let options;
   let label = `<label class="form-label" for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
-  let selectOpen = `<select class="ingredient-selection">`;
+  let selectOpen = `<select id="select1" class="ingredient-selection" required`;
   let selectClose = `</select>`
   let placeholder = `<option value selected>Select Ingredient</option>`
   let numInput = `<label class="form-label" for="amount">Select a Quantity:</label>
-                  <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100">`
+                  <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100" required>`
 
+  ingredientsData.forEach(item => {
+    item.name = item.name.toLowerCase();
+  });
 
-  ingredientNames.forEach((ingredient) => {
-    options += `<option value=${ingredient}>${ingredient}</option>`
+  ingredientsData.sort((a, b) => {
+    let nameA = a.name;
+    let nameB = b.name;
+
+    if (nameA < nameB) {
+      return -1;
+    } if (nameA > nameB) {
+      return 1;
+    }
+    return 0
+  });
+
+  ingredientsData.forEach((ingredient) => {
+    options += `<option data-id=${ingredient.id} value=${ingredient.name.replaceAll(" ", "")}>${ingredient.name}</option>`
+  });
+
+  pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
+  showElement([submitButton]);
+};
+
+// Function to invoke pantry method
+// Pull values from form
+
+const getName = () => {
+  let ingredientInput = document.querySelector("#select1");
+  let output = ingredientInput.value;
+  return output;
+};
+
+const getId = () => {
+  let ingredientInput = document.querySelector("#select1");
+  let output = ingredientInput.value;
+  let result;
+  ingredientsData.forEach(ingredient => {
+    ingredient.name.toLowerCase();
+    if (ingredient.name.replaceAll(" ", "") === output) {
+      result = ingredient.id;
+    }
   })
+  return result;
+};
 
-  pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput
-  showElement([submitButton])
+const getAmount = () => {
+  let ingredientAmount = document.querySelector("#amount");
+  let output = ingredientAmount.value;
+  console.log("AMOUNT", output);
+  return output;
+}
+
+const postToPantry = () => {
+  let ingredientAmount = getAmount();
+  let ingredientName = getName();
+  let ingredientId = getId();
+
+  return { userID: currentUser.id, ingredientID: ingredientId, ingredientModification: ingredientAmount }
 }
