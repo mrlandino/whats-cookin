@@ -161,6 +161,7 @@ clearFilters.addEventListener("click", function() {
 //need to method that injects the html to show the recipe details
 menuThumbnails.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
+      // currentPantry.assessIngredients(currentRecipe);
       loadMenuThumbnail(e);
       showElement([missingIngredients]);
       canCookToggle();
@@ -171,6 +172,7 @@ menuThumbnails.addEventListener("click", function(e) {
 // Duplicate code, talk to group about
 menuThumbnails.addEventListener("keypress", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
+      // currentPantry.assessIngredients(currentRecipe);
       loadMenuThumbnail(e);
       showElement([missingIngredients]);
       canCookToggle();
@@ -197,12 +199,14 @@ submitButton.addEventListener("click", function(e) {
   postIngredient(postToPantry());
   currentPantry.addIngredients(getId(), getName(), getAmount());
   pantryForm.reset();
+  currentPantry.updateMissingIngredients(ingredientsData);
   displayUserProfile();
   hideElement([pantryForm, submitButton]);
   disablePantryButton();
-  console.log(currentPantry)
+  console.log(currentPantry);
 });
 
+// We need to update missing ingredients, upon submit button 
 
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
@@ -255,8 +259,7 @@ const loadMenuThumbnail = (e) => {
   showElement([favoriteRecipesButton, profileButton]);
   menuButtonStatus();
   displayMissingIngredients();
-
-}
+};
 
 const clickFavStar = (e) => {
   changeStar(e.target);
@@ -611,6 +614,7 @@ const displayMenuRecipes = () => {
   let recipesHTML = "";
 
   currentUser.recipesToCook.forEach((recipe) => {
+    currentPantry.assessIngredients(recipe);
     recipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
@@ -650,6 +654,7 @@ const findCookableAlt = (recipe) => {
 };
 
 const displayMissingIngredients = () => {
+  currentPantry.assessIngredients(currentRecipe);
   currentPantry.updateMissingIngredients(ingredientsData);
   canCookToggle();
 
@@ -725,11 +730,11 @@ const injectForm = (ingredientsData) => {
     } if (nameA > nameB) {
       return 1;
     }
-    return 0
+    return 0;
   });
 
   ingredientsData.forEach((ingredient) => {
-    options += `<option data-id=${ingredient.id} value='${ingredient.name}'>'${ingredient.name}'</option>`
+    options += `<option data-id=${ingredient.id} value='${ingredient.name}'>${ingredient.name}</option>`
   });
 
   pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;

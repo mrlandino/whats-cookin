@@ -136,13 +136,14 @@ class Pantry {
   addIngredients(id, name, amount) {
     console.log('inputs: ', id, name, amount);
     let amountToAdd = Number(amount)
-    let obj = {name: name, id: id, amount: amountToAdd};
+    // let obj = {name: name, id: id, amount: amountToAdd};
     let counter = 0;
     this.currentPantry.forEach(item => {
       if (item.id === id) {
+        console.log(item, name)
         // counter++;
         item.amount += amountToAdd;
-      } else if (counter < 1 && this.currentPantry.find(item => item.name !== name)) {
+      } else if (counter < 1 && !this.currentPantry.find(item => item.name === name)) {
         counter++;
         this.currentPantry.push({name: name, id: id, amount: amountToAdd})
       };
