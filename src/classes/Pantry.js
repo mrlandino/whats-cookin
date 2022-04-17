@@ -42,12 +42,16 @@ class Pantry {
       return this.ingredientsMissing = acc;
     }, []);
 
+    this.updateCookability(recipe)
+    // MOVE above method into its own function as a helper function
+  };
+
+  updateCookability(recipe) {
     if (this.ingredientsMissing.length === 0) {
       recipe.canBeCooked = true;
     } else {
       recipe.canBeCooked = false;
     };
-    // MOVE above method into its own function as a helper function
   };
 
   updateCurrentPantry(ingredients) {
@@ -150,6 +154,46 @@ class Pantry {
     });
     return this.currentPantry;
   };
+
+  repopulateIngredientsMissing(recipe) {
+    // basically want to reasses the current pantry to find additions and refresh the ings missing array.
+    // look at currentPantry, see if amounts are enough for the recipe
+
+    let recipeIngredientIds = [];
+    let pantryIngredientIds = [];
+    let missingIngredIds = [];
+
+    recipe.ingredients.forEach((recipeIngredient) => {
+      recipeIngredientIds.push(recipeIngredient.id);
+    });
+
+    this.currentPantry.forEach((pantryIngredient) => {
+      pantryIngredientIds.push(pantryIngredient.id);
+    });
+
+    recipe.ingredients.reduce((acc, recipeIngredient) => {
+      this.currentPantry.forEach(pantryItem => {
+        if(recipeIngredient.id === pantryItem.id && recipeIngredient.quantity.amount > pantryItem.amount) {
+          var difference = recipeIngredient.quantity.amount - pantryItem.amount;
+          var element = {id: recipeIngredient.id, quantity: difference};
+          if (!acc.includes(element)) {
+               acc.push(element);
+               missingIngredIds.push(element.id);
+          };
+        };
+      });
+
+      recipeIngredientIds.forEach(idNum => {
+        if(!pantryIngredientIds.includes(idNum) && !missingIngredIds.includes(idNum) && recipeIngredient.id === idNum) {
+          acc.push({id: idNum, quantity: recipeIngredient.quantity.amount});
+          missingIngredIds.push(idNum);
+        };
+      });
+      return this.ingredientsMissing = acc;
+    }, []);
+    // return this.ingredientsMissing
+    this.updateCookability(recipe);
+  }
 }
 
 export default Pantry

@@ -162,9 +162,24 @@ clearFilters.addEventListener("click", function() {
 menuThumbnails.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
       // currentPantry.assessIngredients(currentRecipe);
+      // currentPantry.repopulateIngredientsMissing(currentRecipe)
       loadMenuThumbnail(e);
       showElement([missingIngredients]);
       canCookToggle();
+      // Promise.all(
+      //   [usersPromise]
+      // ).then(jsonArray => {
+      //   usersData = jsonArray[0];
+      // })
+      let getUserPromise = (url) => {
+        return fetch(url)
+        .then(response => response.json())
+        .then(data => usersData)
+        .catch(err => console.log(error));
+      };
+
+      getUserPromise("http://localhost:3001/api/v1/users")
+      console.log(usersData)
       // cookButton.innerText = 'Cook Recipe';
   };
 });
@@ -188,6 +203,7 @@ cookButton.addEventListener("click", function(e) {
 });
 
 addToPantryButton.addEventListener("click", function(e) {
+  console.log(currentUser)
   // disablePantryButton();
   injectForm(ingredientsData);
   disablePantryButton();
@@ -199,14 +215,18 @@ submitButton.addEventListener("click", function(e) {
   postIngredient(postToPantry());
   currentPantry.addIngredients(getId(), getName(), getAmount());
   pantryForm.reset();
-  currentPantry.updateMissingIngredients(ingredientsData);
+  // currentPantry.updateMissingIngredients(ingredientsData);
+  // console.log(currentRecipe)
+  // currentPantry.repopulateIngredientsMissing(currentRecipe);
   displayUserProfile();
   hideElement([pantryForm, submitButton]);
   disablePantryButton();
-  console.log(currentPantry);
+  // console.log(currentPantry);
+
+  console.log(usersData)
 });
 
-// We need to update missing ingredients, upon submit button 
+// We need to update missing ingredients, upon submit button
 
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
@@ -252,6 +272,7 @@ const loadFavThumbnail = (e) => {
 };
 
 const loadMenuThumbnail = (e) => {
+  console.log(currentPantry.ingredientsMissing)
   displayCard();
   findRecipeInfo(e.target.parentElement.id);
   updateRecipeCard();
@@ -654,8 +675,11 @@ const findCookableAlt = (recipe) => {
 };
 
 const displayMissingIngredients = () => {
-  currentPantry.assessIngredients(currentRecipe);
-  currentPantry.updateMissingIngredients(ingredientsData);
+    currentPantry.assessIngredients(currentRecipe);
+    currentPantry.updateMissingIngredients(ingredientsData);
+    // currentPantry.repopulateIngredientsMissing(currentRecipe);
+
+  // invoke the new method
   canCookToggle();
 
   let missingIngredientList = "";
