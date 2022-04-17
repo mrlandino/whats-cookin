@@ -143,6 +143,8 @@ allRecipesButton.addEventListener("click", function() {
 
 profileButton.addEventListener("click", function() {
   displayUserProfile();
+  hideElement([pantryForm, submitButton])
+  disablePantryButton();
 });
 
 favSearchInput.addEventListener("keypress", function(e) {
@@ -184,20 +186,17 @@ addToPantryButton.addEventListener("click", function(e) {
   // disablePantryButton();
   injectForm(ingredientsData);
   disablePantryButton();
+  showElement([pantryForm]);
 });
 
 
 submitButton.addEventListener("click", function(e) {
-  console.log("POST TO PANTRY", postToPantry())
-  console.log("GET ID: ", getId())
   postIngredient(postToPantry());
-
   currentPantry.addIngredients(getId(), getName(), getAmount());
-
-  console.log(currentPantry)
-
-
-  // addIngredientToPantry(getOutput(), getId());
+  pantryForm.reset();
+  displayUserProfile();
+  hideElement([pantryForm, submitButton]);
+  disablePantryButton();
 });
 
 
