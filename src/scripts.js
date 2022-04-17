@@ -162,8 +162,9 @@ clearFilters.addEventListener("click", function() {
 menuThumbnails.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
       loadMenuThumbnail(e);
-      showElement([missingIngredients])
-      toggleCookButton()
+      showElement([missingIngredients]);
+      canCookToggle();
+      // cookButton.innerText = 'Cook Recipe';
   };
 });
 
@@ -171,8 +172,9 @@ menuThumbnails.addEventListener("click", function(e) {
 menuThumbnails.addEventListener("keypress", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
       loadMenuThumbnail(e);
-      showElement([missingIngredients])
-      toggleCookButton()
+      showElement([missingIngredients]);
+      canCookToggle();
+      // cookButton.innerText = 'Cook Recipe';
   };
 });
 
@@ -198,6 +200,7 @@ submitButton.addEventListener("click", function(e) {
   displayUserProfile();
   hideElement([pantryForm, submitButton]);
   disablePantryButton();
+  console.log(currentPantry)
 });
 
 
@@ -581,6 +584,8 @@ const displayUserProfile = () => {
   checkCookability();
   displayMenuRecipes();
   disablePantryButton();
+  findCookableSource(currentRecipe);
+  findCookableAlt(currentRecipe);
 };
 
 const displayPantry = () => {
@@ -663,15 +668,17 @@ const displayMissingIngredients = () => {
 };
 
 const canCookToggle = () => {
+  cookButton.innerText = "Cook Recipe!";
   if(currentPantry.ingredientsMissing.length > 0) {
-    cookButton.disabled = false;
-    cookButton.classList.remove("disabled")
+    cookButton.disabled = true;
+    cookButton.classList.add("disabled")
   } else {
     cookButton.disabled = false;
     cookButton.classList.remove("disabled")
   };
 };
 
+// Change these back
 const disablePantryButton = () => {
   if (submitButton.classList.contains("hidden")) {
     addToPantryButton.disabled = false;
@@ -681,11 +688,13 @@ const disablePantryButton = () => {
 };
 
 const toggleCookButton = () => {
-  if (cookButton.innerText === "Cook Recipe") {
-    cookButton.innerText = "Recipe Cooked!"
-  } else {
-    cookButton.innerText = "Cook Recipe"
-  }
+  cookButton.innerText = "Recipe Cooked!";
+
+  // if (cookButton.innerText === "Cook Recipe") {
+  //   cookButton.innerText = "Recipe Cooked!";
+  // } else {
+  //   cookButton.innerText = "Cook Recipe";
+  // }
 };
 
 const injectForm = (ingredientsData) => {
@@ -720,7 +729,7 @@ const injectForm = (ingredientsData) => {
   });
 
   ingredientsData.forEach((ingredient) => {
-    options += `<option data-id=${ingredient.id} value=${ingredient.name.replaceAll(" ", "")}>${ingredient.name}</option>`
+    options += `<option data-id=${ingredient.id} value='${ingredient.name}'>'${ingredient.name}'</option>`
   });
 
   pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
@@ -737,9 +746,10 @@ const getId = () => {
   let ingredientInput = document.querySelector("#select1");
   let output = ingredientInput.value;
   let result;
-  ingredientsData.forEach(ingredient => {
+  let ingredientsData2 = ingredientsData;
+  ingredientsData2.forEach(ingredient => {
     ingredient.name.toLowerCase();
-    if (ingredient.name.replaceAll(" ", "") === output) {
+    if (ingredient.name === output) {
       result = ingredient.id;
     }
   })
