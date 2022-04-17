@@ -1,5 +1,5 @@
 import "./styles.css";
-import {usersPromise, ingredientsPromise, recipePromise} from "./apiCalls";
+import {usersPromise, ingredientsPromise, recipePromise, postIngredient} from "./apiCalls";
 import "./images/favorite-star.png";
 import "./images/empty-star.png";
 import "./images/check-mark.png";
@@ -188,8 +188,15 @@ addToPantryButton.addEventListener("click", function(e) {
 
 
 submitButton.addEventListener("click", function(e) {
-  getOutput();
-  getId();
+  console.log("POST TO PANTRY", postToPantry())
+  console.log("GET ID: ", getId())
+  postIngredient(postToPantry());
+
+  currentPantry.addIngredients(getId(), getName(), getAmount());
+
+  console.log(currentPantry)
+
+
   // addIngredientToPantry(getOutput(), getId());
 });
 
@@ -690,7 +697,7 @@ const injectForm = (ingredientsData) => {
 
   let options;
   let label = `<label class="form-label" for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
-  let selectOpen = `<select id="select1" class="ingredient-selection" required>`;
+  let selectOpen = `<select id="select1" class="ingredient-selection" required`;
   let selectClose = `</select>`
   let placeholder = `<option value selected>Select Ingredient</option>`
   let numInput = `<label class="form-label" for="amount">Select a Quantity:</label>
@@ -713,7 +720,7 @@ const injectForm = (ingredientsData) => {
   });
 
   ingredientsData.forEach((ingredient) => {
-    options += `<option data-id=${ingredient.id} value=${ingredient.name}>${ingredient.name}</option>`
+    options += `<option data-id=${ingredient.id} value=${ingredient.name.replaceAll(" ", "")}>${ingredient.name}</option>`
   });
 
   pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
@@ -723,24 +730,36 @@ const injectForm = (ingredientsData) => {
 // Function to invoke pantry method
 // Pull values from form
 
-const getOutput = () => {
+const getName = () => {
   let ingredientInput = document.querySelector("#select1");
   let output = ingredientInput.value;
-  console.log(output);
   return output;
 };
 
 const getId = () => {
   let ingredientInput = document.querySelector("#select1");
-  let output = ingredientInput;
-  console.log(output);
-  return output;
+  let output = ingredientInput.value;
+  let result;
+  ingredientsData.forEach(ingredient => {
+    ingredient.name.toLowerCase();
+    if (ingredient.name.replaceAll(" ", "") === output) {
+      result = ingredient.id;
+    }
+  })
+  return result;
 };
 
-// const addIngredientToPantry = (option, number) => {
-//   // console.log('option: ', option);
-//   let id = option.id;
-//   let name = option.value;
-//   // let amount = number.value;
-//   currentPantry.addIngredients()
-// };
+const getAmount = () => {
+  let ingredientAmount = document.querySelector("#amount");
+  let output = ingredientAmount.value;
+  console.log("AMOUNT", output);
+  return output;
+}
+
+const postToPantry = () => {
+  let ingredientAmount = getAmount();
+  let ingredientName = getName();
+  let ingredientId = getId();
+
+  return { userID: currentUser.id, ingredientID: ingredientId, ingredientModification: ingredientAmount }
+}
