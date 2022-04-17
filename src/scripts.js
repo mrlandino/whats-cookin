@@ -89,7 +89,7 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
 // Duplicate code, talk to group about
 favoriteRecipesContainer.addEventListener("keypress", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
-    loadFavThumbnail(e);
+    loadFavThumbnail(e);get
   };
   if (e.target.classList.contains("star-icon") && e.key === "Enter") {
     clickFavStar(e);
