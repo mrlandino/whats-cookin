@@ -177,8 +177,9 @@ menuThumbnails.addEventListener("keypress", function(e) {
 });
 
 cookButton.addEventListener("click", function(e) {
-  currentPantry.removeIngredients(currentRecipe)
-  toggleCookButton()
+  currentPantry.removeIngredients(currentRecipe);
+  removePost();
+  toggleCookButton();
   setTimeout(() => {displayUserProfile()}, 500);
 });
 
@@ -753,7 +754,7 @@ const getAmount = () => {
   let output = ingredientAmount.value;
   console.log("AMOUNT", output);
   return output;
-}
+};
 
 const postToPantry = () => {
   let ingredientAmount = getAmount();
@@ -761,4 +762,15 @@ const postToPantry = () => {
   let ingredientId = getId();
 
   return { userID: currentUser.id, ingredientID: ingredientId, ingredientModification: ingredientAmount }
-}
+};
+
+const removePost = () => {
+  let itemsToRemove = [];
+  currentRecipe.ingredients.forEach(item => {
+    itemsToRemove.push({userID: currentUser.id, ingredientID: item.id, ingredientModification: -(item.quantity.amount)});
+  });
+
+  itemsToRemove.forEach(ingredientObj => {
+    postIngredient(ingredientObj);
+  });
+};
