@@ -25,16 +25,17 @@ let postIngredient = (postObject) => {
   })
   .then((ingredient) => {
     errorMessage.innerText = '';
-    console.log("Sweet Your Ingredient is Added")
+    console.log("Sweet, your ingredients have been updated");
   })
   .catch((error) => {
+    console.log("ERROR");
     errorMessage.innerText = 'Your ingredient was not added successfully';
     return errorMessage;// container to display errorMessage(querySelector)
   });
 };
 
-const showAddition = (ingredient) => {
-  console.log(ingredient);
+// const showAddition = (ingredient) => {
+//   console.log(ingredient);
+// }
 
-}
 export {usersPromise, ingredientsPromise, recipePromise, postIngredient};
