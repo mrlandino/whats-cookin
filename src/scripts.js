@@ -321,7 +321,7 @@ const displayAllRecipes = () => {
   let allRecipesHTML = "";
   recipesList.recipes.forEach((recipe) => {
     allRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -336,7 +336,7 @@ const displayFavoriteRecipes = () => {
   let favRecipesHTML = "";
   currentUser.favoriteRecipes.forEach((recipe) => {
     favRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="favorited">
@@ -435,7 +435,7 @@ const displayFilteredContent = () => {
   let filteredRecipesHTML = "";
   recipesList.filteredRecipesTag.forEach((recipe) => {
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -455,7 +455,7 @@ const displaySearchedContent = () => {
   let searchedRecipesHTML = "";
   recipesList.filteredRecipesName.forEach((recipe) => {
     searchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -501,7 +501,7 @@ const displayFilteredFavs = () => {
   let filteredRecipesHTML = "";
     currentUser.favoritesByTag.forEach((recipe) => {
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -521,7 +521,7 @@ const displayFavSearchedContent = () => {
   let favSearchedRecipesHTML = "";
   currentUser.favoritesByName.forEach((recipe) => {
     favSearchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -607,7 +607,7 @@ const displayMenuRecipes = () => {
 
   currentUser.recipesToCook.forEach((recipe) => {
     recipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
                   <img class="menu-icon" id='${recipe.id}' src=${findCookableSource(recipe)} alt=${findCookableAlt(recipe)}>
@@ -726,9 +726,6 @@ const injectForm = (ingredientsData) => {
   pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
   showElement([submitButton]);
 };
-
-// Function to invoke pantry method
-// Pull values from form
 
 const getName = () => {
   let ingredientInput = document.querySelector("#select1");
