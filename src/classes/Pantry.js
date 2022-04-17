@@ -68,13 +68,10 @@ class Pantry {
     this.currentPantry.map(ingredient => {
       this.userPantry.forEach(ingredient2 => {
         if (ingredient.id === ingredient2.ingredient) {
-
           ingredient.amount = ingredient2.amount;
-          // ingredient.unit = ingredient2.quantity.unit;
         };
       });
     });
-    // this.userPantry = this.currentPantry
   };
 
   repopulateCurrentPantry(ingredients) {
@@ -82,7 +79,6 @@ class Pantry {
       return ingredient.id;
     });
 
-    // this.currentPantry = [];
     const filteredIngredients = ingredients.filter(ingredient => {
       if (ingredientIds.includes(ingredient.id)) {
         return ingredient;
@@ -93,18 +89,7 @@ class Pantry {
       if (!this.currentPantry.includes({name: ingredient.name, id: ingredient.id, amount: ingredient.amount}) && ingredient.amount !== undefined) {
         this.currentPantry.push({name: ingredient.name, id: ingredient.id, amount: ingredient.amount})
       }
-
     });
-    //
-    // this.currentPantry.map(ingredient => {
-    //   this.userPantry.forEach(ingredient2 => {
-    //     if (ingredient.id === ingredient2.ingredient) {
-    //
-    //       ingredient.amount = ingredient2.amount;
-    //       // ingredient.unit = ingredient2.quantity.unit;
-    //     };
-    //   });
-    // });
   }
 
   updateMissingIngredients(ingredients) {
@@ -128,7 +113,6 @@ class Pantry {
         if (ingredient.id === ingredient2.id) {
 
           ingredient.amount = ingredient2.quantity;
-          // ingredient.unit = ingredient2.quantity.unit;
         };
       });
     });
@@ -137,10 +121,6 @@ class Pantry {
   };
 
   removeIngredients(recipe) {
-    // when a recipe is cooked, the ings required for that recipe are removed from the pantry.
-    // might be cool to do a .hasBeenCooked on recipe class to apply conditional if it has been cooked, remove these ingredients
-    // currentUserPantry - name, id, amount
-    // recipe - ingredients needed
     this.currentPantry.forEach((pantryItem) => {
       recipe.ingredientsNeeded.forEach((ingredient) => {
         if (pantryItem.id === ingredient.id) {
