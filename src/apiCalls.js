@@ -31,12 +31,9 @@ let postIngredient = (postObject) => {
   .catch((error) => {
     console.log("ERROR");
     errorMessage.innerText = 'Your ingredient was not added successfully';
-    return errorMessage;// container to display errorMessage(querySelector)
+    return errorMessage;
   });
 };
 
-// const showAddition = (ingredient) => {
-//   console.log(ingredient);
-// }
 
 export {usersPromise, ingredientsPromise, recipePromise, postIngredient};
