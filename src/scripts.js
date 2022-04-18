@@ -255,7 +255,8 @@ submitButton.addEventListener("click", function(e) {
   displayUserProfile();
   hideElement([pantryForm, submitButton]);
   disablePantryButton();
-  displayMenuRecipes();
+  checkCookability();
+  setTimeout(() => {displayMenuRecipes()}, 500);
   // console.log(currentPantry);
 
   console.log(usersData)
@@ -676,7 +677,6 @@ const displayMenuRecipes = () => {
                 <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="menu-icon" id='${recipe.id}' src=${findCookableSource(recipe)} alt=${findCookableAlt(recipe)}>
                 </div>
               </div>`;
   });
@@ -690,25 +690,25 @@ const checkCookability = () => {
   });
 };
 
-const findCookableSource = (recipe) => {
-  let imageSource = "";
-  if(recipe.canBeCooked) {
-    imageSource = "http://localhost:8080/images/check-mark.png"
-  } else {
-    imageSource = "http://localhost:8080/images/shopping-cart.png"
-  }
-  return imageSource;
-};
-
-const findCookableAlt = (recipe) => {
-  let imageAlt = "";
-  if(recipe.canBeCooked) {
-    imageAlt = "cookable"
-  } else {
-    imageAlt = "uncookable"
-  }
-  return imageAlt;
-};
+// const findCookableSource = (recipe) => {
+//   let imageSource = "";
+//   if(recipe.canBeCooked) {
+//     imageSource = "http://localhost:8080/images/check-mark.png"
+//   } else {
+//     imageSource = "http://localhost:8080/images/shopping-cart.png"
+//   }
+//   return imageSource;
+// };
+//
+// const findCookableAlt = (recipe) => {
+//   let imageAlt = "";
+//   if(recipe.canBeCooked) {
+//     imageAlt = "cookable"
+//   } else {
+//     imageAlt = "uncookable"
+//   }
+//   return imageAlt;
+// };
 
 const displayMissingIngredients = () => {
     currentPantry.assessIngredients(currentRecipe);
