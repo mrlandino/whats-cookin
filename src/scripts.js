@@ -174,12 +174,24 @@ menuThumbnails.addEventListener("click", function(e) {
       let getUserPromise = (url) => {
         return fetch(url)
         .then(response => response.json())
-        .then(data => usersData)
+        .then(data => {
+          usersData = data;
+          usersData.forEach(user => {
+            if(user.id === currentUser.id) {
+              currentPantry.userPantry = user.pantry;
+              console.log(currentPantry)
+              // currentPantry = user.pantry;
+            };
+          });
+          displayMissingIngredients();
+        })
         .catch(err => console.log(error));
       };
 
       getUserPromise("http://localhost:3001/api/v1/users")
       console.log(usersData)
+      //UPDATE CurrentUsers Pantry
+
       // cookButton.innerText = 'Cook Recipe';
   };
 });
@@ -198,7 +210,29 @@ menuThumbnails.addEventListener("keypress", function(e) {
 cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe);
   removePost();
+  //refetch after this post happens and update currentPantry again:
+
+          // let getUserPromise = (url) => {
+          //   return fetch(url)
+          //   .then(response => response.json())
+          //   .then(data => {
+          //     usersData = data;
+          //     usersData.forEach(user => {
+          //       if(user.id === currentUser.id) {
+          //         currentPantry.userPantry = user.pantry;
+          //         console.log(currentPantry)
+          //         // currentPantry = user.pantry;
+          //       };
+          //     });
+          //     displayMissingIngredients();
+          //   })
+          //   .catch(err => console.log(error));
+          // };
+          //
+          // getUserPromise("http://localhost:3001/api/v1/users")
+
   toggleCookButton();
+  currentPantry.assessIngredients(currentRecipe);
   setTimeout(() => {displayUserProfile()}, 500);
 });
 
@@ -221,6 +255,7 @@ submitButton.addEventListener("click", function(e) {
   displayUserProfile();
   hideElement([pantryForm, submitButton]);
   disablePantryButton();
+  displayMenuRecipes();
   // console.log(currentPantry);
 
   console.log(usersData)
@@ -636,6 +671,7 @@ const displayMenuRecipes = () => {
 
   currentUser.recipesToCook.forEach((recipe) => {
     currentPantry.assessIngredients(recipe);
+    console.log(recipe.canBeCooked);
     recipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
@@ -789,7 +825,7 @@ const getAmount = () => {
   let ingredientAmount = document.querySelector("#amount");
   let output = ingredientAmount.value;
   console.log("AMOUNT", output);
-  return output;
+  return Number(output);
 };
 
 const postToPantry = () => {
