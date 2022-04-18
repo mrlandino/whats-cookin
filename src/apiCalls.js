@@ -1,5 +1,6 @@
 let errorMessage = document.querySelector(".error-message");
 let userUrl = 'http://localhost:3001/api/v1/users';
+
 let getPromise = (url) => {
   return fetch(url)
   .then(response => response.json())

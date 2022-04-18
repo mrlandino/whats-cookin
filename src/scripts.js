@@ -89,7 +89,7 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
 // Duplicate code, talk to group about
 favoriteRecipesContainer.addEventListener("keypress", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
-    loadFavThumbnail(e);
+    loadFavThumbnail(e);get
   };
   if (e.target.classList.contains("star-icon") && e.key === "Enter") {
     clickFavStar(e);
@@ -161,29 +161,83 @@ clearFilters.addEventListener("click", function() {
 //need to method that injects the html to show the recipe details
 menuThumbnails.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
+      // currentPantry.assessIngredients(currentRecipe);
+      // currentPantry.repopulateIngredientsMissing(currentRecipe)
       loadMenuThumbnail(e);
-      showElement([missingIngredients])
-      toggleCookButton()
+      showElement([missingIngredients]);
+      canCookToggle();
+      // Promise.all(
+      //   [usersPromise]
+      // ).then(jsonArray => {
+      //   usersData = jsonArray[0];
+      // })
+      let getUserPromise = (url) => {
+        return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          usersData = data;
+          usersData.forEach(user => {
+            if(user.id === currentUser.id) {
+              currentPantry.userPantry = user.pantry;
+              console.log(currentPantry)
+              // currentPantry = user.pantry;
+            };
+          });
+          displayMissingIngredients();
+        })
+        .catch(err => console.log(error));
+      };
+
+      getUserPromise("http://localhost:3001/api/v1/users")
+      console.log(usersData)
+      //UPDATE CurrentUsers Pantry
+
+      // cookButton.innerText = 'Cook Recipe';
   };
 });
 
 // Duplicate code, talk to group about
 menuThumbnails.addEventListener("keypress", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
+      // currentPantry.assessIngredients(currentRecipe);
       loadMenuThumbnail(e);
-      showElement([missingIngredients])
-      toggleCookButton()
+      showElement([missingIngredients]);
+      canCookToggle();
+      // cookButton.innerText = 'Cook Recipe';
   };
 });
 
 cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe);
   removePost();
+  //refetch after this post happens and update currentPantry again:
+
+          // let getUserPromise = (url) => {
+          //   return fetch(url)
+          //   .then(response => response.json())
+          //   .then(data => {
+          //     usersData = data;
+          //     usersData.forEach(user => {
+          //       if(user.id === currentUser.id) {
+          //         currentPantry.userPantry = user.pantry;
+          //         console.log(currentPantry)
+          //         // currentPantry = user.pantry;
+          //       };
+          //     });
+          //     displayMissingIngredients();
+          //   })
+          //   .catch(err => console.log(error));
+          // };
+          //
+          // getUserPromise("http://localhost:3001/api/v1/users")
+
   toggleCookButton();
+  currentPantry.assessIngredients(currentRecipe);
   setTimeout(() => {displayUserProfile()}, 500);
 });
 
 addToPantryButton.addEventListener("click", function(e) {
+  console.log(currentUser)
   // disablePantryButton();
   injectForm(ingredientsData);
   disablePantryButton();
@@ -195,11 +249,19 @@ submitButton.addEventListener("click", function(e) {
   postIngredient(postToPantry());
   currentPantry.addIngredients(getId(), getName(), getAmount());
   pantryForm.reset();
+  // currentPantry.updateMissingIngredients(ingredientsData);
+  // console.log(currentRecipe)
+  // currentPantry.repopulateIngredientsMissing(currentRecipe);
   displayUserProfile();
   hideElement([pantryForm, submitButton]);
   disablePantryButton();
+  displayMenuRecipes();
+  // console.log(currentPantry);
+
+  console.log(usersData)
 });
 
+// We need to update missing ingredients, upon submit button
 
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
@@ -245,6 +307,7 @@ const loadFavThumbnail = (e) => {
 };
 
 const loadMenuThumbnail = (e) => {
+  console.log(currentPantry.ingredientsMissing)
   displayCard();
   findRecipeInfo(e.target.parentElement.id);
   updateRecipeCard();
@@ -252,8 +315,7 @@ const loadMenuThumbnail = (e) => {
   showElement([favoriteRecipesButton, profileButton]);
   menuButtonStatus();
   displayMissingIngredients();
-
-}
+};
 
 const clickFavStar = (e) => {
   changeStar(e.target);
@@ -321,7 +383,7 @@ const displayAllRecipes = () => {
   let allRecipesHTML = "";
   recipesList.recipes.forEach((recipe) => {
     allRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id='${recipe.id}' src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -336,7 +398,7 @@ const displayFavoriteRecipes = () => {
   let favRecipesHTML = "";
   currentUser.favoriteRecipes.forEach((recipe) => {
     favRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id='${recipe.id}' src="./images/favorite-star.png" alt="favorited">
@@ -435,7 +497,7 @@ const displayFilteredContent = () => {
   let filteredRecipesHTML = "";
   recipesList.filteredRecipesTag.forEach((recipe) => {
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -455,7 +517,7 @@ const displaySearchedContent = () => {
   let searchedRecipesHTML = "";
   recipesList.filteredRecipesName.forEach((recipe) => {
     searchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -501,7 +563,7 @@ const displayFilteredFavs = () => {
   let filteredRecipesHTML = "";
     currentUser.favoritesByTag.forEach((recipe) => {
     filteredRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -521,7 +583,7 @@ const displayFavSearchedContent = () => {
   let favSearchedRecipesHTML = "";
   currentUser.favoritesByName.forEach((recipe) => {
     favSearchedRecipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details">
                   <p>${recipe.name}</p>
                   <img tabindex="0" class="star-icon" id=${recipe.id} src=${findImageSource(recipe)} alt=${findImageAlt(recipe)}>
@@ -581,6 +643,8 @@ const displayUserProfile = () => {
   checkCookability();
   displayMenuRecipes();
   disablePantryButton();
+  findCookableSource(currentRecipe);
+  findCookableAlt(currentRecipe);
 };
 
 const displayPantry = () => {
@@ -606,8 +670,10 @@ const displayMenuRecipes = () => {
   let recipesHTML = "";
 
   currentUser.recipesToCook.forEach((recipe) => {
+    currentPantry.assessIngredients(recipe);
+    console.log(recipe.canBeCooked);
     recipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
-                <img tabindex="0" class="recipe-image" src=${recipe.image} alt=${recipe.name}>
+                <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
                   <img class="menu-icon" id='${recipe.id}' src=${findCookableSource(recipe)} alt=${findCookableAlt(recipe)}>
@@ -645,7 +711,11 @@ const findCookableAlt = (recipe) => {
 };
 
 const displayMissingIngredients = () => {
-  currentPantry.updateMissingIngredients(ingredientsData);
+    currentPantry.assessIngredients(currentRecipe);
+    currentPantry.updateMissingIngredients(ingredientsData);
+    // currentPantry.repopulateIngredientsMissing(currentRecipe);
+
+  // invoke the new method
   canCookToggle();
 
   let missingIngredientList = "";
@@ -663,15 +733,17 @@ const displayMissingIngredients = () => {
 };
 
 const canCookToggle = () => {
+  cookButton.innerText = "Cook Recipe!";
   if(currentPantry.ingredientsMissing.length > 0) {
-    cookButton.disabled = false;
-    cookButton.classList.remove("disabled")
+    cookButton.disabled = true;
+    cookButton.classList.add("disabled")
   } else {
     cookButton.disabled = false;
     cookButton.classList.remove("disabled")
   };
 };
 
+// Change these back
 const disablePantryButton = () => {
   if (submitButton.classList.contains("hidden")) {
     addToPantryButton.disabled = false;
@@ -681,11 +753,13 @@ const disablePantryButton = () => {
 };
 
 const toggleCookButton = () => {
-  if (cookButton.innerText === "Cook Recipe") {
-    cookButton.innerText = "Recipe Cooked!"
-  } else {
-    cookButton.innerText = "Cook Recipe"
-  }
+  cookButton.innerText = "Recipe Cooked!";
+
+  // if (cookButton.innerText === "Cook Recipe") {
+  //   cookButton.innerText = "Recipe Cooked!";
+  // } else {
+  //   cookButton.innerText = "Cook Recipe";
+  // }
 };
 
 const injectForm = (ingredientsData) => {
@@ -716,19 +790,16 @@ const injectForm = (ingredientsData) => {
     } if (nameA > nameB) {
       return 1;
     }
-    return 0
+    return 0;
   });
 
   ingredientsData.forEach((ingredient) => {
-    options += `<option data-id=${ingredient.id} value=${ingredient.name.replaceAll(" ", "")}>${ingredient.name}</option>`
+    options += `<option data-id=${ingredient.id} value='${ingredient.name}'>${ingredient.name}</option>`
   });
 
   pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
   showElement([submitButton]);
 };
-
-// Function to invoke pantry method
-// Pull values from form
 
 const getName = () => {
   let ingredientInput = document.querySelector("#select1");
@@ -740,9 +811,10 @@ const getId = () => {
   let ingredientInput = document.querySelector("#select1");
   let output = ingredientInput.value;
   let result;
-  ingredientsData.forEach(ingredient => {
+  let ingredientsData2 = ingredientsData;
+  ingredientsData2.forEach(ingredient => {
     ingredient.name.toLowerCase();
-    if (ingredient.name.replaceAll(" ", "") === output) {
+    if (ingredient.name === output) {
       result = ingredient.id;
     }
   })
@@ -753,7 +825,7 @@ const getAmount = () => {
   let ingredientAmount = document.querySelector("#amount");
   let output = ingredientAmount.value;
   console.log("AMOUNT", output);
-  return output;
+  return Number(output);
 };
 
 const postToPantry = () => {
