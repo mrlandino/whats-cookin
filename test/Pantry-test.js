@@ -6,7 +6,6 @@ import User from '../src/classes/User';
 import {recipeData, usersData, ingredients, ingredients2} from "./data";
 
 describe('Pantry', () => {
-  // let ingredients;
   let recipe;
   let recipe2;
   let user;
@@ -26,7 +25,6 @@ describe('Pantry', () => {
   it("Should be a function", () => {
     expect(Pantry).to.be.a('function');
   });
-//ADD TESTS FOR CONSTRUCTOR PROPS
 
   it("Should be an instance of the Pantry", () => {
     expect(pantry).to.be.an.instanceof(Pantry);
@@ -48,9 +46,11 @@ describe('Pantry', () => {
 
     pantry.assessIngredients(recipe);
     expect(recipe.canBeCooked).to.equal(false);
+    expect(pantry.ingredientsMissing).to.deep.equal([{"id": 18372, "quantity": 0.25}]);
 
     pantry2.assessIngredients(recipe2);
     expect(recipe2.canBeCooked).to.equal(true);
+    expect(pantry2.ingredientsMissing).to.deep.equal([]);
   });
 
   it("Should be able to update the user's current pantry with information needed", () => {
@@ -59,6 +59,11 @@ describe('Pantry', () => {
     expect(pantry.currentPantry[0].name).to.equal('wheat flour');
     expect(pantry.currentPantry[0].id).to.equal(20081);
     expect(pantry.currentPantry[0].amount).to.equal(5);
+
+    pantry2.updateCurrentPantry(ingredients2);
+    expect(pantry2.currentPantry[1].name).to.equal('apple');
+    expect(pantry2.currentPantry[1].id).to.equal(9003);
+    expect(pantry2.currentPantry[1].amount).to.equal(2);
   });
 
   it("Should be able to repopulate the current pantry", () => {
@@ -68,17 +73,33 @@ describe('Pantry', () => {
     expect(pantry.currentPantry[0].name).to.equal('wheat flour');
     expect(pantry.currentPantry[0].id).to.equal(20081);
     expect(pantry.currentPantry[0].amount).to.equal(5);
+
+    pantry2.updateCurrentPantry(ingredients2);
+    pantry2.repopulateCurrentPantry(ingredients2);
+    expect(pantry2.currentPantry[1].name).to.equal('apple');
+    expect(pantry2.currentPantry[1].id).to.equal(9003);
+    expect(pantry2.currentPantry[1].amount).to.equal(2);
   });
 
   it("Should be able to update ingredients once a recipe is cooked", () => {
 
-    // pantry.updateCurrentPantry(ingredients);
-    // pantry.removeIngredients(recipe);
+    pantry.updateCurrentPantry(ingredients);
+    pantry.removeIngredients(recipe);
+    pantry.repopulateCurrentPantry(ingredients);
 
-    // console.log(recipe);
-    // expect(pantry.currentPantry[0].name).to.equal('bicarbonate of soda');
-    // expect(pantry.currentPantry[0].id).to.equal(18372);
-    // expect(pantry.currentPantry[0].amount).to.equal(0.25);
+    expect(pantry.currentPantry[0].name).to.equal('wheat flour');
+    expect(pantry.currentPantry[0].id).to.equal(20081);
+    expect(pantry.currentPantry[0].amount).to.equal(5);
   });
 
+  it("Should be able to add an ingredient to a user's pantry", () => {
+
+    pantry.updateCurrentPantry(ingredients);
+    pantry.addIngredients(ingredients);
+    pantry.repopulateCurrentPantry(ingredients);
+
+    expect(pantry.currentPantry[0].name).to.equal('wheat flour');
+    expect(pantry.currentPantry[0].id).to.equal(20081);
+    expect(pantry.currentPantry[0].amount).to.equal(5);
+  });
 });

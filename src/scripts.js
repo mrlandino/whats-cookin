@@ -193,7 +193,6 @@ addToPantryButton.addEventListener("click", function(e) {
   showElement([pantryForm]);
 });
 
-
 submitButton.addEventListener("click", function(e) {
   postIngredient(postToPantry());
   currentPantry.addIngredients(getId(), getName(), getAmount());
@@ -204,7 +203,6 @@ submitButton.addEventListener("click", function(e) {
   checkCookability();
   setTimeout(() => {displayMenuRecipes()}, 500);
 });
-
 
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
@@ -585,8 +583,6 @@ const displayUserProfile = () => {
   checkCookability();
   displayMenuRecipes();
   disablePantryButton();
-  findCookableSource(currentRecipe);
-  findCookableAlt(currentRecipe);
 };
 
 const displayPantry = () => {
@@ -718,7 +714,6 @@ const getId = () => {
 const getAmount = () => {
   let ingredientAmount = document.querySelector("#amount");
   let output = ingredientAmount.value;
-  console.log("AMOUNT", output);
   return Number(output);
 };
 

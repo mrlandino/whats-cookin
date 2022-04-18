@@ -17,20 +17,20 @@
   - [Additional Resources](#additional-resources)
 
 ## Introduction
-The What's Cookin project was a group assignment for Turing School of Software and Design's Front End Module 2. Students were instructed to work in groups of three, with a time frame of 10 days to make a recipe tracking app with a minimum functionality laid out in the rubric. A user on the site is able to view a repository of recipes, favoriting and unfavoriting them as they like, as well as adding them to a list of recipes they intend to cook during a given week.
+The What's Cookin project was a group assignment for Turing School of Software and Design's Front End Module 2. Students were instructed to work in groups of three, with two 10 day sprints to make a recipe tracking app with a minimum functionality laid out in the rubric. A user on the site is able to view a repository of recipes, favoriting and unfavoriting them as they like, as well as adding them to a list of recipes they intend to cook during a given week.
 
 The goals for students while completing this project, included incorporating Fetch calls and interaction with a backend API for the first time. They were also expected to write test files for each of their classes and the methods within those classes - getting more comfortable with Mocha and Chai in the process.
 
 The biggest wins for our group were sticking to our DTR, becoming more familiar with fetch requests, and gaining a deeper understanding of real-world application of iterator methods. We did a great job of communicating and had an organized approach with the Daily Standup.
 
-Our biggest challenge was grasping the vastness of the project. In comparison to our previous works, this project is significantly larger in scale and complexity. 
+Our biggest challenge was grasping the vastness of the project. In comparison to our previous works, this project is significantly larger in scale and complexity.
 
 
 ## Learning Goals
   - Utilize and employ class to class interaction with ES6 syntax.
   - Practice iterator methods to perform data manipulation in an effort to achieve desired functionalities.
   - Implement a robust testing suite using TDD
-  - Make network requests to retrieve data using Fetch API.
+  - Make network requests to retrieve and post data using Fetch API.
 
 ## Technologies
   - Javascript
@@ -41,6 +41,8 @@ Our biggest challenge was grasping the vastness of the project. In comparison to
   - Fetch API
   - Webpack
   - NPM
+  - Lighthouse (accessibility)
+  - Wave (accessibility)
 
 ## Features
 - When a user loads the browser, they should see a home page with a navigation bar and a display of different recipe thumbnails.
@@ -51,6 +53,7 @@ Our biggest challenge was grasping the vastness of the project. In comparison to
 - To view all of their favorites, a user can then click on the **Favorite Recipes** button.
   - While on this page, they can then filter and search just their favorite recipes.
 - Clicking on **All Recipes** will take the user back to a list of all the available recipes.  
+- Clicking on **View Profile** will allow the user to view their personal pantry inventory as well as the recipes they've chosen to cook. They can view a thumbnail to see what ingredients they are missing, then add to their pantry inventory via a form on their profile page. When they add ingredients or 'cook' a recipe, their pantry will update accordingly.
 
 ## Page Demo
 Adding a recipe to your favorites:
@@ -78,7 +81,9 @@ Adding a recipe to your favorites:
 - Olivia Whitehead (GitHub: whiteheadol)
 
 ## Project Specs
-- The spec for this project can be found [here](https://frontend.turing.edu/projects/What%27sCookin-PartOne.html).
+- The specs parts one and two of this project can be found [here](https://frontend.turing.edu/projects/What%27sCookin-PartOne.html) and [here](https://frontend.turing.edu/projects/whats-cookin-part-two.html).
+
+- The backend API can be found [here](https://github.com/turingschool-examples/whats-cookin-api).
 
 ## Project GitHub Repo
 - The project repo can be found [here](https://github.com/whiteheadol/whats-cookin).
