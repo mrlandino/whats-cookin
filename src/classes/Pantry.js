@@ -42,8 +42,7 @@ class Pantry {
       return this.ingredientsMissing = acc;
     }, []);
 
-    this.updateCookability(recipe)
-    // MOVE above method into its own function as a helper function
+    this.updateCookability(recipe);
   };
 
   updateCookability(recipe) {
@@ -62,11 +61,11 @@ class Pantry {
     const filteredIngredients = ingredients.filter(ingredient => {
       if (ingredientIds.includes(ingredient.id)) {
         return ingredient;
-      }
+      };
     });
 
     filteredIngredients.forEach(ingredient => {
-      this.currentPantry.push({name: ingredient.name, id:ingredient.id})
+      this.currentPantry.push({name: ingredient.name, id:ingredient.id});
     });
 
     this.currentPantry.map(ingredient => {
@@ -86,15 +85,15 @@ class Pantry {
     const filteredIngredients = ingredients.filter(ingredient => {
       if (ingredientIds.includes(ingredient.id)) {
         return ingredient;
-      }
+      };
     });
 
     filteredIngredients.forEach(ingredient => {
       if (!this.currentPantry.includes({name: ingredient.name, id: ingredient.id, amount: ingredient.amount}) && ingredient.amount !== undefined) {
-        this.currentPantry.push({name: ingredient.name, id: ingredient.id, amount: ingredient.amount})
-      }
+        this.currentPantry.push({name: ingredient.name, id: ingredient.id, amount: ingredient.amount});
+      };
     });
-  }
+  };
 
   updateMissingIngredients(ingredients) {
     let completeMissingIngredients = [];
@@ -109,7 +108,7 @@ class Pantry {
     });
 
     filteredIngredients.forEach(ingredient => {
-      completeMissingIngredients.push({name: ingredient.name, id:ingredient.id, amount: 0})
+      completeMissingIngredients.push({name: ingredient.name, id:ingredient.id, amount: 0});
     });
 
     completeMissingIngredients.map(ingredient => {
@@ -128,72 +127,29 @@ class Pantry {
     this.currentPantry.forEach((pantryItem) => {
       recipe.ingredientsNeeded.forEach((ingredient) => {
         if (pantryItem.id === ingredient.id) {
-          let difference = pantryItem.amount - ingredient.amount
-          pantryItem.amount = difference
-        }
-      })
-    })
-    return this.currentPantry
+          let difference = pantryItem.amount - ingredient.amount;
+          pantryItem.amount = difference;
+        };
+      });
+    });
+    return this.currentPantry;
   };
 
 
   addIngredients(id, name, amount) {
-    console.log('inputs: ', id, name, amount);
-    let amountToAdd = Number(amount)
-    // let obj = {name: name, id: id, amount: amountToAdd};
+    let amountToAdd = Number(amount);
     let counter = 0;
     this.currentPantry.forEach(item => {
       if (item.id === id) {
-        console.log(item, name)
-        // counter++;
         item.amount += amountToAdd;
       } else if (counter < 1 && !this.currentPantry.find(item => item.name === name)) {
         counter++;
-        this.currentPantry.push({name: name, id: id, amount: amountToAdd})
+        this.currentPantry.push({name: name, id: id, amount: amountToAdd});
       };
     });
     return this.currentPantry;
   };
 
-//   repopulateIngredientsMissing(recipe) {
-//     // basically want to reasses the current pantry to find additions and refresh the ings missing array.
-//     // look at currentPantry, see if amounts are enough for the recipe
-//
-//     let recipeIngredientIds = [];
-//     let pantryIngredientIds = [];
-//     let missingIngredIds = [];
-//
-//     recipe.ingredients.forEach((recipeIngredient) => {
-//       recipeIngredientIds.push(recipeIngredient.id);
-//     });
-//
-//     this.currentPantry.forEach((pantryIngredient) => {
-//       pantryIngredientIds.push(pantryIngredient.id);
-//     });
-//
-//     recipe.ingredients.reduce((acc, recipeIngredient) => {
-//       this.currentPantry.forEach(pantryItem => {
-//         if(recipeIngredient.id === pantryItem.id && recipeIngredient.quantity.amount > pantryItem.amount) {
-//           var difference = recipeIngredient.quantity.amount - pantryItem.amount;
-//           var element = {id: recipeIngredient.id, quantity: difference};
-//           if (!acc.includes(element)) {
-//                acc.push(element);
-//                missingIngredIds.push(element.id);
-//           };
-//         };
-//       });
-//
-//       recipeIngredientIds.forEach(idNum => {
-//         if(!pantryIngredientIds.includes(idNum) && !missingIngredIds.includes(idNum) && recipeIngredient.id === idNum) {
-//           acc.push({id: idNum, quantity: recipeIngredient.quantity.amount});
-//           missingIngredIds.push(idNum);
-//         };
-//       });
-//       return this.ingredientsMissing = acc;
-//     }, []);
-//     // return this.ingredientsMissing
-//     this.updateCookability(recipe);
-//   }
-}
+};
 
-export default Pantry
+export default Pantry;
