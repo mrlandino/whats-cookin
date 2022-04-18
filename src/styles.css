@@ -98,6 +98,7 @@ h2 {
   justify-content: center;
   overflow: auto;
 }
+
 .recipe-thumbnail {
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -112,10 +113,9 @@ h2 {
   transition: .4s;
 }
 
-
 .recipe-image {
   height: 75%;
-  width: 100%
+  width: 100%;
 }
 
 .thumbnail-details {
@@ -126,6 +126,7 @@ h2 {
   height: 25%;
   justify-content: space-between;
 }
+
 .menu-icon,
 .star-icon {
   height: 80%;
@@ -152,7 +153,7 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  width: 100%
+  width: 100%;
 }
 
 .favorite-recipes-container {
@@ -176,7 +177,6 @@ p {
   flex-direction: column;
   height: 100vh;
   justify-content: center;
-  /* margin: 20px; */
   margin: 20px 50px 10px 5px;
   width: 400px;
 }
@@ -198,7 +198,6 @@ p {
   margin: 20px 5px 10px 50px;
 }
 
-
 .form-label {
   font-size: 20px;
   padding: 10px;
@@ -208,8 +207,6 @@ p {
   display: flex;
   flex-direction: column;
 }
-
-
 
 .card-and-missing-ingredients-container {
   display: flex;
@@ -223,8 +220,8 @@ p {
   height: auto;
   justify-content: flex-start;
   margin: 20px 50px 10px 5px;
-  width: 20%;
   text-align: center;
+  width: 20%;
 }
 
 .profile-container {
@@ -234,14 +231,13 @@ p {
 }
 
 .menu-thumbnails {
-  margin: 20px 10px;
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  margin: 20px 10px;
   width: 70%;
 }
-
 
 .fav-filter-tag {
   background-color: #F87664;
@@ -263,7 +259,7 @@ p {
   flex-direction: row;
   justify-content: center;
   margin: 20px 0px 10px 5px;
-  width: 100%
+  width: 100%;
 }
 
 .fav-search-button-label {
@@ -282,7 +278,6 @@ h3 {
   flex-direction: column;
   width: 60%;
 }
-
 
 /* HEADER-------------------------- */
 header {
@@ -358,7 +353,6 @@ button:hover {
   display: none;
 }
 
-
 .dropdown:hover
 .dropdown-content {
   background-color: #F87664;
@@ -378,12 +372,8 @@ button:hover {
   text-align: center;
 }
 
-
+.tag-hover:hover,
 .fav-tag-hover:hover {
-  background-color: #FAA498;
-}
-
-.tag-hover:hover {
   background-color: #FAA498;
 }
 

@@ -2,8 +2,6 @@ import "./styles.css";
 import {usersPromise, ingredientsPromise, recipePromise, postIngredient} from "./apiCalls";
 import "./images/favorite-star.png";
 import "./images/empty-star.png";
-import "./images/check-mark.png";
-import "./images/shopping-cart.png";
 import RecipeRepository from "./classes/RecipeRepository.js";
 import Recipe from "./classes/Recipe.js";
 import User from "./classes/User.js";
@@ -35,7 +33,7 @@ const favRecipes= document.querySelector(".favorite-recipes-container");
 const allRecipesTitle = document.querySelector(".all-recipes-title");
 const favDropdownContent = document.querySelector(".dropdown-content-fav-tag");
 const favRecipesTitle = document.querySelector(".fav-recipes-title");
-const thumbnailAside = document.querySelector(".thumbnail-aside-container")
+const thumbnailAside = document.querySelector(".thumbnail-aside-container");
 const favSearchInput = document.querySelector(".fav-search-button-input");
 const clearFilters = document.querySelector(".clear-filters-button");
 const addToMenuButton = document.querySelector(".add-to-menu");
@@ -50,9 +48,7 @@ const missingItems = document.querySelector(".missing-items");
 const missingIngredients = document.querySelector(".missing-ingredients");
 const addToPantryButton = document.querySelector(".add-to-pantry");
 const pantryForm = document.querySelector(".add-to-panty-form");
-const submitButton = document.querySelector(".submit-button")
-// const pantryFormAside = document.querySelector(".pantry-form-container");
-// const ingredientInput = document.querySelector("#select1");
+const submitButton = document.querySelector(".submit-button");
 const amountInput = document.querySelector('#amount');
 
 // EVENT LISTENERS-----------------------------------------------
@@ -67,7 +63,6 @@ allRecipes.addEventListener("click", function(e) {
   };
 });
 
-// Duplicate code, talk to group about
 allRecipes.addEventListener("keypress", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
     loadThumbnail(e);
@@ -86,10 +81,9 @@ favoriteRecipesContainer.addEventListener("click", function(e) {
   };
 });
 
-// Duplicate code, talk to group about
 favoriteRecipesContainer.addEventListener("keypress", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
-    loadFavThumbnail(e);get
+    loadFavThumbnail(e);
   };
   if (e.target.classList.contains("star-icon") && e.key === "Enter") {
     clickFavStar(e);
@@ -112,15 +106,12 @@ dropdownContent.addEventListener("click", function(e) {
   };
 });
 
-// How can we make the dropdown accessible with just keys? Both all recipes & favs
-
 favDropdownContent.addEventListener("click", function(e) {
   if(e.target.classList.contains("tag-hover")) {
     loadFavDropdown(e);
   };
 });
 
-// Duplicate code
 favDropdownContent.addEventListener("keypress", function(e) {
   if(e.target.classList.contains("tag-hover") && e.key === "Enter") {
     loadFavDropdown(e);
@@ -143,7 +134,7 @@ allRecipesButton.addEventListener("click", function() {
 
 profileButton.addEventListener("click", function() {
   displayUserProfile();
-  hideElement([pantryForm, submitButton])
+  hideElement([pantryForm, submitButton]);
   disablePantryButton();
 });
 
@@ -157,20 +148,11 @@ clearFilters.addEventListener("click", function() {
   loadFilterClear();
 });
 
-//need an eventListener to allow the user to click on the recipes in the menu
-//need to method that injects the html to show the recipe details
 menuThumbnails.addEventListener("click", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail")) {
-      // currentPantry.assessIngredients(currentRecipe);
-      // currentPantry.repopulateIngredientsMissing(currentRecipe)
       loadMenuThumbnail(e);
       showElement([missingIngredients]);
       canCookToggle();
-      // Promise.all(
-      //   [usersPromise]
-      // ).then(jsonArray => {
-      //   usersData = jsonArray[0];
-      // })
       let getUserPromise = (url) => {
         return fetch(url)
         .then(response => response.json())
@@ -179,66 +161,33 @@ menuThumbnails.addEventListener("click", function(e) {
           usersData.forEach(user => {
             if(user.id === currentUser.id) {
               currentPantry.userPantry = user.pantry;
-              console.log(currentPantry)
-              // currentPantry = user.pantry;
             };
           });
           displayMissingIngredients();
         })
         .catch(err => console.log(error));
       };
-
-      getUserPromise("http://localhost:3001/api/v1/users")
-      console.log(usersData)
-      //UPDATE CurrentUsers Pantry
-
-      // cookButton.innerText = 'Cook Recipe';
+      getUserPromise("http://localhost:3001/api/v1/users");
   };
 });
 
-// Duplicate code, talk to group about
 menuThumbnails.addEventListener("keypress", function(e) {
   if (e.target.parentElement.classList.contains("recipe-thumbnail") && e.key === "Enter") {
-      // currentPantry.assessIngredients(currentRecipe);
       loadMenuThumbnail(e);
       showElement([missingIngredients]);
       canCookToggle();
-      // cookButton.innerText = 'Cook Recipe';
   };
 });
 
 cookButton.addEventListener("click", function(e) {
   currentPantry.removeIngredients(currentRecipe);
   removePost();
-  //refetch after this post happens and update currentPantry again:
-
-          // let getUserPromise = (url) => {
-          //   return fetch(url)
-          //   .then(response => response.json())
-          //   .then(data => {
-          //     usersData = data;
-          //     usersData.forEach(user => {
-          //       if(user.id === currentUser.id) {
-          //         currentPantry.userPantry = user.pantry;
-          //         console.log(currentPantry)
-          //         // currentPantry = user.pantry;
-          //       };
-          //     });
-          //     displayMissingIngredients();
-          //   })
-          //   .catch(err => console.log(error));
-          // };
-          //
-          // getUserPromise("http://localhost:3001/api/v1/users")
-
   toggleCookButton();
   currentPantry.assessIngredients(currentRecipe);
   setTimeout(() => {displayUserProfile()}, 500);
 });
 
 addToPantryButton.addEventListener("click", function(e) {
-  console.log(currentUser)
-  // disablePantryButton();
   injectForm(ingredientsData);
   disablePantryButton();
   showElement([pantryForm]);
@@ -249,19 +198,13 @@ submitButton.addEventListener("click", function(e) {
   postIngredient(postToPantry());
   currentPantry.addIngredients(getId(), getName(), getAmount());
   pantryForm.reset();
-  // currentPantry.updateMissingIngredients(ingredientsData);
-  // console.log(currentRecipe)
-  // currentPantry.repopulateIngredientsMissing(currentRecipe);
   displayUserProfile();
   hideElement([pantryForm, submitButton]);
   disablePantryButton();
-  displayMenuRecipes();
-  // console.log(currentPantry);
-
-  console.log(usersData)
+  checkCookability();
+  setTimeout(() => {displayMenuRecipes()}, 500);
 });
 
-// We need to update missing ingredients, upon submit button
 
 // EVENT HANDLERS------------------------------------------------
 const loadWindow = () => {
@@ -307,7 +250,6 @@ const loadFavThumbnail = (e) => {
 };
 
 const loadMenuThumbnail = (e) => {
-  console.log(currentPantry.ingredientsMissing)
   displayCard();
   findRecipeInfo(e.target.parentElement.id);
   updateRecipeCard();
@@ -650,37 +592,29 @@ const displayUserProfile = () => {
 const displayPantry = () => {
   let pantryList = "";
   let pantryItems;
-
-  // itemizedPantry.innerHTML = "";
-
   pantryItems = currentPantry.currentPantry.reduce((allItems, item) => {
-    allItems.push(item)
+    allItems.push(item);
     return allItems;
   }, []);
-
   pantryItems.forEach(item => {
     pantryList += `<p class="pantry-item" data-id="${item.name}">${item.name} X ${item.amount}</p>`
   });
-
   itemizedPantry.innerHTML = pantryList;
 };
 
 const displayMenuRecipes = () => {
   menuThumbnails.innerHTML = "";
   let recipesHTML = "";
-
   currentUser.recipesToCook.forEach((recipe) => {
     currentPantry.assessIngredients(recipe);
-    console.log(recipe.canBeCooked);
     recipesHTML += `<div class="recipe-thumbnail" id=${recipe.id}>
                 <img tabindex="0" class="recipe-image" src=${recipe.image} alt='${recipe.name}'>
                 <div class="thumbnail-details" id=${recipe.id}>
                   <p>${recipe.name}</p>
-                  <img class="menu-icon" id='${recipe.id}' src=${findCookableSource(recipe)} alt=${findCookableAlt(recipe)}>
                 </div>
               </div>`;
   });
-  let title = `<div class="menu-recipe-title"><h2>Menu</h2></div>`
+  let title = `<div class="menu-recipe-title"><h2>Menu</h2></div>`;
   menuThumbnails.innerHTML = title + recipesHTML;
 };
 
@@ -690,42 +624,16 @@ const checkCookability = () => {
   });
 };
 
-const findCookableSource = (recipe) => {
-  let imageSource = "";
-  if(recipe.canBeCooked) {
-    imageSource = "http://localhost:8080/images/check-mark.png"
-  } else {
-    imageSource = "http://localhost:8080/images/shopping-cart.png"
-  }
-  return imageSource;
-};
-
-const findCookableAlt = (recipe) => {
-  let imageAlt = "";
-  if(recipe.canBeCooked) {
-    imageAlt = "cookable"
-  } else {
-    imageAlt = "uncookable"
-  }
-  return imageAlt;
-};
-
 const displayMissingIngredients = () => {
-    currentPantry.assessIngredients(currentRecipe);
-    currentPantry.updateMissingIngredients(ingredientsData);
-    // currentPantry.repopulateIngredientsMissing(currentRecipe);
-
-  // invoke the new method
+  currentPantry.assessIngredients(currentRecipe);
+  currentPantry.updateMissingIngredients(ingredientsData);
   canCookToggle();
-
   let missingIngredientList = "";
   let missing;
-
   missing = currentPantry.ingredientsMissing.reduce((allItems, item) => {
-    allItems.push(item)
+    allItems.push(item);
     return allItems;
   }, []);
-
   missing.forEach(item => {
     missingIngredientList += `<p class="missing-item" data-id="${item.name}">${item.name} X ${item.amount}</p>`
   });
@@ -736,55 +644,41 @@ const canCookToggle = () => {
   cookButton.innerText = "Cook Recipe!";
   if(currentPantry.ingredientsMissing.length > 0) {
     cookButton.disabled = true;
-    cookButton.classList.add("disabled")
+    cookButton.classList.add("disabled");
   } else {
     cookButton.disabled = false;
-    cookButton.classList.remove("disabled")
+    cookButton.classList.remove("disabled");
   };
 };
 
-// Change these back
 const disablePantryButton = () => {
   if (submitButton.classList.contains("hidden")) {
     addToPantryButton.disabled = false;
   } else {
     addToPantryButton.disabled = true;
-  }
+  };
 };
 
 const toggleCookButton = () => {
   cookButton.innerText = "Recipe Cooked!";
-
-  // if (cookButton.innerText === "Cook Recipe") {
-  //   cookButton.innerText = "Recipe Cooked!";
-  // } else {
-  //   cookButton.innerText = "Cook Recipe";
-  // }
 };
 
 const injectForm = (ingredientsData) => {
-  pantryForm.innerHTML = ""
-  // const ingredientNames = ingredientsData.map((ingredient) => {
-  //   return ingredient.name.toLowerCase()
-  // })
-  // ingredientNames.sort()
-
+  pantryForm.innerHTML = "";
   let options;
-  let label = `<label class="form-label" for="ingredient-dropdown">Choose an Ingredient to Add:</label>`
+  let label = `<label class="form-label" for="ingredient-dropdown">Choose an Ingredient to Add:</label>`;
   let selectOpen = `<select id="select1" class="ingredient-selection" required`;
-  let selectClose = `</select>`
-  let placeholder = `<option value selected>Select Ingredient</option>`
+  let selectClose = `</select>`;
+  let placeholder = `<option value selected>Select Ingredient</option>`;
   let numInput = `<label class="form-label" for="amount">Select a Quantity:</label>
-                  <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100" required>`
+                  <input type="number" id ="amount" name="amount" step="0.25" min="0.25" max="100" required>`;
 
   ingredientsData.forEach(item => {
     item.name = item.name.toLowerCase();
   });
-
   ingredientsData.sort((a, b) => {
     let nameA = a.name;
     let nameB = b.name;
-
     if (nameA < nameB) {
       return -1;
     } if (nameA > nameB) {
@@ -794,7 +688,7 @@ const injectForm = (ingredientsData) => {
   });
 
   ingredientsData.forEach((ingredient) => {
-    options += `<option data-id=${ingredient.id} value='${ingredient.name}'>${ingredient.name}</option>`
+    options += `<option data-id=${ingredient.id} value='${ingredient.name}'>${ingredient.name}</option>`;
   });
 
   pantryForm.innerHTML += label + selectOpen + placeholder + options + selectClose + numInput;
@@ -816,8 +710,8 @@ const getId = () => {
     ingredient.name.toLowerCase();
     if (ingredient.name === output) {
       result = ingredient.id;
-    }
-  })
+    };
+  });
   return result;
 };
 
@@ -833,7 +727,7 @@ const postToPantry = () => {
   let ingredientName = getName();
   let ingredientId = getId();
 
-  return { userID: currentUser.id, ingredientID: ingredientId, ingredientModification: ingredientAmount }
+  return { userID: currentUser.id, ingredientID: ingredientId, ingredientModification: ingredientAmount };
 };
 
 const removePost = () => {
